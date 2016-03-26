@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Lift</string>
     <string name="action_settings">Settings</string>
+    <string name="one">Today</string>
+    <string name="two">Tomorrow</string>
+    <string name="three">Monday</string>
+    <string name="four">Tuesday</string>
+    <string name="five">Wednesday</string>
 </resources>
