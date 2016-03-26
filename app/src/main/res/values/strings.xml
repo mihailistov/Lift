@@ -6,4 +6,19 @@
     <string name="three">Monday</string>
     <string name="four">Tuesday</string>
     <string name="five">Wednesday</string>
+
+    <string-array name="list">
+        <item>Barbell Front Squat</item>
+        <item>Kettlebell One-Legged Deadlift</item>
+        <item>Barbell Squat</item>
+        <item>Stiff-Legged Deadlift</item>
+        <item>Barbell Lunge</item>
+        <item>Kettlebell Swing</item>
+        <item>Kettlebell Swing w/ Foward/Backward Step</item>
+        <item>Kettlebell Goblet Squat</item>
+        <item>Kettlebell Swing w/ Side-to-Side Step</item>
+        <item>Barbell Lunge</item>
+        <item>Kettlebell Deadlift</item>
+        <item>Standing Calf Raises</item>
+    </string-array>
 </resources>
