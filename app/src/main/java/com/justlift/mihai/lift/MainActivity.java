@@ -15,8 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+
+        setSupportActionBar(mainToolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
     }
 
