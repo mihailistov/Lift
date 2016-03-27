@@ -7,4 +7,16 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/calendar"
+        android:icon="@drawable/ic_calendar"
+        android:orderInCategory="100"
+        android:title="@string/calendar"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/organizer"
+        android:icon="@drawable/ic_organizer"
+        android:orderInCategory="100"
+        android:title="@string/organizer"
+        app:showAsAction="always" />
 </menu>

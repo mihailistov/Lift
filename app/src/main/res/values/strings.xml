@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Lift</string>
     <string name="action_settings">Settings</string>
+    <string name="calendar">Calendar</string>
+    <string name="organizer">Organizer</string>
     <string name="one">Today</string>
     <string name="two">Tomorrow</string>
     <string name="three">Monday</string>
@@ -9,16 +11,16 @@
 
     <string-array name="list">
         <item>Barbell Front Squat</item>
-        <item>Kettlebell One-Legged Deadlift</item>
+        <item>KB One-Legged Deadlift</item>
         <item>Barbell Squat</item>
         <item>Stiff-Legged Deadlift</item>
         <item>Barbell Lunge</item>
-        <item>Kettlebell Swing</item>
-        <item>Kettlebell Swing w/ Foward/Backward Step</item>
-        <item>Kettlebell Goblet Squat</item>
-        <item>Kettlebell Swing w/ Side-to-Side Step</item>
+        <item>KB Swing</item>
+        <item>KB Forward/Backward Travelling Swing</item>
+        <item>KB Goblet Squat</item>
+        <item>KB Side Travelling Swing</item>
         <item>Barbell Lunge</item>
-        <item>Kettlebell Deadlift</item>
+        <item>KB Deadlift</item>
         <item>Standing Calf Raises</item>
     </string-array>
 </resources>
