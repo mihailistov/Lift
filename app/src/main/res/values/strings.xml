@@ -23,4 +23,15 @@
         <item>KB Deadlift</item>
         <item>Standing Calf Raises</item>
     </string-array>
+    <string-array name="list_two">
+        <item>Overhead Press</item>
+        <item>Arnold Dumbell Press</item>
+        <item>Side Raise</item>
+        <item>Front Raise</item>
+        <item>Dumbell Press</item>
+        <item>Barbell Upright Row</item>
+        <item>Rear Flyes w/Bench</item>
+        <item>Dumbell Shrug</item>
+        <item>Barbell Shrug</item>
+    </string-array>
 </resources>

@@ -20,11 +20,14 @@ public class OneFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        ((MainActivity) getActivity()).setActionBarTitle("Lift.Legs");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Lift.Legs");
+//        ((MainActivity) getActivity()).setActionBarTitle("Lift.Legs");
         list_items = getResources().getStringArray(R.array.list);
         setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, list_items));
         // Inflate the layout for this fragment

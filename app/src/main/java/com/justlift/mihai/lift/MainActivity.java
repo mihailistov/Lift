@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,25 +23,50 @@ public class MainActivity extends AppCompatActivity {
         getDelegate().onCreate(savedInstanceState);
 
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
-//        Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
-//        setSupportActionBar(mainToolbar);
+        getSupportActionBar().setTitle("Lift.Legs");
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
-        getSupportActionBar().setTitle(null);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                viewPager.setCurrentItem(position);
+                switch(position){
+                    case 0:
+                        getSupportActionBar().setTitle("Lift.Legs");
+                        break;
+                    case 1:
+                        getSupportActionBar().setTitle("Lift.Shoulders");
+                        break;
+                    case 2:
+                        getSupportActionBar().setTitle("Lift.Back");
+                        break;
+                    case 3:
+                        getSupportActionBar().setTitle("Lift.Chest");
+                        break;
+                    case 4:
+                        getSupportActionBar().setTitle("Lift.Abs");
+                        break;
+                }
+            }
+        });
+
     }
+
+//    public void setActionBarTitle(String title){
+//        getSupportActionBar().setTitle(title);
+//    }
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
