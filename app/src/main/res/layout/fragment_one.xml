@@ -5,8 +5,12 @@
     android:layout_height="fill_parent">
 
     <ExpandableListView
-        android:id="@+id/list"
+        android:id="@+id/expListView"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_width="match_parent"
+        android:divider="@null"
+        android:background="@color/white"
+        android:groupIndicator="@drawable/group_indicator"
+        android:transcriptMode="alwaysScroll" />
 
 </LinearLayout>
