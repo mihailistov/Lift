@@ -1,10 +1,13 @@
 package com.justlift.mihai.lift;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -59,6 +62,25 @@ public class OneFragment extends Fragment {
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
         elv.setAdapter(new ExpandableListAdapter(groups, children));
 //        elv.setGroupIndicator(null);
+
+        // Move indicator to right
+        DisplayMetrics metrics = new DisplayMetrics();
+//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getMetrics(metrics);
+        int width = metrics.widthPixels;
+        if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
+            elv.setIndicatorBounds(width - GetPixelFromDips(50), width - GetPixelFromDips(10));
+        } else {
+            elv.setIndicatorBoundsRelative(width - GetPixelFromDips(50), width - GetPixelFromDips(10));
+        }
+    }
+
+    public int GetPixelFromDips(float pixels) {
+        // Get the screen's density scale
+        final float scale = getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return (int) (pixels * scale + 0.5f);
     }
 
     public class ExpandableListAdapter extends BaseExpandableListAdapter{
