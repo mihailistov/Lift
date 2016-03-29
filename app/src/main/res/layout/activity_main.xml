@@ -35,12 +35,15 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-            <android.support.design.widget.TabLayout
+            <com.justlift.mihai.lift.CustomTabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabMode="scrollable"
+                app:tabIndicatorColor="@android:color/white"
+                app:tabIndicatorHeight="5dip"
                 app:tabGravity="fill"/>
+                <!--app:tabMaxWidth="51.43dip"-->
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager

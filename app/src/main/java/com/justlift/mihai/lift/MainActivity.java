@@ -1,7 +1,6 @@
 package com.justlift.mihai.lift;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,12 +14,19 @@ import android.view.Window;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
+
+//        Display display = getWindowManager().getDefaultDisplay();
+//        Point size = new Point();
+//        display.getSize(size);
+//        int width = size.x;
 
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
@@ -35,8 +41,10 @@ public class MainActivity extends AppCompatActivity {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        CustomTabLayout.Tab tab = tabLayout.getTabAt(1);
+        tab.select();
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -50,13 +58,19 @@ public class MainActivity extends AppCompatActivity {
                         getSupportActionBar().setTitle("Lift.Shoulders");
                         break;
                     case 2:
-                        getSupportActionBar().setTitle("Lift.Back");
+                        getSupportActionBar().setTitle("Lift.Cardio&Abs");
                         break;
                     case 3:
-                        getSupportActionBar().setTitle("Lift.Chest");
+                        getSupportActionBar().setTitle("Lift.Back");
                         break;
                     case 4:
-                        getSupportActionBar().setTitle("Lift.Abs");
+                        getSupportActionBar().setTitle("Lift.Chest");
+                        break;
+                    case 5:
+                        getSupportActionBar().setTitle("Lift.ActiveRecovery");
+                        break;
+                    case 6:
+                        getSupportActionBar().setTitle("Lift.Rest");
                         break;
                 }
             }
@@ -70,11 +84,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "TODAY");
-        adapter.addFragment(new TwoFragment(), "TOMORROW");
-        adapter.addFragment(new ThreeFragment(), "MONDAY");
-        adapter.addFragment(new FourFragment(), "TUESDAY");
-        adapter.addFragment(new FiveFragment(), "WEDNESDAY");
+        adapter.addFragment(new OneFragment(), "Tu\n29");
+        adapter.addFragment(new TwoFragment(), "W\n30");
+        adapter.addFragment(new ThreeFragment(), "Th\n31");
+        adapter.addFragment(new FourFragment(), "F\n1");
+        adapter.addFragment(new FiveFragment(), "Sa\n2");
+        adapter.addFragment(new SixFragment(), "Su\n3");
+        adapter.addFragment(new SevenFragment(), "M\n4");
         viewPager.setAdapter(adapter);
     }
 
