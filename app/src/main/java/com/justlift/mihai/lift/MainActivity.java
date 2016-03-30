@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Lift.Back");
+
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
@@ -81,33 +81,21 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(tabNumber).select();
 
+        final String[] titleStrings = {"Lift.Rest",
+                                       "Lift.Chest",
+                                       "Lift.Back",
+                                       "Lift.Chest/Cardio",
+                                       "Lift.Legs",
+                                       "Lift.Shoulders+Chest",
+                                       "Lift.Rest"};
+
+        getSupportActionBar().setTitle(titleStrings[tabNumber]);
+
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position);
-                switch(position){
-                    case 0:
-                        getSupportActionBar().setTitle("Lift.Rest");
-                        break;
-                    case 1:
-                        getSupportActionBar().setTitle("Lift.Chest");
-                        break;
-                    case 2:
-                        getSupportActionBar().setTitle("Lift.Back");
-                        break;
-                    case 3:
-                        getSupportActionBar().setTitle("Lift.Chest/Cardio");
-                        break;
-                    case 4:
-                        getSupportActionBar().setTitle("Lift.Legs");
-                        break;
-                    case 5:
-                        getSupportActionBar().setTitle("Lift.Shoulders+Chest");
-                        break;
-                    case 6:
-                        getSupportActionBar().setTitle("Lift.Rest");
-                        break;
-                }
+                getSupportActionBar().setTitle(titleStrings[position]);
             }
         });
 
