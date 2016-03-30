@@ -42,7 +42,7 @@
                 app:tabMode="scrollable"
                 app:tabIndicatorColor="@android:color/white"
                 app:tabIndicatorHeight="5dip"
-                app:tabGravity="fill"/>
+                app:tabGravity="center"/>
                 <!--app:tabMaxWidth="51.43dip"-->
         </android.support.design.widget.AppBarLayout>
 

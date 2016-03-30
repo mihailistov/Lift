@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Lift.Legs");
+        getSupportActionBar().setTitle("Lift.Back");
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
@@ -43,8 +45,41 @@ public class MainActivity extends AppCompatActivity {
 
         CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        CustomTabLayout.Tab tab = tabLayout.getTabAt(1);
-        tab.select();
+
+//        for (int ii = 0; ii < tabLayout.getTabCount(); ii++) {
+//            tabLayout.getTabAt(ii).setCustomView(R.layout.tab_view);
+//        }
+
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        int tabNumber = 0;
+
+        switch(day)
+        {
+            case Calendar.SUNDAY:
+                tabNumber = 0;
+                break;
+            case Calendar.MONDAY:
+                tabNumber = 1;
+                break;
+            case Calendar.TUESDAY:
+                tabNumber = 2;
+                break;
+            case Calendar.WEDNESDAY:
+                tabNumber = 3;
+                break;
+            case Calendar.THURSDAY:
+                tabNumber = 4;
+                break;
+            case Calendar.FRIDAY:
+                tabNumber = 5;
+                break;
+            case Calendar.SATURDAY:
+                tabNumber = 6;
+                break;
+        }
+
+        tabLayout.getTabAt(tabNumber).select();
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -52,22 +87,22 @@ public class MainActivity extends AppCompatActivity {
                 viewPager.setCurrentItem(position);
                 switch(position){
                     case 0:
-                        getSupportActionBar().setTitle("Lift.Legs");
+                        getSupportActionBar().setTitle("Lift.Rest");
                         break;
                     case 1:
-                        getSupportActionBar().setTitle("Lift.Shoulders");
-                        break;
-                    case 2:
-                        getSupportActionBar().setTitle("Lift.Cardio&Abs");
-                        break;
-                    case 3:
-                        getSupportActionBar().setTitle("Lift.Back");
-                        break;
-                    case 4:
                         getSupportActionBar().setTitle("Lift.Chest");
                         break;
+                    case 2:
+                        getSupportActionBar().setTitle("Lift.Back");
+                        break;
+                    case 3:
+                        getSupportActionBar().setTitle("Lift.Chest/Cardio");
+                        break;
+                    case 4:
+                        getSupportActionBar().setTitle("Lift.Legs");
+                        break;
                     case 5:
-                        getSupportActionBar().setTitle("Lift.ActiveRecovery");
+                        getSupportActionBar().setTitle("Lift.Shoulders+Chest");
                         break;
                     case 6:
                         getSupportActionBar().setTitle("Lift.Rest");
@@ -83,14 +118,26 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     private void setupViewPager(ViewPager viewPager) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        SimpleDateFormat df = new SimpleDateFormat("d");
+//        SimpleDateFormat df2 = new SimpleDateFormat("E");
+//        String formattedDate = df.format(cal.getTime());
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "Tu\n29");
-        adapter.addFragment(new TwoFragment(), "W\n30");
-        adapter.addFragment(new ThreeFragment(), "Th\n31");
-        adapter.addFragment(new FourFragment(), "F\n1");
-        adapter.addFragment(new FiveFragment(), "Sa\n2");
-        adapter.addFragment(new SixFragment(), "Su\n3");
-        adapter.addFragment(new SevenFragment(), "M\n4");
+        adapter.addFragment(new OneFragment(), "SUN\n" + df.format(cal.getTime()));    // Tu W Th F Sa Su M
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        adapter.addFragment(new TwoFragment(), "MON\n" + df.format(cal.getTime()));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        adapter.addFragment(new ThreeFragment(), "TUE\n" + df.format(cal.getTime()));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        adapter.addFragment(new FourFragment(), "WED\n" + df.format(cal.getTime()));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        adapter.addFragment(new FiveFragment(), "THU\n" + df.format(cal.getTime()));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        adapter.addFragment(new SixFragment(), "FRI\n" + df.format(cal.getTime()));
+        cal.add(Calendar.DAY_OF_WEEK, 1);
+        adapter.addFragment(new SevenFragment(), "SAT\n" + df.format(cal.getTime()));
         viewPager.setAdapter(adapter);
     }
 
