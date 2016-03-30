@@ -9,7 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,17 +28,22 @@ public class MainActivity extends AppCompatActivity {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
 
-//        Display display = getWindowManager().getDefaultDisplay();
-//        Point size = new Point();
-//        display.getSize(size);
-//        int width = size.x;
-
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ImageButton addButton = (ImageButton) findViewById(R.id.add_button);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+        public void onClick(View v){
+                Toast.makeText(MainActivity.this, "Updated",Toast.LENGTH_SHORT).show();
+                OneFragment.groups[0] = "Barbell Front Squat";
+                OneFragment.elv.invalidateViews();
+            }
+        });
 
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
@@ -89,43 +97,41 @@ public class MainActivity extends AppCompatActivity {
                                        "Lift.Shoulders+Chest",
                                        "Lift.Rest"};
 
-        getSupportActionBar().setTitle(titleStrings[tabNumber]);
+        setActionBarTitle(titleStrings[tabNumber]);
 
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position);
-                getSupportActionBar().setTitle(titleStrings[position]);
+                setActionBarTitle(titleStrings[position]);
             }
         });
 
     }
 
-//    public void setActionBarTitle(String title){
-//        getSupportActionBar().setTitle(title);
-//    }
+    public void setActionBarTitle(String title){
+        getSupportActionBar().setTitle(title);
+    }
 
-    private void setupViewPager(ViewPager viewPager) {
+    public static String dayOfWeek(int days)
+    {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+        cal.add(Calendar.DAY_OF_WEEK, days);
         SimpleDateFormat df = new SimpleDateFormat("d");
-//        SimpleDateFormat df2 = new SimpleDateFormat("E");
-//        String formattedDate = df.format(cal.getTime());
+        return df.format(cal.getTime());
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "SUN\n" + df.format(cal.getTime()));    // Tu W Th F Sa Su M
-        cal.add(Calendar.DAY_OF_WEEK, 1);
-        adapter.addFragment(new TwoFragment(), "MON\n" + df.format(cal.getTime()));
-        cal.add(Calendar.DAY_OF_WEEK, 1);
-        adapter.addFragment(new ThreeFragment(), "TUE\n" + df.format(cal.getTime()));
-        cal.add(Calendar.DAY_OF_WEEK, 1);
-        adapter.addFragment(new FourFragment(), "WED\n" + df.format(cal.getTime()));
-        cal.add(Calendar.DAY_OF_WEEK, 1);
-        adapter.addFragment(new FiveFragment(), "THU\n" + df.format(cal.getTime()));
-        cal.add(Calendar.DAY_OF_WEEK, 1);
-        adapter.addFragment(new SixFragment(), "FRI\n" + df.format(cal.getTime()));
-        cal.add(Calendar.DAY_OF_WEEK, 1);
-        adapter.addFragment(new SevenFragment(), "SAT\n" + df.format(cal.getTime()));
+        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
+        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
+        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
+        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
+        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
+        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
         viewPager.setAdapter(adapter);
     }
 

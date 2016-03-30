@@ -17,9 +17,9 @@ import android.widget.TextView;
  */
 public class OneFragment extends Fragment {
     View rootView;
-    ExpandableListView elv;
-    private String[] groups;
-    private String[][] children;
+    public static ExpandableListView elv;
+    public static String[] groups;
+    public String[][] children;
 //    String[] list_items;
 
     public OneFragment() {
@@ -42,16 +42,7 @@ public class OneFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Lift.Legs");
-//        ((MainActivity) getActivity()).setActionBarTitle("Lift.Legs");
-//        list_items = getResources().getStringArray(R.array.list);
-//        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, list_items));
         rootView = inflater.inflate(R.layout.fragment_one, container, false);
-//        v.setPadding(20,20,20,20);
-//        ExpandableListView elv = (ExpandableListView) v.findViewById(R.id.list);
-//        elv.setAdapter(new SavedTabsListAdapter());
-
-        // Inflate the layout for this fragment
         return rootView;
     }
 
@@ -61,14 +52,13 @@ public class OneFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
         elv.setAdapter(new ExpandableListAdapter(groups, children));
-//        elv.setGroupIndicator(null);
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
+
         if(android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR2) {
             elv.setIndicatorBounds(width - GetPixelFromDips(50), width - GetPixelFromDips(10));
         } else {
@@ -147,10 +137,6 @@ public class OneFragment extends Fragment {
 
             holder.text.setText(getGroup(i).toString());
             return view;
-
-//            TextView textView = new TextView(OneFragment.this.getActivity());
-//            textView.setText(getGroup(i).toString());
-//            return textView;
         }
 
         @Override
@@ -169,10 +155,6 @@ public class OneFragment extends Fragment {
 
             holder.text.setText(getChild(i, i1).toString());
             return view;
-
-//            TextView textView = new TextView(OneFragment.this.getActivity());
-//            textView.setText(getChild(i, i1).toString());
-//            return textView;
         }
 
         @Override

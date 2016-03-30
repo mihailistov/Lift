@@ -34,7 +34,6 @@ public class CustomTabLayout extends TabLayout {
 
     private void initTabMinWidth() {
         DisplayMetrics metrics = new DisplayMetrics();
-//        getWindowManager().getDefaultDisplay().getMetrics(metrics);
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
