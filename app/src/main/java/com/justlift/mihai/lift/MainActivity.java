@@ -21,6 +21,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    public ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,31 +42,54 @@ public class MainActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
 //                OneFragment.groups[0] = "Barbell Front Squat";
                 //Plan: get active fragment number, call a method that calls the current fragment
                 //dataHandler.addEntry method to add a string & string array provided by the user
 
-                String squat[] = {"Set 1: 6x185", "Set 2: 5x225", "Set 3: 5x225", "Set 4: 8x185"};
-                String gobsquat[] = {"Set 1: 5x25", "Set 2: 10x35"};
-                String kbsquat[] = {"Set 1: 10x35", "Set 2: 10x70"};
-                String frontsquat[] = {"Set 1: 8x95", "Set 2: 12x135"};
+                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
+                        + R.id.viewpager + ":" + viewPager.getCurrentItem());
 
-                FiveFragment.dataHandler.addEntry("KB Goblet Squat", gobsquat);
-                FiveFragment.dataHandler.addEntry("KB Deadlift", gobsquat);
-                FiveFragment.dataHandler.addEntry("KB Squat", kbsquat);
-                FiveFragment.dataHandler.addEntry("KB One-Legged Deadlift", gobsquat);
-                FiveFragment.dataHandler.addEntry("Front Squat", frontsquat);
-                FiveFragment.dataHandler.addEntry("Squat", squat);
-                FiveFragment.dataHandler.addEntry("Stiff-Legged Deadlift", squat);
-                FiveFragment.elv.invalidateViews();
+                String squat[] = {"Set 1: 6x185", "Set 2: 5x225", "Set 3: 5x225", "Set 4: 8x185"};
+
+                if (viewPager.getCurrentItem() == 0 && page != null)
+                {
+                    ((OneFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((OneFragment)page).elv.invalidateViews();
+                    Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                } else if (viewPager.getCurrentItem() == 1 && page != null)
+                {
+                    ((TwoFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((TwoFragment)page).elv.invalidateViews();
+                } else if (viewPager.getCurrentItem() == 2 && page != null)
+                {
+                    ((ThreeFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((ThreeFragment)page).elv.invalidateViews();
+                } else if (viewPager.getCurrentItem() == 3 && page != null)
+                {
+                    ((FourFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((FourFragment)page).elv.invalidateViews();
+                } else if (viewPager.getCurrentItem() == 4 && page != null)
+                {
+                    ((FiveFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((FiveFragment)page).elv.invalidateViews();
+                } else if (viewPager.getCurrentItem() == 5 && page != null)
+                {
+                    ((SixFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((SixFragment)page).elv.invalidateViews();
+                } else if (viewPager.getCurrentItem() == 6 && page != null)
+                {
+                    ((SevenFragment)page).dataHandler.addEntry("Barbell Squat", squat);
+                    ((SevenFragment)page).elv.invalidateViews();
+                }
+
+                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
             }
         });
 
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
