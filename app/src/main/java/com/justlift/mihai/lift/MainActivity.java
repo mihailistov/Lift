@@ -40,8 +40,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
         public void onClick(View v){
                 Toast.makeText(MainActivity.this, "Updated",Toast.LENGTH_SHORT).show();
-                OneFragment.groups[0] = "Barbell Front Squat";
+//                OneFragment.groups[0] = "Barbell Front Squat";
+                String children[] = {"Set 1: 10x45","Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"};
+
+                OneFragment.dataHandler.addEntry("Stiff-Legged Deadlift", children);
                 OneFragment.elv.invalidateViews();
+
+//                SharedPreferences pref =  getContext()
             }
         });
 
