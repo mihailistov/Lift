@@ -20,7 +20,6 @@ import java.util.Calendar;
 import java.util.List;
 
 
-
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -44,10 +43,22 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
 //                OneFragment.groups[0] = "Barbell Front Squat";
-                String children[] = {"Set 1: 10x45", "Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"};
+                //Plan: get active fragment number, call a method that calls the current fragment
+                //dataHandler.addEntry method to add a string & string array provided by the user
 
-                OneFragment.dataHandler.addEntry("Stiff-Legged Deadlift", children);
-                OneFragment.elv.invalidateViews();
+                String squat[] = {"Set 1: 6x185", "Set 2: 5x225", "Set 3: 5x225", "Set 4: 8x185"};
+                String gobsquat[] = {"Set 1: 5x25", "Set 2: 10x35"};
+                String kbsquat[] = {"Set 1: 10x35", "Set 2: 10x70"};
+                String frontsquat[] = {"Set 1: 8x95", "Set 2: 12x135"};
+
+                FiveFragment.dataHandler.addEntry("KB Goblet Squat", gobsquat);
+                FiveFragment.dataHandler.addEntry("KB Deadlift", gobsquat);
+                FiveFragment.dataHandler.addEntry("KB Squat", kbsquat);
+                FiveFragment.dataHandler.addEntry("KB One-Legged Deadlift", gobsquat);
+                FiveFragment.dataHandler.addEntry("Front Squat", frontsquat);
+                FiveFragment.dataHandler.addEntry("Squat", squat);
+                FiveFragment.dataHandler.addEntry("Stiff-Legged Deadlift", squat);
+                FiveFragment.elv.invalidateViews();
             }
         });
 
@@ -60,14 +71,10 @@ public class MainActivity extends AppCompatActivity {
         CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-//        for (int ii = 0; ii < tabLayout.getTabCount(); ii++) {
-//            tabLayout.getTabAt(ii).setCustomView(R.layout.tab_view);
-//        }
-
+        // determine the day of the week it is today
         Calendar cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_WEEK);
         int tabNumber = 0;
-
         switch (day) {
             case Calendar.SUNDAY:
                 tabNumber = 0;
@@ -92,8 +99,10 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        // set tab to today's day of the week
         tabLayout.getTabAt(tabNumber).select();
 
+        // title bar titles for each tab
         final String[] titleStrings = {"Lift.Rest",
                 "Lift.Chest",
                 "Lift.Back",
@@ -102,8 +111,10 @@ public class MainActivity extends AppCompatActivity {
                 "Lift.Shoulders+Chest",
                 "Lift.Rest"};
 
+        // set title bar title based on today's day of the week
         setActionBarTitle(titleStrings[tabNumber]);
 
+        // update title bar based on tab/view changes
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {

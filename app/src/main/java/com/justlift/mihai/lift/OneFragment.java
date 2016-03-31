@@ -23,42 +23,19 @@ public class OneFragment extends Fragment {
     View rootView;
     public static ExpandableListView elv;
     public static handleListData dataHandler;
-//    public static handleListData dataHandler;
-//    public static String[] groups;
-//    public String[][] children;
-//    String[] list_items;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
     public OneFragment() {
-//        SharedPreferences pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
-//        String listDataChildStr = pref.getString("listDataChild", null);
-//        String listDataHeaderStr = pref.getString("listDataHeader",null);
-//
-//        Gson gson = new Gson();
-//        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
-//        Type typeHeader = new TypeToken<List<String>>(){}.getType();
-//
-//        listDataChild = gson.fromJson(listDataChildStr, typeChild);
-//        listDataHeader = gson.fromJson(listDataHeaderStr, typeHeader);
-        // Required empty public constructor
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
 
-        dataHandler = new handleListData(listDataHeader, listDataChild);
+        dataHandler = new handleListData(0, listDataHeader, listDataChild);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        ((MainActivity) getActivity()).setActionBarTitle("Lift.Legs");
-//        groups = new String[] {"Barbell Squat","Stiff-Legged Deadlift","Barbell Lunge","KB Swing"};
-//        children = new String[][] {
-//                {"Set 1: 10x45", "Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"},
-//                {"Set 1: 10x45", "Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"},
-//                {"Set 1: 10x45", "Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"},
-//                {"Set 1: 10x45", "Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"},
-//        };
     }
 
     @Override
@@ -68,55 +45,11 @@ public class OneFragment extends Fragment {
         return rootView;
     }
 
-//    @Override
-//    public void onSaveInstanceState(Bundle savedInstanceState) {
-//        super.onSaveInstanceState(savedInstanceState);
-//
-//        Gson gson = new Gson();
-//        String listDataChildStr = gson.toJson(listDataChild);
-//        String listDataHeaderStr = gson.toJson(listDataHeader);
-//
-//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-//        SharedPreferences.Editor editor = pref.edit();
-//
-//        editor.putString("listDataChild", listDataChildStr);
-//        editor.putString("listDataHeader", listDataHeaderStr);
-//
-////        File file = new File(this.getActivity().getDir("data", Context.MODE_PRIVATE),"map");
-////        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-////        outputStream.writeObject(map);
-////        outputStream.flush();
-////        outputStream.close();
-////
-////        SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-////        SharedPreferences.Editor editor = pref.edit();
-////
-////        for (String s : listDataChild.keySet()){
-////            editor.putString(s, listDataChild.get(s));
-////        }
-//    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
-
-//        String children[] = {"Set 1: 10x45","Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"};
-
-//        dataHandler.addEntry("Barbell Squat", children);
-
-//        SharedPreferences pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
-//        String listDataChildStr = pref.getString("listDataChild", null);
-//        String listDataHeaderStr = pref.getString("listDataHeader",null);
-//
-//        Gson gson = new Gson();
-//        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
-//        Type typeHeader = new TypeToken<List<String>>(){}.getType();
-//
-//        listDataChild = gson.fromJson(listDataChildStr, typeChild);
-//        listDataHeader = gson.fromJson(listDataHeaderStr, typeHeader);
-//        dataHandler = new handleListData(listDataHeader, listDataChild);
 
         dataHandler.loadData();
 
@@ -134,38 +67,6 @@ public class OneFragment extends Fragment {
             elv.setIndicatorBoundsRelative(width - GetPixelFromDips(50), width - GetPixelFromDips(10));
         }
     }
-
-//    public void prepareListData() {
-//        listDataHeader = new ArrayList<String>();
-//        listDataChild = new HashMap<String, List<String>>();
-//
-//        listDataHeader.add("Barbell Squat");
-//        List<String> exercise1 = new ArrayList<String>();
-//        exercise1.add("Set 1: 10x45");
-//        exercise1.add("Set 2: 8x95");
-//        exercise1.add("Set 3: 8x135");
-//        exercise1.add("Set 4: 6x185");
-//        exercise1.add("Set 5: 5x225");
-//        listDataChild.put(listDataHeader.get(0), exercise1); // Header, Child data
-//
-//        listDataHeader.add("Stiff-Legged Deadlift");
-//        List<String> exercise2 = new ArrayList<String>();
-//        exercise2.add("Set 1: 10x45");
-//        exercise2.add("Set 2: 8x95");
-//        exercise2.add("Set 3: 8x135");
-//        exercise2.add("Set 4: 6x185");
-//        exercise2.add("Set 5: 5x225");
-//        listDataChild.put(listDataHeader.get(1), exercise2);
-//
-//        listDataHeader.add("Barbell Lunge");
-//        List<String> exercise3 = new ArrayList<String>();
-//        exercise3.add("Set 1: 10x45");
-//        exercise3.add("Set 2: 8x95");
-//        exercise3.add("Set 3: 8x135");
-//        exercise3.add("Set 4: 6x185");
-//        exercise3.add("Set 5: 5x225");
-//        listDataChild.put(listDataHeader.get(2), exercise3);
-//    }
 
     public int GetPixelFromDips(float pixels) {
         // Get the screen's density scale
