@@ -22,7 +22,6 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    private static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,9 @@ public class MainActivity extends AppCompatActivity {
         getDelegate().onCreate(savedInstanceState);
 
         super.onCreate(savedInstanceState);
-        instance = this;
+
+        prefManager.getInstance().Initalize(getApplicationContext());
+
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
@@ -40,10 +41,10 @@ public class MainActivity extends AppCompatActivity {
         ImageButton addButton = (ImageButton) findViewById(R.id.add_button);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
-        public void onClick(View v){
-                Toast.makeText(MainActivity.this, "Updated",Toast.LENGTH_SHORT).show();
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
 //                OneFragment.groups[0] = "Barbell Front Squat";
-                String children[] = {"Set 1: 10x45","Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"};
+                String children[] = {"Set 1: 10x45", "Set 2: 8x95", "Set 3: 8x135", "Set 4: 6x185", "Set 5: 5x225"};
 
                 OneFragment.dataHandler.addEntry("Stiff-Legged Deadlift", children);
                 OneFragment.elv.invalidateViews();
@@ -67,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         int day = cal.get(Calendar.DAY_OF_WEEK);
         int tabNumber = 0;
 
-        switch(day)
-        {
+        switch (day) {
             case Calendar.SUNDAY:
                 tabNumber = 0;
                 break;
@@ -95,12 +95,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(tabNumber).select();
 
         final String[] titleStrings = {"Lift.Rest",
-                                       "Lift.Chest",
-                                       "Lift.Back",
-                                       "Lift.Chest/Cardio",
-                                       "Lift.Legs",
-                                       "Lift.Shoulders+Chest",
-                                       "Lift.Rest"};
+                "Lift.Chest",
+                "Lift.Back",
+                "Lift.Chest/Cardio",
+                "Lift.Legs",
+                "Lift.Shoulders+Chest",
+                "Lift.Rest"};
 
         setActionBarTitle(titleStrings[tabNumber]);
 
@@ -112,10 +112,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public static MainActivity getInstance() {
-        return instance;
     }
 
     public void setActionBarTitle(String title){
