@@ -22,6 +22,7 @@ import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
+    private static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         getDelegate().onCreate(savedInstanceState);
 
         super.onCreate(savedInstanceState);
+        instance = this;
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
@@ -45,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
                 OneFragment.dataHandler.addEntry("Stiff-Legged Deadlift", children);
                 OneFragment.elv.invalidateViews();
-
-//                SharedPreferences pref =  getContext()
             }
         });
 
@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static MainActivity getInstance() {
+        return instance;
     }
 
     public void setActionBarTitle(String title){

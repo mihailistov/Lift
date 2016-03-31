@@ -1,9 +1,7 @@
 package com.justlift.mihai.lift;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -13,8 +11,6 @@ import android.view.WindowManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,10 +31,19 @@ public class OneFragment extends Fragment {
     HashMap<String, List<String>> listDataChild;
 
     public OneFragment() {
+//        SharedPreferences pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
+//        String listDataChildStr = pref.getString("listDataChild", null);
+//        String listDataHeaderStr = pref.getString("listDataHeader",null);
+//
+//        Gson gson = new Gson();
+//        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
+//        Type typeHeader = new TypeToken<List<String>>(){}.getType();
+//
+//        listDataChild = gson.fromJson(listDataChildStr, typeChild);
+//        listDataHeader = gson.fromJson(listDataHeaderStr, typeHeader);
         // Required empty public constructor
         listDataHeader = new ArrayList<String>();
         listDataChild = new HashMap<String, List<String>>();
-
 
         dataHandler = new handleListData(listDataHeader, listDataChild);
     }
@@ -63,33 +68,33 @@ public class OneFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-        Gson gson = new Gson();
-        String listDataChildStr = gson.toJson(listDataChild);
-        String listDataHeaderStr = gson.toJson(listDataHeader);
-
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = pref.edit();
-
-        editor.putString("listDataChild",listDataChildStr);
-        editor.putString("listDataHeader",listDataHeaderStr);
-
-//        File file = new File(this.getActivity().getDir("data", Context.MODE_PRIVATE),"map");
-//        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
-//        outputStream.writeObject(map);
-//        outputStream.flush();
-//        outputStream.close();
+//    @Override
+//    public void onSaveInstanceState(Bundle savedInstanceState) {
+//        super.onSaveInstanceState(savedInstanceState);
 //
-//        SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+//        Gson gson = new Gson();
+//        String listDataChildStr = gson.toJson(listDataChild);
+//        String listDataHeaderStr = gson.toJson(listDataHeader);
+//
+//        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 //        SharedPreferences.Editor editor = pref.edit();
 //
-//        for (String s : listDataChild.keySet()){
-//            editor.putString(s, listDataChild.get(s));
-//        }
-    }
+//        editor.putString("listDataChild", listDataChildStr);
+//        editor.putString("listDataHeader", listDataHeaderStr);
+//
+////        File file = new File(this.getActivity().getDir("data", Context.MODE_PRIVATE),"map");
+////        ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+////        outputStream.writeObject(map);
+////        outputStream.flush();
+////        outputStream.close();
+////
+////        SharedPreferences pref = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+////        SharedPreferences.Editor editor = pref.edit();
+////
+////        for (String s : listDataChild.keySet()){
+////            editor.putString(s, listDataChild.get(s));
+////        }
+//    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -101,8 +106,22 @@ public class OneFragment extends Fragment {
 
 //        dataHandler.addEntry("Barbell Squat", children);
 
+//        SharedPreferences pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
+//        String listDataChildStr = pref.getString("listDataChild", null);
+//        String listDataHeaderStr = pref.getString("listDataHeader",null);
+//
+//        Gson gson = new Gson();
+//        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
+//        Type typeHeader = new TypeToken<List<String>>(){}.getType();
+//
+//        listDataChild = gson.fromJson(listDataChildStr, typeChild);
+//        listDataHeader = gson.fromJson(listDataHeaderStr, typeHeader);
+//        dataHandler = new handleListData(listDataHeader, listDataChild);
+
 //        listDataHeader = dataHandler.returnHeader();
 //        listDataChild = dataHandler.returnChildren();
+
+
 
         elv.setAdapter(new ExpandableListAdapter(dataHandler.returnHeader(), dataHandler.returnChildren()));
 
