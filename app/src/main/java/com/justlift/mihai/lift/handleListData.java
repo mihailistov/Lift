@@ -39,37 +39,52 @@ public class handleListData {
         this._listDataHeader = listDataHeader;
     }
 
-    public List<String> loadHeader(){
-//        pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
-//        listDataHeaderStr = pref.getString("listDataHeader", null);
-
+    public void loadData(){
         listDataHeaderStr = prefManager.getInstance().getPref("listDataHeader", null);
+        listDataChildStr = prefManager.getInstance().getPref("listDataChild", null);
+
         gson = new Gson();
         Type typeHeader = new TypeToken<List<String>>(){}.getType();
-
-        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
-
-        if (listHeaderLoaded != null)
-            this._listDataHeader = listHeaderLoaded;
-
-        return this._listDataHeader;
-    }
-
-    public HashMap<String, List<String>> loadChild(){
-//        pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
-//        listDataChildStr = pref.getString("listDataChild", null);
-
-        listDataChildStr = prefManager.getInstance().getPref("listDataChild", null);
-        gson = new Gson();
         Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
 
+        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
         listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
 
-        if (listChildLoaded != null)
-            this._listDataChild = listChildLoaded;
-
-        return this._listDataChild;
+        if (listHeaderLoaded != null) this._listDataHeader = listHeaderLoaded;
+        if (listChildLoaded != null) this._listDataChild = listChildLoaded;
     }
+
+//    public List<String> loadHeader(){
+////        pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
+////        listDataHeaderStr = pref.getString("listDataHeader", null);
+//
+//        listDataHeaderStr = prefManager.getInstance().getPref("listDataHeader", null);
+//        gson = new Gson();
+//        Type typeHeader = new TypeToken<List<String>>(){}.getType();
+//
+//        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
+//
+//        if (listHeaderLoaded != null)
+//            this._listDataHeader = listHeaderLoaded;
+//
+//        return this._listDataHeader;
+//    }
+//
+//    public HashMap<String, List<String>> loadChild(){
+////        pref = MainActivity.getInstance().getPreferences(Context.MODE_PRIVATE);
+////        listDataChildStr = pref.getString("listDataChild", null);
+//
+//        listDataChildStr = prefManager.getInstance().getPref("listDataChild", null);
+//        gson = new Gson();
+//        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
+//
+//        listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
+//
+//        if (listChildLoaded != null)
+//            this._listDataChild = listChildLoaded;
+//
+//        return this._listDataChild;
+//    }
 
     public void addEntry(String exerciseTitle, String[] exerciseChild){
         _listDataHeader.add(exerciseTitle);

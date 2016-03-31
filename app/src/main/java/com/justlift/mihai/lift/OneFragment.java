@@ -118,8 +118,7 @@ public class OneFragment extends Fragment {
 //        listDataHeader = gson.fromJson(listDataHeaderStr, typeHeader);
 //        dataHandler = new handleListData(listDataHeader, listDataChild);
 
-        listDataHeader = dataHandler.loadHeader();
-        listDataChild = dataHandler.loadChild();
+        dataHandler.loadData();
 
         elv.setAdapter(new ExpandableListAdapter(dataHandler.returnHeader(), dataHandler.returnChildren()));
 
