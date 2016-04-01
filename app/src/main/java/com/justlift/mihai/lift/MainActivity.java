@@ -1,16 +1,19 @@
 package com.justlift.mihai.lift;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -22,6 +25,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public ViewPager viewPager;
+    private static MainActivity instance;
+    private String exerciseName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         getDelegate().onCreate(savedInstanceState);
 
         super.onCreate(savedInstanceState);
+        instance = this;
 
         prefManager.getInstance().Initalize(getApplicationContext());
 
@@ -46,43 +52,68 @@ public class MainActivity extends AppCompatActivity {
                 //Plan: get active fragment number, call a method that calls the current fragment
                 //dataHandler.addEntry method to add a string & string array provided by the user
 
-                Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
-                        + R.id.viewpager + ":" + viewPager.getCurrentItem());
+                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
 
-                String squat[] = {"Set 1: 6x185", "Set 2: 5x225", "Set 3: 5x225", "Set 4: 8x185"};
+                alert.setTitle("New Exercise");
+                alert.setMessage("Enter name");
 
-                if (viewPager.getCurrentItem() == 0 && page != null)
-                {
-                    ((OneFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((OneFragment)page).elv.invalidateViews();
-                    Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-                } else if (viewPager.getCurrentItem() == 1 && page != null)
-                {
-                    ((TwoFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((TwoFragment)page).elv.invalidateViews();
-                } else if (viewPager.getCurrentItem() == 2 && page != null)
-                {
-                    ((ThreeFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((ThreeFragment)page).elv.invalidateViews();
-                } else if (viewPager.getCurrentItem() == 3 && page != null)
-                {
-                    ((FourFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((FourFragment)page).elv.invalidateViews();
-                } else if (viewPager.getCurrentItem() == 4 && page != null)
-                {
-                    ((FiveFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((FiveFragment)page).elv.invalidateViews();
-                } else if (viewPager.getCurrentItem() == 5 && page != null)
-                {
-                    ((SixFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((SixFragment)page).elv.invalidateViews();
-                } else if (viewPager.getCurrentItem() == 6 && page != null)
-                {
-                    ((SevenFragment)page).dataHandler.addEntry("Barbell Squat", squat);
-                    ((SevenFragment)page).elv.invalidateViews();
-                }
+                final EditText input = new EditText(instance);
+                alert.setView(input);
 
-                Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        exerciseName = input.getText().toString();
+
+                        String emptyChild[] = {""};
+                        String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
+
+                        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
+                                + R.id.viewpager + ":" + viewPager.getCurrentItem());
+
+                        if (viewPager.getCurrentItem() == 0 && page != null)
+                        {
+                            ((OneFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((OneFragment)page).elv.invalidateViews();
+                            Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                        } else if (viewPager.getCurrentItem() == 1 && page != null)
+                        {
+                            ((TwoFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((TwoFragment)page).elv.invalidateViews();
+                        } else if (viewPager.getCurrentItem() == 2 && page != null)
+                        {
+                            ((ThreeFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((ThreeFragment)page).elv.invalidateViews();
+                        } else if (viewPager.getCurrentItem() == 3 && page != null)
+                        {
+                            ((FourFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((FourFragment)page).elv.invalidateViews();
+                        } else if (viewPager.getCurrentItem() == 4 && page != null)
+                        {
+                            ((FiveFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((FiveFragment)page).elv.invalidateViews();
+                        } else if (viewPager.getCurrentItem() == 5 && page != null)
+                        {
+                            ((SixFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((SixFragment)page).elv.invalidateViews();
+                        } else if (viewPager.getCurrentItem() == 6 && page != null)
+                        {
+                            ((SevenFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            ((SevenFragment)page).elv.invalidateViews();
+                        }
+
+                        Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                alert.show();
+
             }
         });
 
@@ -147,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public static MainActivity getInstance() {
+        return instance;
     }
 
     public void setActionBarTitle(String title){
