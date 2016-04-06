@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                OneFragment.groups[0] = "Barbell Front Squat";
-                //Plan: get active fragment number, call a method that calls the current fragment
-                //dataHandler.addEntry method to add a string & string array provided by the user
 
                 AlertDialog.Builder alert = new AlertDialog.Builder(instance);
 
@@ -73,32 +70,39 @@ public class MainActivity extends AppCompatActivity {
 
                         if (viewPager.getCurrentItem() == 0 && page != null)
                         {
-                            ((OneFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((OneFragment)page).elv.invalidateViews();
+                            handleListData.addEntry(0, exerciseName, fullChild);
+//                            ((OneFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                                    ((OneFragment) page).elv.invalidateViews();
                             Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                         } else if (viewPager.getCurrentItem() == 1 && page != null)
                         {
-                            ((TwoFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            handleListData.addEntry(1, exerciseName, fullChild);
+//                            ((TwoFragment)page).dataHandler.addEntry(exerciseName, fullChild);
                             ((TwoFragment)page).elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 2 && page != null)
                         {
-                            ((ThreeFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            handleListData.addEntry(2, exerciseName, fullChild);
+//                            ((ThreeFragment)page).dataHandler.addEntry(exerciseName, fullChild);
                             ((ThreeFragment)page).elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 3 && page != null)
                         {
-                            ((FourFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            handleListData.addEntry(3, exerciseName, fullChild);
+//                            ((FourFragment)page).dataHandler.addEntry(exerciseName, fullChild);
                             ((FourFragment)page).elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 4 && page != null)
                         {
-                            ((FiveFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            handleListData.addEntry(4, exerciseName, fullChild);
+//                            ((FiveFragment)page).dataHandler.addEntry(exerciseName, fullChild);
                             ((FiveFragment)page).elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 5 && page != null)
                         {
-                            ((SixFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            handleListData.addEntry(5, exerciseName, fullChild);
+//                            ((SixFragment)page).dataHandler.addEntry(exerciseName, fullChild);
                             ((SixFragment)page).elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 6 && page != null)
                         {
-                            ((SevenFragment)page).dataHandler.addEntry(exerciseName, fullChild);
+                            handleListData.addEntry(6, exerciseName, fullChild);
+//                            ((SevenFragment)page).dataHandler.addEntry(exerciseName, fullChild);
                             ((SevenFragment)page).elv.invalidateViews();
                         }
 

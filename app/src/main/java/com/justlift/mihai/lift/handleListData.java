@@ -14,41 +14,36 @@ import java.util.List;
  * Created by mihai on 16-03-30.
  */
 public class handleListData {
-    private List<String> _listDataHeader, listHeaderLoaded;
-    private HashMap<String, List<String>> _listDataChild, listChildLoaded;
-    String listDataChildStr;
-    String listDataHeaderStr;
-    String headerKey;
-    String childKey;
-    private Gson gson;
+    private static List<String> _listDataHeader, listHeaderLoaded;
+    private static HashMap<String, List<String>> _listDataChild, listChildLoaded;
+    static String listDataChildStr;
+    static String listDataHeaderStr;
+    static String headerKey;
+    static String childKey;
+    private static Gson gson;
     private SharedPreferences pref;
 
-    public handleListData(int fragmentNum, List<String> listDataHeader,
-                          HashMap<String, List<String>> listChildData){
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+    public handleListData(){}
 
-        // create unique key for shared pref based on fragmentNum
-        this.headerKey = "listDataHeader" + fragmentNum;
-        this.childKey = "listDataChild" + fragmentNum;
-    }
+//    public void loadData(){
+//        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
+//        listDataChildStr = prefManager.getInstance().getPref(childKey, null);
+//
+//        gson = new Gson();
+//        Type typeHeader = new TypeToken<List<String>>(){}.getType();
+//        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
+//
+//        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
+//        listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
+//
+//        if (listHeaderLoaded != null) this._listDataHeader = listHeaderLoaded;
+//        if (listChildLoaded != null) this._listDataChild = listChildLoaded;
+//    }
 
-    public void loadData(){
-        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
-        listDataChildStr = prefManager.getInstance().getPref(childKey, null);
+    public static void addEntry(int fragmentNum, String exerciseTitle, String[] exerciseChild){
+        headerKey = "listDataHeader" + fragmentNum;
+        childKey = "listDataChild" + fragmentNum;
 
-        gson = new Gson();
-        Type typeHeader = new TypeToken<List<String>>(){}.getType();
-        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
-
-        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
-        listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
-
-        if (listHeaderLoaded != null) this._listDataHeader = listHeaderLoaded;
-        if (listChildLoaded != null) this._listDataChild = listChildLoaded;
-    }
-
-    public void addEntry(String exerciseTitle, String[] exerciseChild){
         _listDataHeader.add(exerciseTitle);
         List<String> exercise = new ArrayList<String>();
 
@@ -67,11 +62,28 @@ public class handleListData {
 
     }
 
-    public List<String> returnHeader(){
+    public static List<String> returnHeader(int fragmentNum){
+        headerKey = "listDataHeader" + fragmentNum;
+
+        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
+
+        gson = new Gson();
+        Type typeHeader = new TypeToken<List<String>>(){}.getType();
+        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
+        if (listHeaderLoaded != null) _listDataHeader = listHeaderLoaded;
         return _listDataHeader;
     }
 
-    public HashMap<String, List<String>> returnChildren(){
+    public static HashMap<String, List<String>> returnChildren(int fragmentNum){
+        childKey = "listDataChild" + fragmentNum;
+        listDataChildStr = prefManager.getInstance().getPref(childKey, null);
+
+        gson = new Gson();
+        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
+        listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
+
+        if (listChildLoaded != null) _listDataChild = listChildLoaded;
+
         return _listDataChild;
     }
 }

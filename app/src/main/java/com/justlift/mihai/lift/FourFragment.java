@@ -12,7 +12,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -22,15 +21,11 @@ import java.util.List;
 public class FourFragment extends Fragment {
     View rootView;
     public static ExpandableListView elv;
-    public static handleListData dataHandler;
+    //    public static handleListData dataHandler;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
     public FourFragment() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
-
-        dataHandler = new handleListData(3, listDataHeader, listDataChild);
     }
 
     @Override
@@ -51,9 +46,7 @@ public class FourFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        dataHandler.loadData();
-
-        elv.setAdapter(new ExpandableListAdapter(dataHandler.returnHeader(), dataHandler.returnChildren()));
+        elv.setAdapter(new ExpandableListAdapter(handleListData.returnHeader(3), handleListData.returnChildren(3)));
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();
