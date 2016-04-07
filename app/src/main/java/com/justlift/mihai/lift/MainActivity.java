@@ -1,13 +1,21 @@
 package com.justlift.mihai.lift;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.text.SimpleDateFormat;
@@ -36,53 +44,50 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.multiple_actions_left);
+        final FloatingActionsMenu menuMultipleActions = (FloatingActionsMenu) findViewById(R.id.fabmenu);
+        final FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_button);
 
-//        final FloatingActionButton actionA = (FloatingActionButton) findViewById(R.id.action_a);
-//        menuMultipleActions.addButton(actionA);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuMultipleActions.collapse();
+                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
 
-//        ImageButton addButton = (ImageButton) findViewById(R.id.add_button);
-//        addButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
-//
-//                alert.setTitle("New Exercise");
-//                alert.setMessage("Enter name");
-//
-//                final EditText input = new EditText(instance);
-//                alert.setView(input);
-//
-//                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        exerciseName = input.getText().toString();
-//
-//                        String emptyChild[] = {""};
-//                        String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
-//
-//                        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
-//                                + R.id.viewpager + ":" + viewPager.getCurrentItem());
-//
-//                        Log.i("MainActivity", "getView() - get item number " + viewPager.getCurrentItem());
-//
-//                        ElvDataHandler.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
-//                        adapter.notifyDataSetChanged();
-//                        Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        // Canceled.
-//                    }
-//                });
-//
-//                alert.show();
-//
-//            }
-//        });
+                alert.setTitle("New Exercise");
+                alert.setMessage("Enter name");
+
+                final EditText input = new EditText(instance);
+                alert.setView(input);
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        exerciseName = input.getText().toString();
+
+                        String emptyChild[] = {""};
+                        String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
+
+                        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
+                                + R.id.viewpager + ":" + viewPager.getCurrentItem());
+
+                        Log.i("MainActivity", "getView() - get item number " + viewPager.getCurrentItem());
+
+                        ElvDataHandler.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                alert.show();
+
+            }
+        });
 
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
