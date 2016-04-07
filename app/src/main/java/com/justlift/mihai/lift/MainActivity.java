@@ -91,13 +91,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-        adapter.addFragment(new FragmentPage().newInstance(1), "MON\n" + dayOfWeek(1));;
-        adapter.addFragment(new FragmentPage().newInstance(2), "TUE\n" + dayOfWeek(2));;
-        adapter.addFragment(new FragmentPage().newInstance(3), "WED\n" + dayOfWeek(3));
-        adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(4));
-        adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(5));
-        adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(6));
+        adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(-7));    // Tu W Th F Sa Su M
+        adapter.addFragment(new FragmentPage().newInstance(1), "MON\n" + dayOfWeek(-6));;
+        adapter.addFragment(new FragmentPage().newInstance(2), "TUE\n" + dayOfWeek(-5));;
+        adapter.addFragment(new FragmentPage().newInstance(3), "WED\n" + dayOfWeek(-4));
+        adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(-3));
+        adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(-2));
+        adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(-1));
+        adapter.addFragment(new FragmentPage().newInstance(7), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+        adapter.addFragment(new FragmentPage().newInstance(8), "MON\n" + dayOfWeek(1));;
+        adapter.addFragment(new FragmentPage().newInstance(9), "TUE\n" + dayOfWeek(2));;
+        adapter.addFragment(new FragmentPage().newInstance(10), "WED\n" + dayOfWeek(3));
+        adapter.addFragment(new FragmentPage().newInstance(11), "THU\n" + dayOfWeek(4));
+        adapter.addFragment(new FragmentPage().newInstance(12), "FRI\n" + dayOfWeek(5));
+        adapter.addFragment(new FragmentPage().newInstance(13), "SAT\n" + dayOfWeek(6));
 
         viewPager.setAdapter(adapter);
 
@@ -110,25 +117,25 @@ public class MainActivity extends AppCompatActivity {
         int tabNumber = 0;
         switch (day) {
             case Calendar.SUNDAY:
-                tabNumber = 0;
+                tabNumber = 7;
                 break;
             case Calendar.MONDAY:
-                tabNumber = 1;
+                tabNumber = 8;
                 break;
             case Calendar.TUESDAY:
-                tabNumber = 2;
+                tabNumber = 9;
                 break;
             case Calendar.WEDNESDAY:
-                tabNumber = 3;
+                tabNumber = 10;
                 break;
             case Calendar.THURSDAY:
-                tabNumber = 4;
+                tabNumber = 11;
                 break;
             case Calendar.FRIDAY:
-                tabNumber = 5;
+                tabNumber = 12;
                 break;
             case Calendar.SATURDAY:
-                tabNumber = 6;
+                tabNumber = 13;
                 break;
         }
 
@@ -137,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
 
         // title bar titles for each tab
         final String[] titleStrings = {"Lift.Rest",
+                "Lift.Chest",
+                "Lift.Back",
+                "Lift.Chest/Cardio",
+                "Lift.Legs",
+                "Lift.Shoulders+Chest",
+                "Lift.Rest",
+                "Lift.Rest",
                 "Lift.Chest",
                 "Lift.Back",
                 "Lift.Chest/Cardio",
