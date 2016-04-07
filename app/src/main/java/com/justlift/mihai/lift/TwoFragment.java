@@ -46,7 +46,10 @@ public class TwoFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        elv.setAdapter(new ExpandableListAdapter(handleListData.returnHeader(1), handleListData.returnChildren(1)));
+        listDataHeader = handleListData.returnHeader(1);
+        listDataChild = handleListData.returnChildren(1);
+
+        elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();

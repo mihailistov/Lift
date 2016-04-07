@@ -46,7 +46,10 @@ public class SixFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        elv.setAdapter(new ExpandableListAdapter(handleListData.returnHeader(5), handleListData.returnChildren(5)));
+        listDataHeader = handleListData.returnHeader(5);
+        listDataChild = handleListData.returnChildren(5);
+
+        elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();

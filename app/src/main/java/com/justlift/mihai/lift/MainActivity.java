@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public ViewPager viewPager;
     private static MainActivity instance;
     private String exerciseName;
+    ViewPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,41 +72,34 @@ public class MainActivity extends AppCompatActivity {
                         if (viewPager.getCurrentItem() == 0 && page != null)
                         {
                             handleListData.addEntry(0, exerciseName, fullChild);
-//                            ((OneFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                                    ((OneFragment) page).elv.invalidateViews();
-                            Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+                            ((OneFragment)page).elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 1 && page != null)
                         {
                             handleListData.addEntry(1, exerciseName, fullChild);
-//                            ((TwoFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((TwoFragment)page).elv.invalidateViews();
+                            TwoFragment.elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 2 && page != null)
                         {
                             handleListData.addEntry(2, exerciseName, fullChild);
-//                            ((ThreeFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((ThreeFragment)page).elv.invalidateViews();
+                            ThreeFragment.elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 3 && page != null)
                         {
                             handleListData.addEntry(3, exerciseName, fullChild);
-//                            ((FourFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((FourFragment)page).elv.invalidateViews();
+                            FourFragment.elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 4 && page != null)
                         {
                             handleListData.addEntry(4, exerciseName, fullChild);
-//                            ((FiveFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((FiveFragment)page).elv.invalidateViews();
+                            FiveFragment.elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 5 && page != null)
                         {
                             handleListData.addEntry(5, exerciseName, fullChild);
-//                            ((SixFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((SixFragment)page).elv.invalidateViews();
+                            SixFragment.elv.invalidateViews();
                         } else if (viewPager.getCurrentItem() == 6 && page != null)
                         {
                             handleListData.addEntry(6, exerciseName, fullChild);
-//                            ((SevenFragment)page).dataHandler.addEntry(exerciseName, fullChild);
-                            ((SevenFragment)page).elv.invalidateViews();
+                            SevenFragment.elv.invalidateViews();
                         }
 
+//                        adapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -125,7 +119,26 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+//        setupViewPager(viewPager);
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
+        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
+        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
+        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
+        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
+        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
+
+//        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+//        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
+//        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
+//        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
+//        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
+//        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
+//        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
+
+        viewPager.setAdapter(adapter);
 
         CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -201,20 +214,21 @@ public class MainActivity extends AppCompatActivity {
         return df.format(cal.getTime());
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
-        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
-        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
-        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
-        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
-        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
-        viewPager.setAdapter(adapter);
-    }
+//    private void setupViewPager(ViewPager viewPager) {
+//
+//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+//        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
+//        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
+//        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
+//        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
+//        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
+//        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
+//        viewPager.setAdapter(adapter);
+//    }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
+        private boolean mState = true;
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

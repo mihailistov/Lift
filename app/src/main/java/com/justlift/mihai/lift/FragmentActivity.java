@@ -18,19 +18,32 @@ import java.util.List;
 /**
  * Created by mihai on 16-03-26.
  */
-public class FiveFragment extends Fragment {
+public class FragmentActivity extends Fragment {
     View rootView;
     public static ExpandableListView elv;
     //    public static handleListData dataHandler;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    int mNum;
 
-    public FiveFragment() {
+    public FragmentActivity() {
+    }
+
+    static FragmentActivity newInstance(int num){
+        FragmentActivity f = new FragmentActivity();
+
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        f.setArguments(args);
+
+        return f;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
     }
 
     @Override
@@ -46,10 +59,7 @@ public class FiveFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        listDataHeader = handleListData.returnHeader(4);
-        listDataChild = handleListData.returnChildren(4);
-
-        elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
+        elv.setAdapter(new ExpandableListAdapter(handleListData.returnHeader(mNum), handleListData.returnChildren(mNum)));
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();

@@ -46,7 +46,10 @@ public class ThreeFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        elv.setAdapter(new ExpandableListAdapter(handleListData.returnHeader(2), handleListData.returnChildren(2)));
+        listDataHeader = handleListData.returnHeader(2);
+        listDataChild = handleListData.returnChildren(2);
+
+        elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();

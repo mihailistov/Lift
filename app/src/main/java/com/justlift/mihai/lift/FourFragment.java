@@ -46,7 +46,10 @@ public class FourFragment extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        elv.setAdapter(new ExpandableListAdapter(handleListData.returnHeader(3), handleListData.returnChildren(3)));
+        listDataHeader = handleListData.returnHeader(3);
+        listDataChild = handleListData.returnChildren(3);
+
+        elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();

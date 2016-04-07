@@ -23,7 +23,9 @@ public class handleListData {
     private static Gson gson;
     private SharedPreferences pref;
 
-    public handleListData(){}
+    public handleListData(){
+
+    }
 
 //    public void loadData(){
 //        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
@@ -44,6 +46,24 @@ public class handleListData {
         headerKey = "listDataHeader" + fragmentNum;
         childKey = "listDataChild" + fragmentNum;
 
+        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
+        listDataChildStr = prefManager.getInstance().getPref(childKey, null);
+
+        gson = new Gson();
+        Type typeHeader = new TypeToken<List<String>>(){}.getType();
+        Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
+
+        listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
+        listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
+
+        if (listHeaderLoaded != null) {
+            _listDataHeader = listHeaderLoaded;
+        } else _listDataHeader = new ArrayList<String>();
+
+        if (listChildLoaded != null) {
+            _listDataChild = listChildLoaded;
+        } else _listDataChild = new HashMap<String, List<String>>();
+
         _listDataHeader.add(exerciseTitle);
         List<String> exercise = new ArrayList<String>();
 
@@ -53,9 +73,8 @@ public class handleListData {
 
         _listDataChild.put(_listDataHeader.get(_listDataHeader.size()-1), exercise);
 
-        gson = new Gson();
-        String listDataChildStr = gson.toJson(_listDataChild);
-        String listDataHeaderStr = gson.toJson(_listDataHeader);
+        listDataChildStr = gson.toJson(_listDataChild);
+        listDataHeaderStr = gson.toJson(_listDataHeader);
 
         prefManager.getInstance().writePref(childKey, listDataChildStr);
         prefManager.getInstance().writePref(headerKey, listDataHeaderStr);
@@ -70,8 +89,13 @@ public class handleListData {
         gson = new Gson();
         Type typeHeader = new TypeToken<List<String>>(){}.getType();
         listHeaderLoaded = gson.fromJson(listDataHeaderStr, typeHeader);
-        if (listHeaderLoaded != null) _listDataHeader = listHeaderLoaded;
-        return _listDataHeader;
+
+        if (listHeaderLoaded != null) {
+            _listDataHeader = listHeaderLoaded;
+            return _listDataHeader;
+        } else {
+            return new ArrayList<String>();
+        }
     }
 
     public static HashMap<String, List<String>> returnChildren(int fragmentNum){
@@ -82,8 +106,11 @@ public class handleListData {
         Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();
         listChildLoaded = gson.fromJson(listDataChildStr, typeChild);
 
-        if (listChildLoaded != null) _listDataChild = listChildLoaded;
-
-        return _listDataChild;
+        if (listChildLoaded != null) {
+            _listDataChild = listChildLoaded;
+            return _listDataChild;
+        } else {
+            return new HashMap<String, List<String>>();
+        }
     }
 }
