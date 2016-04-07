@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="0dp"
     android:paddingRight="0dp"
     android:paddingTop="0dp"
@@ -53,13 +54,34 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_button"
-        app:fabSize="mini"
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/multiple_actions_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_add" />
+        fab:fab_addButtonColorNormal="@color/colorPrimary"
+        fab:fab_addButtonColorPressed="@color/colorPrimary"
+        fab:fab_addButtonSize="mini"
+        fab:fab_addButtonPlusIconColor="@color/white"
+        fab:fab_labelStyle="@style/menu_labels_style"
+        fab:fab_addButtonStrokeVisible="false">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_title="Add new exercise"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_size="mini"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimary"
+            fab:fab_title="Edit exercise/sets"
+            fab:fab_size="mini"/>
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 </android.support.design.widget.CoordinatorLayout>
