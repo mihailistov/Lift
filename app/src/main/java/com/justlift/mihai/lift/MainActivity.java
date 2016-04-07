@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        prefManager.getInstance().Initalize(getApplicationContext());
+        PrefManager.getInstance().Initalize(getApplicationContext());
 
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
                         Log.i("MainActivity", "getView() - get item number " + viewPager.getCurrentItem());
 
-                        handleListData.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
+                        ElvDataHandler.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     }
@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
 //        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-//        setupViewPager(viewPager);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
@@ -99,14 +98,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(4));
         adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(5));
         adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(6));
-
-//        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-//        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
-//        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
-//        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
-//        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
-//        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
-//        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
 
         viewPager.setAdapter(adapter);
 
@@ -183,19 +174,6 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("d");
         return df.format(cal.getTime());
     }
-
-//    private void setupViewPager(ViewPager viewPager) {
-//
-//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-//        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-//        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
-//        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
-//        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
-//        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
-//        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
-//        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
-//        viewPager.setAdapter(adapter);
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

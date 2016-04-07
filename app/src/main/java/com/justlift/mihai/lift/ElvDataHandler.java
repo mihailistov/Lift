@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by mihai on 16-03-30.
  */
-public class handleListData {
+public class ElvDataHandler {
     private static List<String> _listDataHeader, listHeaderLoaded;
     private static HashMap<String, List<String>> _listDataChild, listChildLoaded;
     static String listDataChildStr;
@@ -23,7 +23,7 @@ public class handleListData {
     private static Gson gson;
     private SharedPreferences pref;
 
-    public handleListData(){
+    public ElvDataHandler(){
 
     }
 
@@ -46,8 +46,8 @@ public class handleListData {
         headerKey = "listDataHeader" + fragmentNum;
         childKey = "listDataChild" + fragmentNum;
 
-        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
-        listDataChildStr = prefManager.getInstance().getPref(childKey, null);
+        listDataHeaderStr = PrefManager.getInstance().getPref(headerKey, null);
+        listDataChildStr = PrefManager.getInstance().getPref(childKey, null);
 
         gson = new Gson();
         Type typeHeader = new TypeToken<List<String>>(){}.getType();
@@ -76,15 +76,15 @@ public class handleListData {
         listDataChildStr = gson.toJson(_listDataChild);
         listDataHeaderStr = gson.toJson(_listDataHeader);
 
-        prefManager.getInstance().writePref(childKey, listDataChildStr);
-        prefManager.getInstance().writePref(headerKey, listDataHeaderStr);
+        PrefManager.getInstance().writePref(childKey, listDataChildStr);
+        PrefManager.getInstance().writePref(headerKey, listDataHeaderStr);
 
     }
 
     public static List<String> returnHeader(int fragmentNum){
         headerKey = "listDataHeader" + fragmentNum;
 
-        listDataHeaderStr = prefManager.getInstance().getPref(headerKey, null);
+        listDataHeaderStr = PrefManager.getInstance().getPref(headerKey, null);
 
         gson = new Gson();
         Type typeHeader = new TypeToken<List<String>>(){}.getType();
@@ -100,7 +100,7 @@ public class handleListData {
 
     public static HashMap<String, List<String>> returnChildren(int fragmentNum){
         childKey = "listDataChild" + fragmentNum;
-        listDataChildStr = prefManager.getInstance().getPref(childKey, null);
+        listDataChildStr = PrefManager.getInstance().getPref(childKey, null);
 
         gson = new Gson();
         Type typeChild = new TypeToken<HashMap<String, List<String>>>(){}.getType();

@@ -21,7 +21,6 @@ import java.util.List;
 public class FragmentPage extends Fragment {
     View rootView;
     public static ExpandableListView elv;
-    //    public static handleListData dataHandler;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     int mNum;
@@ -29,7 +28,6 @@ public class FragmentPage extends Fragment {
     static FragmentPage newInstance(int num) {
         FragmentPage f = new FragmentPage();
 
-        // Supply num input as an argument.
         Bundle args = new Bundle();
         args.putInt("num", num);
         f.setArguments(args);
@@ -56,8 +54,8 @@ public class FragmentPage extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        listDataHeader = handleListData.returnHeader(mNum);
-        listDataChild = handleListData.returnChildren(mNum);
+        listDataHeader = ElvDataHandler.returnHeader(mNum);
+        listDataChild = ElvDataHandler.returnChildren(mNum);
 
         elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
@@ -84,10 +82,7 @@ public class FragmentPage extends Fragment {
     public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
         private final LayoutInflater inf;
-        private String[] groups;
-        private String[][] children;
-        private List<String> _listDataHeader; // header titles
-        // child data in format of header title, child title
+        private List<String> _listDataHeader;
         private HashMap<String, List<String>> _listDataChild;
 
         public ExpandableListAdapter(List<String> listDataHeader,
