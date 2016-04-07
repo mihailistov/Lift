@@ -3,12 +3,11 @@ package com.justlift.mihai.lift;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,9 +17,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -69,37 +66,10 @@ public class MainActivity extends AppCompatActivity {
                         Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
                                 + R.id.viewpager + ":" + viewPager.getCurrentItem());
 
-                        if (viewPager.getCurrentItem() == 0 && page != null)
-                        {
-                            handleListData.addEntry(0, exerciseName, fullChild);
-                            ((OneFragment)page).elv.invalidateViews();
-                        } else if (viewPager.getCurrentItem() == 1 && page != null)
-                        {
-                            handleListData.addEntry(1, exerciseName, fullChild);
-                            TwoFragment.elv.invalidateViews();
-                        } else if (viewPager.getCurrentItem() == 2 && page != null)
-                        {
-                            handleListData.addEntry(2, exerciseName, fullChild);
-                            ThreeFragment.elv.invalidateViews();
-                        } else if (viewPager.getCurrentItem() == 3 && page != null)
-                        {
-                            handleListData.addEntry(3, exerciseName, fullChild);
-                            FourFragment.elv.invalidateViews();
-                        } else if (viewPager.getCurrentItem() == 4 && page != null)
-                        {
-                            handleListData.addEntry(4, exerciseName, fullChild);
-                            FiveFragment.elv.invalidateViews();
-                        } else if (viewPager.getCurrentItem() == 5 && page != null)
-                        {
-                            handleListData.addEntry(5, exerciseName, fullChild);
-                            SixFragment.elv.invalidateViews();
-                        } else if (viewPager.getCurrentItem() == 6 && page != null)
-                        {
-                            handleListData.addEntry(6, exerciseName, fullChild);
-                            SevenFragment.elv.invalidateViews();
-                        }
+                        Log.i("MainActivity", "getView() - get item number " + viewPager.getCurrentItem());
 
-//                        adapter.notifyDataSetChanged();
+                        handleListData.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
+                        adapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -121,14 +91,14 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 //        setupViewPager(viewPager);
 
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
-        adapter.addFragment(new ThreeFragment(), "TUE\n" + dayOfWeek(2));;
-        adapter.addFragment(new FourFragment(), "WED\n" + dayOfWeek(3));
-        adapter.addFragment(new FiveFragment(), "THU\n" + dayOfWeek(4));
-        adapter.addFragment(new SixFragment(), "FRI\n" + dayOfWeek(5));
-        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+        adapter.addFragment(new FragmentPage().newInstance(1), "MON\n" + dayOfWeek(1));;
+        adapter.addFragment(new FragmentPage().newInstance(2), "TUE\n" + dayOfWeek(2));;
+        adapter.addFragment(new FragmentPage().newInstance(3), "WED\n" + dayOfWeek(3));
+        adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(4));
+        adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(5));
+        adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(6));
 
 //        adapter.addFragment(new OneFragment(), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
 //        adapter.addFragment(new TwoFragment(), "MON\n" + dayOfWeek(1));;
@@ -226,36 +196,6 @@ public class MainActivity extends AppCompatActivity {
 //        adapter.addFragment(new SevenFragment(), "SAT\n" + dayOfWeek(6));
 //        viewPager.setAdapter(adapter);
 //    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private boolean mState = true;
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
