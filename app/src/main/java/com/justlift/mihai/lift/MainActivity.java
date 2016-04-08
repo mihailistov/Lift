@@ -50,8 +50,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
-        final FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_button);
         createCustomAnimation();
+        menuMultipleActions.setClosedOnTouchOutside(true);
+
+        final FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_button);
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
