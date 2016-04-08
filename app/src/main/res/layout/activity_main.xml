@@ -54,60 +54,56 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
     </LinearLayout>
 
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fabmenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        fab:fab_addButtonColorNormal="@color/colorPrimary"
-        fab:fab_addButtonColorPressed="@color/colorPrimaryDark"
-        fab:fab_addButtonSize="mini"
-        fab:fab_addButtonPlusIconColor="@color/white"
-        fab:fab_icon="@drawable/ic_list"
-        fab:fab_labelStyle="@style/menu_labels_style"
-        fab:fab_addButtonStrokeVisible="true">
+        fab:menu_colorNormal="@color/colorPrimary"
+        fab:menu_colorPressed="@color/colorPrimaryDark"
+        fab:menu_fab_size="mini"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_icon="@drawable/ic_list"
+        fab:menu_labels_style="@style/menu_labels_style"
+        fab:menu_labels_ellipsize="end">
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
-            fab:fab_title="Add exercise"
-            fab:fab_icon="@drawable/ic_add"
-            fab:fab_labelStyle="@style/menu_labels_style"
             fab:fab_colorPressed="@color/colorPrimaryDark"
+            android:src="@drawable/ic_add"
+            fab:fab_label="Add exercise"
             fab:fab_size="mini"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
-            fab:fab_icon="@drawable/ic_mode_edit"
-            fab:fab_title="Edit"
-            fab:fab_labelStyle="@style/menu_labels_style"
+            android:src="@drawable/ic_edit"
+            fab:fab_label="Edit"
             fab:fab_size="mini"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
-            fab:fab_icon="@drawable/ic_content_copy"
-            fab:fab_title="Copy workout"
-            fab:fab_labelStyle="@style/menu_labels_style"
+            android:src="@drawable/ic_content_copy"
+            fab:fab_label="Copy workout"
             fab:fab_size="mini"/>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
+        <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
-            fab:fab_icon="@drawable/ic_delete"
-            fab:fab_title="Remove exercise"
-            fab:fab_labelStyle="@style/menu_labels_style"
+            android:src="@drawable/ic_delete"
+            fab:fab_label="Remove exercise"
             fab:fab_size="mini"/>
 
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+    </com.github.clans.fab.FloatingActionMenu>
 </android.support.design.widget.CoordinatorLayout>
