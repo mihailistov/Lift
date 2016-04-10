@@ -23,6 +23,8 @@ import android.widget.Toast;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -40,6 +42,33 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         instance = this;
+
+        DatabaseHelper myDbHelper;
+        myDbHelper = new DatabaseHelper(this);
+
+        try {
+
+            myDbHelper.createDataBase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.openDataBase();
+
+        }catch(SQLException sqle){
+
+            try {
+                throw sqle;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
 
         PrefManager.getInstance().Initalize(getApplicationContext());
 
