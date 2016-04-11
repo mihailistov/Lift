@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        DatabaseHelper myDbHelper;
+        final DatabaseHelper myDbHelper;
         myDbHelper = new DatabaseHelper(this);
 
         try {
 
-            myDbHelper.createDataBase();
+            myDbHelper.createDatabase();
 
         } catch (IOException ioe) {
 
@@ -58,7 +58,17 @@ public class MainActivity extends AppCompatActivity {
 
         try {
 
-            myDbHelper.openDataBase();
+            myDbHelper.createDatabase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.openDatabase();
 
         }catch(SQLException sqle){
 
@@ -100,6 +110,17 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         exerciseName = input.getText().toString();
+//                        exerciseName = myDbHelper.addExercise(exerciseName);
+//                        exerciseName = myDbHelper.returnExerciseName();
+
+                        int fragNum = viewPager.getCurrentItem();
+                        Log.e("MainActivity", "Current fragment number: " + fragNum);
+
+                        if (!myDbHelper.workoutExists(fragNum)){
+                            myDbHelper.createWorkout(fragNum);
+                        } else {
+                            long rowId = myDbHelper.getWorkoutId(fragNum);
+                        }
 
                         String emptyChild[] = {""};
                         String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
