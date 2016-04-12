@@ -1,6 +1,7 @@
 package com.justlift.mihai.lift;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -71,6 +72,7 @@ public class ElvDataHandler {
             exercise.add(exerciseChild[i]);
         }
 
+        Log.e("ElvDataHandler","_listDataHeader index: " + _listDataHeader.get(_listDataHeader.size()-1));
         _listDataChild.put(_listDataHeader.get(_listDataHeader.size()-1), exercise);
 
         listDataChildStr = gson.toJson(_listDataChild);

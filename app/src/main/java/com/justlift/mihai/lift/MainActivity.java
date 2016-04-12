@@ -26,7 +26,9 @@ import com.github.clans.fab.FloatingActionMenu;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -116,11 +118,14 @@ public class MainActivity extends AppCompatActivity {
                         int fragNum = viewPager.getCurrentItem();
                         Log.e("MainActivity", "Current fragment number: " + fragNum);
 
-                        if (!myDbHelper.workoutExists(fragNum)){
-                            myDbHelper.createWorkout(fragNum);
-                        } else {
-                            long rowId = myDbHelper.getWorkoutId(fragNum);
-                        }
+                        myDbHelper.addExerciseToWorkout(fragNum, exerciseName);
+                        List<String> listOfExercises = new ArrayList<String>();
+                        listOfExercises = myDbHelper.getExerciseHeaders(fragNum);
+//                        if (!myDbHelper.workoutExists(fragNum)){
+//                            myDbHelper.createWorkout(fragNum);
+//                        } else {
+//                            long rowId = myDbHelper.getWorkoutId(fragNum);
+//                        }
 
                         String emptyChild[] = {""};
                         String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};

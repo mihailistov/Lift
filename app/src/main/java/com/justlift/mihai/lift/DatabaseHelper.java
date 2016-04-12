@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +25,6 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
 
-//    private static List<String> listDataHeader;
-//    private static HashMap<String, List<String>> listDataChild;
     private static String DB_PATH = "/data/data/com.justlift.mihai.lift/databases/";
     private static String DB_NAME = "liftData";
     private SQLiteDatabase myDatabase;
@@ -191,36 +190,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     }
 
-//    public static List<String> returnHeader(int fragmentNum) {
-//        int dayWrtFirstDayOfWeek = fragmentNum - 7;
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
-//        cal.add(Calendar.DAY_OF_WEEK, dayWrtFirstDayOfWeek);
-//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-//
-//        // Get yyyy-MM-dd format for current fragment's date
-//        String date = df.format(cal.getTime());
-//
-//        return listDataHeader;
-//    }
+    public String getExerciseNameFromId(long exerciseId)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-//    public String returnExerciseName()
-//    {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        String selectQuery = "Select * FROM " + TABLE_EXERCISES + " WHERE "
-//                + KEY_EXERCISE_ID + " = 1";
-//
-//        Cursor c = db.rawQuery(selectQuery, null);
-//
-//        if (c != null)
-//            c.moveToFirst();
-//
-//        String exerciseName;
-//        exerciseName = c.getString(c.getColumnIndex(KEY_EXERCISE_NAME));
-//        return exerciseName;
-//
-//    }
+        String selectQuery = "Select * FROM " + TABLE_EXERCISES + " WHERE "
+                + KEY_EXERCISE_ID + " = " + exerciseId;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        String exerciseName;
+        exerciseName = c.getString(c.getColumnIndex(KEY_EXERCISE_NAME));
+        return exerciseName;
+    }
 
     public String getDate(int fragmentNum){
         int dayWrtFirstDayOfWeek = fragmentNum - 7;
@@ -292,7 +277,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return rowId;
     }
 
-    public void addExerciseToTable(String exerciseName)
+    public void addExerciseToRef(String exerciseName)
     {
         String exerciseNamePulledFromDb;
         long rowId;
@@ -303,15 +288,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         // if exercise doesn't exist
         if (!exerciseExists(exerciseName))
         {
-            Log.e("DatabaseHelper", "Exercise doesn't yet exist in DB! Going to create entry now");
+            Log.e("DatabaseHelper", "addExerciseToTable: doesn't exist in exercises table, create entry for: "
+                + exerciseName);
             // Exercise doesn't exist yet in exercises table, add to table and get corresponding id
             // create sets entry with exercise id
             ContentValues values = new ContentValues();
             values.put(KEY_EXERCISE_NAME, exerciseName);
             rowId = db.insert(TABLE_EXERCISES, null, values);
-            Log.e("DatabaseHelper", "Successfully created entry in table! id = " + Long.toString(id));
+            Log.e("DatabaseHelper", "addExerciseToTable: Successfully created entry! id = "
+                    + Long.toString(rowId));
         } else {
-            Log.e("DatabaseHelper", "Exercise already exists in database! No need to add");
+            Log.e("DatabaseHelper", "addExerciseToTable: already exists in database! No need to add");
         }
     }
 
@@ -330,31 +317,45 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             c.moveToFirst();
 
         rowId = c.getLong(c.getColumnIndex(KEY_EXERCISE_ID));
-        Log.e("DatabaseHelper","The rowId for the exercise is _id = " + rowId);
+        Log.e("DatabaseHelper","getExerciseId: The rowId for the exercise is _id = " + rowId);
         return rowId;
     }
 
-    public void addExercise(int fragmentNum, String exerciseName){
-        boolean firstAdd;
+    public void addExerciseToWorkout(int fragmentNum, String exerciseName){
         long exerciseId;
         long workoutId;
+        long setId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
         // Check if exercise exists in exercise table
         if (!exerciseExists(exerciseName)){
             // doesn't exist, add to exercise table
-            addExerciseToTable(exerciseName);
+            addExerciseToRef(exerciseName);
         }
-
-        exerciseId = getExerciseId(exerciseName);
 
         if(!workoutExists(fragmentNum)){
             createWorkout(fragmentNum);
         }
 
+        // get exercise id for adding to sets table
+        exerciseId = getExerciseId(exerciseName);
+
+        // add set to sets table with exerciseId
+        setId = createNewExerciseSet(exerciseId);
+
+        // get workoutId for adding to workoutSets table
         workoutId = getWorkoutId(fragmentNum);
 
-
+        // Add workoutId + setId to workoutSets table
+        ContentValues values = new ContentValues();
+        values.put(KEY_WORKOUT_SET_WORKOUT_ID_FK, workoutId);
+        values.put(KEY_WORKOUT_SET_SET_ID_FK, setId);
+        db.insert(TABLE_WORKOUT_SETS, null, values);
     }
 
+    // create new set for a new exercise, includes 1 default set with NULL values of reps/weight
+    // returns rowId to reference in workoutSets table
     public long createNewExerciseSet(long exerciseId){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -362,9 +363,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_SET_EXERCISE_ID_FK, exerciseId);
         values.put(KEY_SET_NUM, 1);
-        values.put(KEY_SET_REPS, 8);
-        values.put(KEY_SET_WEIGHT, )
         rowId = db.insert(TABLE_SETS, null, values);
+        Log.e("DatabaseHelper", "Created new exercise set for exerciseId: " + exerciseId);
 
         return rowId;
     }
@@ -388,5 +388,129 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         return exists;
+    }
+
+    public List<Long> getSetIdsFromWorkout(int fragmentNum){
+        long workoutId, setId;
+        List<Long> setIdList = new ArrayList<Long>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        workoutId = getWorkoutId(fragmentNum);
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_SETS + " WHERE "
+                + KEY_WORKOUT_SET_WORKOUT_ID_FK + " = " + workoutId;
+
+        Log.e("DatabaseHelper", selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        while (c.moveToNext()) {
+            setIdList.add(c.getLong(c.getColumnIndex(KEY_WORKOUT_SET_SET_ID_FK)));
+        }
+
+        return setIdList;
+    }
+
+    /*
+    * Plan:
+    * 1. Get workoutId from date
+    * 2. Get setId using workoutId from workoutSets table (may be multiple setId's, create array and
+    *    loop the array again till finished for the following steps)
+    * 3. Get exerciseId using setId from sets table and check both setId column and num column,
+    *    making sure that only get the first# set of every exercise
+    * */
+    public List<String> getExerciseHeaders(int fragmentNum)
+    {
+        List<Long> setIdList = new ArrayList<Long>();
+        List<String> exerciseList = new ArrayList<String>();
+        Long exerciseId;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // get list of id's associated with current fragment workout
+        setIdList = getSetIdsFromWorkout(fragmentNum);
+
+        String selectQuery;
+        Cursor c;
+        for (int i=0; i < setIdList.size(); i++)
+        {
+            // find row of set id found from workoutSet table
+            selectQuery = "SELECT * FROM " + TABLE_SETS + " WHERE "
+                    + KEY_SET_ID + " = " + setIdList.get(i);
+            c = db.rawQuery(selectQuery, null);
+
+            if (c != null)
+                c.moveToFirst();
+
+            if (c.getInt(c.getColumnIndex(KEY_SET_NUM)) == 1) {
+                // get exerciseId's of each set which is set num = 1
+                exerciseId = c.getLong(c.getColumnIndex(KEY_SET_EXERCISE_ID_FK));
+
+                selectQuery = "SELECT * FROM " + TABLE_EXERCISES + " WHERE "
+                        + KEY_EXERCISE_ID + " = " + exerciseId;
+                c = db.rawQuery(selectQuery, null);
+
+                if(c != null)
+                    c.moveToFirst();
+
+                exerciseList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_NAME)));
+            }
+        }
+        Log.e("DatabaseHelper", "List of all exercises saved for this workout:" + exerciseList);
+        return exerciseList;
+    }
+
+    public HashMap<String, List<String>> getExerciseSets(int fragmentNum){
+        HashMap<String, List<String>> exerciseChild;
+        Long exerciseId;
+        String exerciseName;
+        List<Long> setIdList = new ArrayList<Long>();
+        List<String> exerciseList = new ArrayList<String>();
+        List<String> exerciseSet = new ArrayList<String>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        setIdList = getSetIdsFromWorkout(fragmentNum);
+
+        String selectQuery;
+        Cursor c;
+        for (int i=0; i < setIdList.size(); i++){
+            selectQuery = "SELECT * FROM " + TABLE_SETS + " WHERE "
+                    + KEY_SET_ID + " = " + setIdList.get(i);
+            c = db.rawQuery(selectQuery, null);
+
+            if (c != null)
+                c.moveToFirst();
+
+            exerciseId = c.getLong(c.getColumnIndex(KEY_SET_EXERCISE_ID_FK));
+            exerciseName = getExerciseNameFromId(exerciseId);
+
+            exerciseSet.add("Set " + c.getInt(c.getColumnIndex(KEY_SET_NUM))
+                    + ": " + c.getInt(c.getColumnIndex(KEY_SET_REPS))
+                    + "x" + c.getInt(c.getColumnIndex(KEY_SET_WEIGHT)) + "lbs");
+
+            exerciseChild.put(exerciseName, exerciseSet);
+
+//            selectQuery = "SELECT * FROM " + TABLE_SETS + " WHERE "
+//                    + KEY_SET_EXERCISE_ID_FK + " = " + exerciseId;
+//
+//            c = db.rawQuery(selectQuery, null);
+//
+//
+
+//            int j = 0;
+//            while(c.moveToNext())
+//            {
+//                j++;
+//                if (c.getInt(c.getColumnIndex(KEY_SET_NUM)) == j)
+//                {
+//                    exerciseSet.add("Set " + j + ": " + c.getInt(c.getColumnIndex(KEY_SET_REPS)) +
+//                        "x" + c.getInt(c.getColumnIndex(KEY_SET_WEIGHT)) + "lbs");
+//                }
+//            }
+        }
+
+        return listDataChild;
     }
 }
