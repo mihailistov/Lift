@@ -172,8 +172,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return df.format(cal.getTime());
     }
 
-    public void getExerciseSetStats(int fragmentNum, int exerciseNum, List<Integer> setNum,
-                                        List<Integer> setReps, List<Integer> setWeight){
+    public void getExerciseSetStats(int fragmentNum, int exerciseNum, final List<Integer> setNum,
+                                    final List<Integer> setReps, final List<Integer> setWeight){
 //        List<String> exerciseSets = new ArrayList<String>();
 
         SQLiteDatabase db = this.getReadableDatabase();

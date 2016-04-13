@@ -1,6 +1,7 @@
 package com.justlift.mihai.lift;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -67,9 +68,9 @@ public class EditExerciseActivity extends AppCompatActivity {
 
         }
 
-        List<Integer> setNum = new ArrayList<Integer>();
-        List<Integer> setReps = new ArrayList<Integer>();
-        List<Integer> setWeight = new ArrayList<Integer>();
+        final List<Integer> setNum = new ArrayList<Integer>();
+        final List<Integer> setReps = new ArrayList<Integer>();
+        final List<Integer> setWeight = new ArrayList<Integer>();
 
         myDbHelper.getExerciseSetStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
 
@@ -86,17 +87,48 @@ public class EditExerciseActivity extends AppCompatActivity {
         displayWeight(currWeight);
         displayReps(currRepNum);
 
-        int numberOfSets = setNum.size();
+        final int numberOfSets = setNum.size();
 
         TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
 
 
         for(int i=0; i<numberOfSets;i++){
-            TableRow row = (TableRow)LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_layout, null);
+            final TableRow row = (TableRow)LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_layout, null);
             ((TextView)row.findViewById(R.id.setNum)).setText("" + setNum.get(i));
+            ((TextView)row.findViewById(R.id.setNum)).setTag(i, "setNum");
             ((TextView)row.findViewById(R.id.setReps)).setText("" + setReps.get(i));
+            ((TextView)row.findViewById(R.id.setReps)).setTag(i, "setReps");
             ((TextView)row.findViewById(R.id.setWeight)).setText("" + setWeight.get(i));
+            ((TextView)row.findViewById(R.id.setWeight)).setTag(i, "setWeight");
+            row.setTag(i);
             table.addView(row);
+
+            final int currSetNum = i;
+            final TableRow divider = (TableRow) LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_divider, null);
+
+            if (i < numberOfSets-1) {
+                table.addView(divider);
+            }
+
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    currWeight = setWeight.get(currSetNum);
+                    currRepNum = setReps.get(currSetNum);
+                    displayWeight(currWeight);
+                    displayReps(currRepNum);
+
+                    row.setBackgroundColor(Color.rgb(237, 237, 237));
+
+                    if (currSetNum < numberOfSets-1)
+                    {
+                        divider.setBackgroundColor(Color.rgb(237, 237, 237));
+                    }
+
+                    String styledTitle = "Edit.<font color='#fd5621'>Set " + setNum.get(currSetNum) + "</font>";
+                    setTitle(Html.fromHtml(styledTitle));
+                }
+            });
         }
 
     }
