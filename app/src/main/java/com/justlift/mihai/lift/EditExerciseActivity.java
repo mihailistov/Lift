@@ -89,34 +89,61 @@ public class EditExerciseActivity extends AppCompatActivity {
 
         final int numberOfSets = setNum.size();
 
-        TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
+        final TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
 
+//        View.OnClickListener tableRowOnClick = new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int tagValue = (Integer) v.getTag();
+//                currWeight = setWeight.get(tagValue);
+//                currRepNum = setReps.get(tagValue);
+//                displayWeight(currWeight);
+//                displayReps(currRepNum);
+//
+//                Log.e("EditExerciseActivity", "Tag value is: " + tagValue);
+//
+////                row.setBackgroundColor(Color.rgb(237, 237, 237));
+////
+////                if (tagValue < numberOfSets - 1) {
+////                    divider.setBackgroundColor(Color.rgb(237, 237, 237));
+////                }
+//
+//                String styledTitle = "Edit.<font color='#fd5621'>Set " + setNum.get(tagValue) + "</font>";
+//                setTitle(Html.fromHtml(styledTitle));
+//            }
+//        };
 
         for(int i=0; i<numberOfSets;i++){
             final TableRow row = (TableRow)LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_layout, null);
             ((TextView)row.findViewById(R.id.setNum)).setText("" + setNum.get(i));
-            ((TextView)row.findViewById(R.id.setNum)).setTag(i, "setNum");
             ((TextView)row.findViewById(R.id.setReps)).setText("" + setReps.get(i));
-            ((TextView)row.findViewById(R.id.setReps)).setTag(i, "setReps");
             ((TextView)row.findViewById(R.id.setWeight)).setText("" + setWeight.get(i));
-            ((TextView)row.findViewById(R.id.setWeight)).setTag(i, "setWeight");
-            row.setTag(i);
+            row.setTag(Integer.valueOf(i));
             table.addView(row);
 
-            final int currSetNum = i;
+//            final int currSetNum = i;
             final TableRow divider = (TableRow) LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_divider, null);
 
             if (i < numberOfSets-1) {
                 table.addView(divider);
             }
 
+//            row.setOnClickListener(tableRowOnClick);
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    int currSetNum = (Integer)v.getTag();
                     currWeight = setWeight.get(currSetNum);
                     currRepNum = setReps.get(currSetNum);
                     displayWeight(currWeight);
                     displayReps(currRepNum);
+
+                    Log.e("EditExerciseActivity", "Tag value is: " + currSetNum);
+
+                    for(int j=0;j<table.getChildCount();j++) {
+                        TableRow otherRows = (TableRow) table.getChildAt(j);
+                        otherRows.setBackgroundColor(Color.rgb(255,255,255));
+                    }
 
                     row.setBackgroundColor(Color.rgb(237, 237, 237));
 
@@ -130,6 +157,8 @@ public class EditExerciseActivity extends AppCompatActivity {
                 }
             });
         }
+
+
 
     }
 
