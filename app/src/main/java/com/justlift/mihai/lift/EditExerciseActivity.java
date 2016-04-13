@@ -3,9 +3,12 @@ package com.justlift.mihai.lift;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -15,11 +18,8 @@ import java.util.List;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
-    int repNum = 0;
-    int weight = 0;
-
-    int repNum2 = 0;
-    int weight2 = 0;
+    int currRepNum = 0;
+    int currWeight = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,97 +67,68 @@ public class EditExerciseActivity extends AppCompatActivity {
 
         }
 
-        Button close_button = (Button) findViewById(R.id.close_button);
-        close_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         List<Integer> setNum = new ArrayList<Integer>();
         List<Integer> setReps = new ArrayList<Integer>();
         List<Integer> setWeight = new ArrayList<Integer>();
 
         myDbHelper.getExerciseSetStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
 
+        Log.e("EditExerciseActivity", "Number of sets to show: " + setNum.size());
         Log.e("EditExerciseActivity", "Set numbers: \n" + setNum
                 + "\nSet reps: \n" + setReps
                 + "\nSet weights: \n" + setWeight);
 
-        repNum = setReps.get(0);
-        weight = setWeight.get(0);
+        String styledTitle = "Edit.<font color='#fd5621'>Set " + setNum.get(0) + "</font>";
+        setTitle(Html.fromHtml(styledTitle));
 
-        repNum2 = setReps.get(1);
-        weight2 = setWeight.get(1);
+        currWeight = setWeight.get(0);
+        currRepNum = setReps.get(0);
+        displayWeight(currWeight);
+        displayReps(currRepNum);
 
-        displayReps(repNum);
-        displayWeight(weight);
+        int numberOfSets = setNum.size();
 
-        displayReps2(repNum2);
-        displayWeight2(weight2);
+        TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
 
 
-    }
+        for(int i=0; i<numberOfSets;i++){
+            TableRow row = (TableRow)LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_layout, null);
+            ((TextView)row.findViewById(R.id.setNum)).setText("" + setNum.get(i));
+            ((TextView)row.findViewById(R.id.setReps)).setText("" + setReps.get(i));
+            ((TextView)row.findViewById(R.id.setWeight)).setText("" + setWeight.get(i));
+            table.addView(row);
+        }
 
-    public void increaseReps(View view) {
-        repNum = repNum + 1;
-        displayReps(repNum);
-
-    }public void decreaseReps(View view) {
-        repNum = repNum - 1;
-        displayReps(repNum);
     }
 
     public void increaseWeight(View view) {
-        weight = weight + 5;
-        displayWeight(weight);
+        currWeight = currWeight + 5;
+        displayWeight(currWeight);
 
     }public void decreaseWeight(View view) {
-        weight = weight - 5;
-        displayWeight(weight);
-    }
-
-    private void displayReps(int reps) {
-        TextView displayReps = (TextView) findViewById(
-                R.id.repNumber);
-        displayReps.setText("" + reps);
+        currWeight = currWeight - 5;
+        displayWeight(currWeight);
     }
 
     private void displayWeight(int weight) {
         TextView displayReps = (TextView) findViewById(
-                R.id.weightLbs);
-        displayReps.setText("" + weight);
+                R.id.weightNum);
+        displayReps.setText("" + currWeight);
     }
 
-    // second set
-    public void increaseReps2(View view) {
-        repNum2 = repNum2 + 1;
-        displayReps2(repNum2);
+    public void increaseReps(View view) {
+        currRepNum = currRepNum + 1;
+        displayReps(currRepNum);
 
-    }public void decreaseReps2(View view) {
-        repNum2 = repNum2 - 1;
-        displayReps2(repNum2);
+    }public void decreaseReps(View view) {
+        currRepNum = currRepNum - 1;
+        displayReps(currRepNum);
     }
 
-    public void increaseWeight2(View view) {
-        weight2 = weight2 + 5;
-        displayWeight2(weight2);
-
-    }public void decreaseWeight2(View view) {
-        weight2 = weight2 - 5;
-        displayWeight2(weight2);
-    }
-
-    private void displayReps2(int reps2) {
+    private void displayReps(int weight) {
         TextView displayReps = (TextView) findViewById(
-                R.id.repNumber2);
-        displayReps.setText("" + reps2);
+                R.id.repNum);
+        displayReps.setText("" + currRepNum);
     }
 
-    private void displayWeight2(int weight2) {
-        TextView displayReps = (TextView) findViewById(
-                R.id.weightLbs2);
-        displayReps.setText("" + weight2);
-    }
 }
