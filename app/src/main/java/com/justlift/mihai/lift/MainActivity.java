@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,14 +25,13 @@ import com.github.clans.fab.FloatingActionMenu;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
     public ViewPager viewPager;
     private static MainActivity instance;
+    private static boolean editEnabled = false;
     private String exerciseName;
     ViewPagerAdapter adapter;
 
@@ -95,6 +93,16 @@ public class MainActivity extends AppCompatActivity {
         menuMultipleActions.setClosedOnTouchOutside(true);
 
         final FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_button);
+        final FloatingActionButton editButton = (FloatingActionButton) findViewById(R.id.edit_button);
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                menuMultipleActions.close(true);
+                Toast.makeText(MainActivity.this, "Select exercise to edit", Toast.LENGTH_LONG).show();
+                editEnabled = true;
+            }
+        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,24 +126,23 @@ public class MainActivity extends AppCompatActivity {
                         int fragNum = viewPager.getCurrentItem();
                         Log.e("MainActivity", "Current fragment number: " + fragNum);
 
-                        myDbHelper.addExerciseToWorkout(fragNum, exerciseName);
-                        List<String> listOfExercises = new ArrayList<String>();
-                        listOfExercises = myDbHelper.getExerciseHeaders(fragNum);
+                        myDbHelper.addExercise(fragNum, exerciseName);
+//                        myDbHelper.getExerciseHeaders(fragNum);
+//                        myDbHelper.getExerciseSets(fragNum);
+
 //                        if (!myDbHelper.workoutExists(fragNum)){
 //                            myDbHelper.createWorkout(fragNum);
 //                        } else {
 //                            long rowId = myDbHelper.getWorkoutId(fragNum);
 //                        }
 
-                        String emptyChild[] = {""};
-                        String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
+//                        String emptyChild[] = {""};
+//                        String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
 
-                        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
-                                + R.id.viewpager + ":" + viewPager.getCurrentItem());
+//                        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
+//                                + R.id.viewpager + ":" + viewPager.getCurrentItem());
 
-                        Log.i("MainActivity", "getView() - get item number " + viewPager.getCurrentItem());
-
-                        ElvDataHandler.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
+//                        ElvDataHandler.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     }
@@ -271,8 +278,33 @@ public class MainActivity extends AppCompatActivity {
         menuMultipleActions.setIconToggleAnimatorSet(set);
     }
 
+//    public static void editExercise(int fragmentNum, int groupPosition){
+//        int exerciseNum = groupPosition + 1;
+//
+//        Intent intent = new Intent(MainActivity.this, EditExerciseActivity.class);
+//        Bundle b = new Bundle();
+//        b.putInt("fragmentNum", fragmentNum);
+//        b.putInt("exerciseNum", exerciseNum);
+//        intent.putExtras(b);
+//
+//        startActivity(intent);
+//        finish();
+//    }
+
     public static MainActivity getInstance() {
         return instance;
+    }
+
+    public static boolean getEditState(){
+        return editEnabled;
+    }
+
+    public static void setEditEnabled(){
+        editEnabled = true;
+    }
+
+    public static void setEditDisabled(){
+        editEnabled = false;
     }
 
     public void setActionBarTitle(String title){

@@ -1,9 +1,11 @@
 package com.justlift.mihai.lift;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,8 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,10 +58,74 @@ public class FragmentPage extends Fragment {
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
 
-        listDataHeader = ElvDataHandler.returnHeader(mNum);
-        listDataChild = ElvDataHandler.returnChildren(mNum);
+//        listDataHeader = ElvDataHandler.returnHeader(mNum);
+//        listDataChild = ElvDataHandler.returnChildren(mNum);
 
+        final DatabaseHelper myDbHelper;
+        myDbHelper = new DatabaseHelper(MainActivity.getInstance());
+
+        try {
+
+            myDbHelper.createDatabase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.createDatabase();
+
+        } catch (IOException ioe) {
+
+            throw new Error("Unable to create database");
+
+        }
+
+        try {
+
+            myDbHelper.openDatabase();
+
+        }catch(SQLException sqle){
+
+            try {
+                throw sqle;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        listDataHeader = myDbHelper.getExerciseHeaders(mNum);
+        listDataChild = myDbHelper.getExerciseChildren(mNum);
         elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
+
+        elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+            @Override
+            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                if (MainActivity.getEditState() == true) {
+                    Log.e("FragmentPage", "Clicked group #: " + groupPosition);
+
+                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("fragmentNum", mNum);
+                    b.putInt("exerciseNum", groupPosition+1);
+                    intent.putExtras(b);
+
+                    startActivity(intent);
+
+                    MainActivity.setEditDisabled();
+
+                    if(parent.isGroupExpanded(groupPosition))
+                        return true;
+                    else
+                        return false;
+                } else
+                    return false;
+            }
+        });
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();

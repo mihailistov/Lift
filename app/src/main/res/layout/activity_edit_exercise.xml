@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context="com.justlift.mihai.lift.EditExerciseActivity">
+
+    <LinearLayout
+        android:id="@+id/layoutReps1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="1"
+            android:textColor="#ffffff"
+            android:id="@+id/textView"
+            android:background="@drawable/bg_orange_circle"
+            android:gravity="center_vertical|center_horizontal"
+            />
+
+        <Button
+            android:id="@+id/decreaseReps"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="decreaseReps"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="-" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/repNumber" />
+
+        <Button
+            android:id="@+id/increaseReps"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="increaseReps"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="+" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="reps" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutWeight1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:layout_below="@+id/layoutReps1">
+
+        <Button
+            android:id="@+id/decreaseWeight"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="decreaseWeight"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="-" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/weightLbs" />
+
+        <Button
+            android:id="@+id/increaseWeight"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="increaseWeight"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="+" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="lbs" />
+
+    </LinearLayout>
+
+    <!--SECOND SET -->
+
+    <LinearLayout
+        android:id="@+id/layoutReps2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutWeight1">
+
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="2"
+            android:textColor="#ffffff"
+            android:id="@+id/textView2"
+            android:background="@drawable/bg_orange_circle"
+            android:gravity="center_vertical|center_horizontal"
+            />
+
+        <Button
+            android:id="@+id/decreaseReps2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="decreaseReps2"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="-" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/repNumber2" />
+
+        <Button
+            android:id="@+id/increaseReps2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="increaseReps2"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="+" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="reps" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutWeight2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:layout_below="@+id/layoutReps2">
+
+        <Button
+            android:id="@+id/decreaseWeight2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="decreaseWeight2"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="-" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/weightLbs2" />
+
+        <Button
+            android:id="@+id/increaseWeight2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:onClick="increaseWeight2"
+            android:background="@android:color/transparent"
+            android:textColor="@color/colorPrimary"
+            android:textSize="24dp"
+            android:text="+" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="lbs" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_below="@+id/layoutWeight2"
+        android:id="@+id/close_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Dismiss"
+        android:layout_marginTop="103dp"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
