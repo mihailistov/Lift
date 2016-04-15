@@ -194,10 +194,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, int setWeight){
         SQLiteDatabase db = this.getReadableDatabase();
 
+        setNum += 1;
+
         String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
                 + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
                 + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
-                + KEY_WORKOUT_LOG_SET_NUM + " = " + setNum+1;
+                + KEY_WORKOUT_LOG_SET_NUM + " = " + setNum;
+
+        Log.e("DatabaseHelper",selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
 

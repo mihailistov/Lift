@@ -82,39 +82,53 @@ public class EditExerciseActivity extends AppCompatActivity {
                 + "\nSet reps: \n" + setReps
                 + "\nSet weights: \n" + setWeight);
 
-        String styledTitle = "Edit.<font color='#fd5621'>Set " + setNum.get(0) + "</font>";
+        String styledTitle = "<big>Edit.<font color='#fd5621'>Select/Add</font></big>";
         setTitle(Html.fromHtml(styledTitle));
 
-        currWeight = setWeight.get(0);
-        currRepNum = setReps.get(0);
-        displayWeight(currWeight);
-        displayReps(currRepNum);
+//        currWeight = setWeight.get(0);
+//        currRepNum = setReps.get(0);
+        displayWeight(0);
+        displayReps(0);
+        currSetNum = 0;
+
+        if (currSetNum == 0){
+
+        }
 
         final int numberOfSets = setNum.size();
 
         final TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
 
-//        View.OnClickListener tableRowOnClick = new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int tagValue = (Integer) v.getTag();
-//                currWeight = setWeight.get(tagValue);
-//                currRepNum = setReps.get(tagValue);
-//                displayWeight(currWeight);
-//                displayReps(currRepNum);
-//
-//                Log.e("EditExerciseActivity", "Tag value is: " + tagValue);
-//
-////                row.setBackgroundColor(Color.rgb(237, 237, 237));
-////
-////                if (tagValue < numberOfSets - 1) {
-////                    divider.setBackgroundColor(Color.rgb(237, 237, 237));
-////                }
-//
-//                String styledTitle = "Edit.<font color='#fd5621'>Set " + setNum.get(tagValue) + "</font>";
-//                setTitle(Html.fromHtml(styledTitle));
-//            }
-//        };
+        View.OnClickListener tableRowOnClick = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                currSetNum = (Integer)v.getTag();
+                currWeight = setWeight.get(currSetNum);
+                currRepNum = setReps.get(currSetNum);
+                displayWeight(currWeight);
+                displayReps(currRepNum);
+
+                Log.e("EditExerciseActivity", "Selected set number is: " + currSetNum);
+
+                for(int j=0;j<table.getChildCount();j++) {
+                    TableRow otherRows = (TableRow) table.getChildAt(j);
+                    otherRows.setBackgroundColor(Color.rgb(255,255,255));
+                }
+
+                TableRow currRow = (TableRow) table.findViewWithTag(currSetNum);
+                TableRow currDivider = (TableRow) table.findViewWithTag(currSetNum+numberOfSets);
+
+                currRow.setBackgroundColor(Color.rgb(237, 237, 237));
+
+                if (currSetNum < numberOfSets-1)
+                {
+                    currDivider.setBackgroundColor(Color.rgb(237, 237, 237));
+                }
+
+                String styledTitle = "<big>Edit.<font color='#fd5621'>Set " + setNum.get(currSetNum) + "</font></big>";
+                setTitle(Html.fromHtml(styledTitle));
+            }
+        };
 
         for(int i=0; i<numberOfSets;i++){
             final TableRow row = (TableRow)LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_layout, null);
@@ -126,39 +140,40 @@ public class EditExerciseActivity extends AppCompatActivity {
 
 //            final int currSetNum = i;
             final TableRow divider = (TableRow) LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_divider, null);
+            divider.setTag(i+numberOfSets);
 
             if (i < numberOfSets-1) {
                 table.addView(divider);
             }
 
-//            row.setOnClickListener(tableRowOnClick);
-            row.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    currSetNum = (Integer)v.getTag();
-                    currWeight = setWeight.get(currSetNum);
-                    currRepNum = setReps.get(currSetNum);
-                    displayWeight(currWeight);
-                    displayReps(currRepNum);
-
-                    Log.e("EditExerciseActivity", "Selected set number is: " + currSetNum);
-
-                    for(int j=0;j<table.getChildCount();j++) {
-                        TableRow otherRows = (TableRow) table.getChildAt(j);
-                        otherRows.setBackgroundColor(Color.rgb(255,255,255));
-                    }
-
-                    row.setBackgroundColor(Color.rgb(237, 237, 237));
-
-                    if (currSetNum < numberOfSets-1)
-                    {
-                        divider.setBackgroundColor(Color.rgb(237, 237, 237));
-                    }
-
-                    String styledTitle = "Edit.<font color='#fd5621'>Set " + setNum.get(currSetNum) + "</font>";
-                    setTitle(Html.fromHtml(styledTitle));
-                }
-            });
+            row.setOnClickListener(tableRowOnClick);
+//            row.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    currSetNum = (Integer)v.getTag();
+//                    currWeight = setWeight.get(currSetNum);
+//                    currRepNum = setReps.get(currSetNum);
+//                    displayWeight(currWeight);
+//                    displayReps(currRepNum);
+//
+//                    Log.e("EditExerciseActivity", "Selected set number is: " + currSetNum);
+//
+//                    for(int j=0;j<table.getChildCount();j++) {
+//                        TableRow otherRows = (TableRow) table.getChildAt(j);
+//                        otherRows.setBackgroundColor(Color.rgb(255,255,255));
+//                    }
+//
+//                    row.setBackgroundColor(Color.rgb(237, 237, 237));
+//
+//                    if (currSetNum < numberOfSets-1)
+//                    {
+//                        divider.setBackgroundColor(Color.rgb(237, 237, 237));
+//                    }
+//
+//                    String styledTitle = "<big>Edit.<font color='#fd5621'>Set " + setNum.get(currSetNum) + "</font></big>";
+//                    setTitle(Html.fromHtml(styledTitle));
+//                }
+//            });
         }
 
        Button saveButton = (Button) findViewById(R.id.save_button);
