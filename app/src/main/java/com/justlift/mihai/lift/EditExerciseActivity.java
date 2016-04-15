@@ -8,6 +8,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     int currRepNum = 0;
     int currWeight = 0;
+    int currSetNum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,8 +31,8 @@ public class EditExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_exercise);
 
         Intent intent = getIntent();
-        int fragmentNum = intent.getIntExtra("fragmentNum", 0);
-        int exerciseNum = intent.getIntExtra("exerciseNum", 0);
+        final int fragmentNum = intent.getIntExtra("fragmentNum", 0);
+        final int exerciseNum = intent.getIntExtra("exerciseNum", 0);
 
         final DatabaseHelper myDbHelper;
         myDbHelper = new DatabaseHelper(this);
@@ -72,7 +75,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         final List<Integer> setReps = new ArrayList<Integer>();
         final List<Integer> setWeight = new ArrayList<Integer>();
 
-        myDbHelper.getExerciseSetStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
+        myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
 
         Log.e("EditExerciseActivity", "Number of sets to show: " + setNum.size());
         Log.e("EditExerciseActivity", "Set numbers: \n" + setNum
@@ -132,13 +135,13 @@ public class EditExerciseActivity extends AppCompatActivity {
             row.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int currSetNum = (Integer)v.getTag();
+                    currSetNum = (Integer)v.getTag();
                     currWeight = setWeight.get(currSetNum);
                     currRepNum = setReps.get(currSetNum);
                     displayWeight(currWeight);
                     displayReps(currRepNum);
 
-                    Log.e("EditExerciseActivity", "Tag value is: " + currSetNum);
+                    Log.e("EditExerciseActivity", "Selected set number is: " + currSetNum);
 
                     for(int j=0;j<table.getChildCount();j++) {
                         TableRow otherRows = (TableRow) table.getChildAt(j);
@@ -158,7 +161,29 @@ public class EditExerciseActivity extends AppCompatActivity {
             });
         }
 
+       Button saveButton = (Button) findViewById(R.id.save_button);
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // get values of setRep and setWeight
+                // write current values to database
+                EditText mRepNum = (EditText)findViewById(R.id.repNum);
+                EditText mWeightNum = (EditText) findViewById(R.id.weightNum);
+
+                currRepNum = Integer.parseInt(mRepNum.getText().toString());
+                currWeight = Integer.parseInt(mWeightNum.getText().toString());
+
+                myDbHelper.setSetStats(fragmentNum, exerciseNum, currSetNum, currRepNum, currWeight);
+
+                displayWeight(currWeight);
+                displayReps(currRepNum);
+
+                TableRow currRow = (TableRow) table.findViewWithTag(currSetNum);
+                ((TextView)currRow.findViewById(R.id.setReps)).setText("" + currRepNum);
+                ((TextView)currRow.findViewById(R.id.setWeight)).setText("" + currWeight);
+            }
+        });
 
     }
 
@@ -172,7 +197,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     }
 
     private void displayWeight(int weight) {
-        TextView displayReps = (TextView) findViewById(
+        EditText displayReps = (EditText) findViewById(
                 R.id.weightNum);
         displayReps.setText("" + currWeight);
     }
@@ -187,7 +212,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     }
 
     private void displayReps(int weight) {
-        TextView displayReps = (TextView) findViewById(
+        EditText displayReps = (EditText) findViewById(
                 R.id.repNum);
         displayReps.setText("" + currRepNum);
     }

@@ -172,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return df.format(cal.getTime());
     }
 
-    public void getExerciseSetStats(int fragmentNum, int exerciseNum, final List<Integer> setNum,
+    public void getExerciseStats(int fragmentNum, int exerciseNum, final List<Integer> setNum,
                                     final List<Integer> setReps, final List<Integer> setWeight){
 //        List<String> exerciseSets = new ArrayList<String>();
 
@@ -189,6 +189,31 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             setReps.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)));
             setWeight.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)));
         }
+    }
+
+    public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, int setWeight){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
+                + KEY_WORKOUT_LOG_SET_NUM + " = " + setNum+1;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        long id = 0;
+        if (c != null && c.getCount() == 1) {
+            c.moveToFirst();
+            id = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+        } else
+            Log.e("DatabaseHelper","Matched more than one entry for set number");
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_WORKOUT_LOG_REPS, setReps);
+        values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
+        db.update(TABLE_WORKOUT_LOG, values, "_id=" + id, null);
+        MainActivity.updatedSet();
+//        MainActivity.adapter.notifyDataSetChanged();
     }
 
     public int getLastExerciseNum(int fragmentNum){
@@ -210,6 +235,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             if (curNum > lastNum)
                 lastNum = curNum;
         }
+        c.close();
 
         return lastNum;
     }

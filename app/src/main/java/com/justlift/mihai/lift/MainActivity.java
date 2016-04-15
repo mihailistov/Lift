@@ -30,10 +30,21 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
     public ViewPager viewPager;
+    public static boolean setUpdated = false;
     private static MainActivity instance;
     private static boolean editEnabled = false;
     private String exerciseName;
-    ViewPagerAdapter adapter;
+    ViewPagerAdapter adapter = null;
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        if (setUpdated) {
+            adapter.notifyDataSetChanged();
+            setUpdated=false;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,20 +176,34 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(-7));    // Tu W Th F Sa Su M
-        adapter.addFragment(new FragmentPage().newInstance(1), "MON\n" + dayOfWeek(-6));;
-        adapter.addFragment(new FragmentPage().newInstance(2), "TUE\n" + dayOfWeek(-5));;
-        adapter.addFragment(new FragmentPage().newInstance(3), "WED\n" + dayOfWeek(-4));
-        adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(-3));
-        adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(-2));
-        adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(-1));
-        adapter.addFragment(new FragmentPage().newInstance(7), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-        adapter.addFragment(new FragmentPage().newInstance(8), "MON\n" + dayOfWeek(1));;
-        adapter.addFragment(new FragmentPage().newInstance(9), "TUE\n" + dayOfWeek(2));;
-        adapter.addFragment(new FragmentPage().newInstance(10), "WED\n" + dayOfWeek(3));
-        adapter.addFragment(new FragmentPage().newInstance(11), "THU\n" + dayOfWeek(4));
-        adapter.addFragment(new FragmentPage().newInstance(12), "FRI\n" + dayOfWeek(5));
-        adapter.addFragment(new FragmentPage().newInstance(13), "SAT\n" + dayOfWeek(6));
+
+        Calendar cal = Calendar.getInstance();
+
+        for (int i=-7; i<7;i++){
+            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+            cal.add(Calendar.DAY_OF_WEEK, i);
+            SimpleDateFormat df = new SimpleDateFormat("EEE");
+            String dayOfWeekEEE =  df.format(cal.getTime());
+
+            FragmentPage newFrag = new FragmentPage().newInstance(i + 7);
+
+            adapter.addFragment(newFrag, dayOfWeekEEE + "\n" + dayOfWeek(i));
+        }
+
+//        adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(-7));    // Tu W Th F Sa Su M
+//        adapter.addFragment(new FragmentPage().newInstance(1), "MON\n" + dayOfWeek(-6));;
+//        adapter.addFragment(new FragmentPage().newInstance(2), "TUE\n" + dayOfWeek(-5));;
+//        adapter.addFragment(new FragmentPage().newInstance(3), "WED\n" + dayOfWeek(-4));
+//        adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(-3));
+//        adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(-2));
+//        adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(-1));
+//        adapter.addFragment(new FragmentPage().newInstance(7), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
+//        adapter.addFragment(new FragmentPage().newInstance(8), "MON\n" + dayOfWeek(1));;
+//        adapter.addFragment(new FragmentPage().newInstance(9), "TUE\n" + dayOfWeek(2));;
+//        adapter.addFragment(new FragmentPage().newInstance(10), "WED\n" + dayOfWeek(3));
+//        adapter.addFragment(new FragmentPage().newInstance(11), "THU\n" + dayOfWeek(4));
+//        adapter.addFragment(new FragmentPage().newInstance(12), "FRI\n" + dayOfWeek(5));
+//        adapter.addFragment(new FragmentPage().newInstance(13), "SAT\n" + dayOfWeek(6));
 
         viewPager.setAdapter(adapter);
 
@@ -186,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // determine the day of the week it is today
-        Calendar cal = Calendar.getInstance();
+        cal = Calendar.getInstance();
         int day = cal.get(Calendar.DAY_OF_WEEK);
         int tabNumber = 0;
         switch (day) {
@@ -293,6 +318,10 @@ public class MainActivity extends AppCompatActivity {
 
     public static MainActivity getInstance() {
         return instance;
+    }
+
+    public static void updatedSet(){
+        setUpdated = true;
     }
 
     public static boolean getEditState(){
