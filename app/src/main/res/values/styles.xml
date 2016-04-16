@@ -53,4 +53,9 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="ButtonEditSet" parent="android:Widget.Button">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

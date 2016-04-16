@@ -13,8 +13,7 @@ import java.lang.reflect.Field;
  */
 public class CustomTabLayout extends TabLayout {
 
-    private static final int WIDTH_INDEX = 0;
-    private static final int DIVIDER_FACTOR = 3;
+    private static final int DIVIDER_FACTOR = 7;
     private static final String SCROLLABLE_TAB_MIN_WIDTH = "mScrollableTabMinWidth";
 
     public CustomTabLayout(Context context) {
@@ -37,7 +36,7 @@ public class CustomTabLayout extends TabLayout {
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
                 .getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
-        int tabMinWidth = width / 7;
+        int tabMinWidth = width / DIVIDER_FACTOR;
 
         Field field;
         try {

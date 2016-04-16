@@ -189,6 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             setReps.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)));
             setWeight.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)));
         }
+        c.close();
     }
 
     public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, int setWeight){
@@ -212,12 +213,76 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         } else
             Log.e("DatabaseHelper","Matched more than one entry for set number");
 
+        c.close();
+
         ContentValues values = new ContentValues();
         values.put(KEY_WORKOUT_LOG_REPS, setReps);
         values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
         db.update(TABLE_WORKOUT_LOG, values, "_id=" + id, null);
         MainActivity.updatedSet();
 //        MainActivity.adapter.notifyDataSetChanged();
+    }
+
+    public void addSet(int fragmentNum, int exerciseNum, int setReps, int setWeight){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        int lastSetNum = getLastSetNum(fragmentNum, exerciseNum);
+        int newSetNum = lastSetNum + 1;
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_WORKOUT_LOG_DATE, getDate(fragmentNum));
+        values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, exerciseNum);
+        values.put(KEY_WORKOUT_LOG_EXERCISE_NAME, getExerciseName(fragmentNum, exerciseNum));
+        values.put(KEY_WORKOUT_LOG_SET_NUM, newSetNum);
+        values.put(KEY_WORKOUT_LOG_REPS, setReps);
+        values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
+        db.insert(TABLE_WORKOUT_LOG, null, values);
+    }
+
+    public String getExerciseName(int fragmentNum, int exerciseNum){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null)
+            c.moveToFirst();
+
+        String exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
+
+        c.close();
+
+        return exerciseName;
+    }
+
+    public int getLastSetNum(int fragmentNum, int exerciseNum){
+        int curNum, lastNum;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        lastNum = 0;
+        curNum = 0;
+
+        while(c.moveToNext()){
+            curNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM));
+
+            if (curNum > lastNum)
+                lastNum = curNum;
+        }
+        c.close();
+
+        Log.e("DatabaseHelper","Last set found was: " + lastNum);
+
+        return lastNum;
     }
 
     public int getLastExerciseNum(int fragmentNum){
@@ -283,6 +348,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             }
         }
 
+        c.close();
         Log.e("DatabaseHelper", "List of all exercises saved for this workout:" + exerciseList);
 
         return exerciseList;
@@ -325,7 +391,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 }
                     exercises.put(exerciseName, exerciseSets);
             }
-
+            c.close();
         }
 
         Log.e("DatabaseHelper", "Hashmap of all sets saved for this workout:" + exercises);

@@ -207,8 +207,28 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
-        CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
+        final CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+//        tabLayout.setOnTabSelectedListener(
+//                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
+//                    @Override
+//                    public void onTabSelected(TabLayout.Tab tab) {
+//                        super.onTabSelected(tab);
+//                        int tabNum = viewPager.getCurrentItem();
+//                        Display display = getWindowManager().getDefaultDisplay();
+//                        Point size = new Point();
+//                        display.getSize(size);
+//                        int width = size.x;
+//
+//                        Log.e("MainActivity","Current tabNum: " + tabNum);
+//                        if (tabNum >= 7) {
+//                            Log.e("MainActivity", "Scroll position: " + tabLayout.getScrollX());
+//                            tabLayout.setScrollX(width);
+//                        }
+//                    }
+//                });
+
 
         // determine the day of the week it is today
         cal = Calendar.getInstance();
