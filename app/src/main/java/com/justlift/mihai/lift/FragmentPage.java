@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -127,6 +128,38 @@ public class FragmentPage extends Fragment {
             }
         });
 
+        elv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+                int childPosition = ExpandableListView.getPackedPositionChild(id);
+                int itemType = ExpandableListView.getPackedPositionType(id);
+
+                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+
+                    Log.e("FragmentPage","Long press detected on child item: " + childPosition + " of group: " + groupPosition);
+                    // You now have everything that you would as if this was an OnChildClickListener()
+                    // Add your logic here.
+
+                    // Return true as we are handling the event.
+                    return true;
+                } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
+                {
+                    Log.e("FragmentPage","Long press detected on group item: " + groupPosition);
+                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("fragmentNum", mNum);
+                    b.putInt("exerciseNum", groupPosition+1);
+                    intent.putExtras(b);
+
+                    startActivity(intent);
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();
         ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE))
@@ -220,16 +253,31 @@ public class FragmentPage extends Fragment {
 
             ViewHolder holder;
             if (view == null){
-                holder = new ViewHolder();
-                view = inf.inflate(R.layout.child_view, viewGroup, false);
+//                holder = new ViewHolder();
+//                view = inf.inflate(R.layout.child_view, viewGroup, false);
+                view = inf.inflate(R.layout.child_view, null);
 
-                holder.text = (TextView) view.findViewById(R.id.lblListItem);
-                view.setTag(holder);
+//                holder.text = (TextView) view.findViewById(R.id.lblListItem);
+//                view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
             }
 
-            holder.text.setText(getChild(i, i1).toString());
+            String childString = getChild(i, i1).toString();
+            String[] seperated = childString.split(":");
+            String setNum = seperated[0];
+            String repNum = seperated[1];
+            String weightNum = seperated[2];
+
+            TextView tv = (TextView) view.findViewById(R.id.childSetNum);
+            TextView ltv = (TextView) view.findViewById(R.id.childSetReps);
+            TextView ktv = (TextView) view.findViewById(R.id.childSetWeight);
+
+            tv.setText(setNum);
+            ltv.setText(repNum);
+            ktv.setText(weightNum);
+
+//            holder.text.setText(getChild(i, i1).toString());
             return view;
         }
 

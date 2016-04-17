@@ -218,7 +218,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_WORKOUT_LOG_REPS, setReps);
         values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
-        db.update(TABLE_WORKOUT_LOG, values, "_id=" + id, null);
+        db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + id, null);
         MainActivity.updatedSet();
 //        MainActivity.adapter.notifyDataSetChanged();
     }
@@ -237,6 +237,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_WORKOUT_LOG_REPS, setReps);
         values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
         db.insert(TABLE_WORKOUT_LOG, null, values);
+        MainActivity.updatedSet();
     }
 
     public String getExerciseName(int fragmentNum, int exerciseNum){
@@ -280,9 +281,66 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
         c.close();
 
-        Log.e("DatabaseHelper","Last set found was: " + lastNum);
+        Log.e("DatabaseHelper", "Last set found was: " + lastNum);
 
         return lastNum;
+    }
+
+    public void removeSet(int fragmentNum, int exerciseNum, int setNum){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // setNum will from 0-4 for example
+        // lastSetNum will be from 1-5 for example
+        int lastSetNum = getLastSetNum(fragmentNum, exerciseNum);
+        int setRemoveNum = setNum + 1;
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
+                + KEY_WORKOUT_LOG_SET_NUM + " = " + setRemoveNum;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if (c != null && c.getCount() == 1)
+            c.moveToFirst();
+        else {
+            Log.e("DatabaseHelper", "Found more than one set to delete");
+            return;
+        }
+
+        long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+
+        db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+
+        Log.e("DatabaseHelper", "Given set to remove: " + setRemoveNum + " Last set num: " + lastSetNum);
+        if (setRemoveNum < lastSetNum){
+            Log.e("DatabaseHelper","RemoveSet Note: THIS IS NOT THE LAST SET");
+            for (int i=1;i<=(lastSetNum-setRemoveNum);i++){
+                int nextSetNum = setRemoveNum + i;
+                int newSetNum = nextSetNum - 1;
+
+                selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                        + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                        + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
+                        + KEY_WORKOUT_LOG_SET_NUM + " = " + nextSetNum;
+
+                c = db.rawQuery(selectQuery, null);
+
+                if (c != null && c.getCount() == 1)
+                    c.moveToFirst();
+                else {
+                    Log.e("DatabaseHelper", "Found more than one set to delete");
+                    return;
+                }
+
+                rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+
+                ContentValues values = new ContentValues();
+                values.put(KEY_WORKOUT_LOG_SET_NUM, newSetNum);
+                db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+            }
+        }
+        MainActivity.updatedSet();
     }
 
     public int getLastExerciseNum(int fragmentNum){
@@ -381,12 +439,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
                 while (c.moveToNext()) {
                     if (c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) > 0) {
-                        exerciseSets.add("Set "
-                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ": "
-                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + "x"
-                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "lbs");
+//                        exerciseSets.add("Set "
+//                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ": "
+//                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + "x"
+//                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "lbs");
+                        exerciseSets.add(""
+                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ":"
+                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + ":"
+                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "");
                     } else {
-                        exerciseSets.add("Select edit to add sets!");
+                        exerciseSets.add("1:0:0");
                     }
                 }
                     exercises.put(exerciseName, exerciseSets);

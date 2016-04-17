@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
 
         final CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSmoothScrollingEnabled(true);
 
 //        tabLayout.setOnTabSelectedListener(
 //                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
@@ -216,15 +217,15 @@ public class MainActivity extends AppCompatActivity {
 //                    public void onTabSelected(TabLayout.Tab tab) {
 //                        super.onTabSelected(tab);
 //                        int tabNum = viewPager.getCurrentItem();
-//                        Display display = getWindowManager().getDefaultDisplay();
-//                        Point size = new Point();
-//                        display.getSize(size);
-//                        int width = size.x;
+////                        Display display = getWindowManager().getDefaultDisplay();
+////                        Point size = new Point();
+////                        display.getSize(size);
+////                        int width = size.x;
 //
 //                        Log.e("MainActivity","Current tabNum: " + tabNum);
 //                        if (tabNum >= 7) {
+//                            tabLayout.smoothScrollTo(1078,0);
 //                            Log.e("MainActivity", "Scroll position: " + tabLayout.getScrollX());
-//                            tabLayout.setScrollX(width);
 //                        }
 //                    }
 //                });
@@ -285,6 +286,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position);
+//                tabLayout.scrollTo(tabLayout.getChildAt(position), 0);
+//                tabLayout.getTabAt(position).select();
+//                if (position > 6)
+//                    tabLayout.setScrollX(1078);
+//                tabLayout.calculateScrollXForTab();
                 setActionBarTitle(titleStrings[position]);
             }
         });

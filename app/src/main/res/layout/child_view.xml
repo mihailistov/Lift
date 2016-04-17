@@ -1,9 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="horizontal"
+    android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp">
 
-    <TextView
+    <!--<TextView
         android:id="@+id/lblListItem"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -11,5 +14,42 @@
         android:paddingBottom="5dp"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:paddingTop="0dp"
-        android:textSize="14sp" />
+        android:textSize="18sp" />-->
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#ffffff"
+        android:id="@+id/childSetNum"
+        android:background="@drawable/bg_orange_circle"
+        android:gravity="center_vertical|center_horizontal"
+        />
+
+    <TextView
+        android:paddingLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/childSetWeight" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/lighter_gray"
+        android:text=" lbs"/>
+
+    <TextView
+        android:paddingLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/childSetReps" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/lighter_gray"
+        android:text=" reps"/>
 </LinearLayout>
