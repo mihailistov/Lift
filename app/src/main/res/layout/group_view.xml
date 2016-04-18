@@ -13,7 +13,7 @@
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:gravity="center_vertical"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:background="@color/parentColor"
         android:textColor="@color/white"
         android:textStyle="bold"

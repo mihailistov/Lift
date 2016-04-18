@@ -202,7 +202,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
                 + KEY_WORKOUT_LOG_SET_NUM + " = " + setNum;
 
-        Log.e("DatabaseHelper",selectQuery);
+        Log.e("DatabaseHelper", selectQuery);
 
         Cursor c = db.rawQuery(selectQuery, null);
 
@@ -291,8 +291,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         // setNum will from 0-4 for example
         // lastSetNum will be from 1-5 for example
+        String exerciseName = getExerciseName(fragmentNum, exerciseNum);
         int lastSetNum = getLastSetNum(fragmentNum, exerciseNum);
         int setRemoveNum = setNum + 1;
+        Log.e("DatabaseHelper", "Given set to remove: " + setRemoveNum + " Last set num: " + lastSetNum);
 
         String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
                 + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
@@ -312,8 +314,46 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
 
-        Log.e("DatabaseHelper", "Given set to remove: " + setRemoveNum + " Last set num: " + lastSetNum);
+//        if (setRemoveNum == lastSetNum){
+//            Log.e("DatabaseHelper", "THIS IS THE LAST SET TO DELETE");
+//            selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+//                    + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+//                    + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
+//
+//            c = db.rawQuery(selectQuery, null);
+//
+//            if (c != null && c.getCount() == 1){
+//                Log.e("DatabaseHelper", "LAST AND ONLY SET, UPDATE TO NEW");
+//                ContentValues values = new ContentValues();
+//                values.put(KEY_WORKOUT_LOG_SET_NUM, 1);
+//                values.put(KEY_WORKOUT_LOG_WEIGHT, 0);
+//                values.put(KEY_WORKOUT_LOG_REPS, 0);
+//                db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+//            } else {
+//                db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+//            }
+//        }
+
+//        if (setRemoveNum == lastSetNum){
+//            Log.e("DatabaseHelper", "THIS IS THE LAST SET TO DELETE");
+//            c = db.rawQuery(selectQuery, null);
+//
+//            if (c.getCount() == 0) {
+//                Log.e("DatabaseHelper", "LAST AND ONLY SET, CREATE A NEW ONE");
+//                ContentValues values = new ContentValues();
+//                values.put(KEY_WORKOUT_LOG_DATE, getDate(fragmentNum));
+//                values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, exerciseNum);
+//                values.put(KEY_WORKOUT_LOG_EXERCISE_NAME, exerciseName);
+//                values.put(KEY_WORKOUT_LOG_SET_NUM, 1);
+//                values.put(KEY_WORKOUT_LOG_REPS, 0);
+//                values.put(KEY_WORKOUT_LOG_WEIGHT, 0);
+//                db.insert(TABLE_WORKOUT_LOG, null, values);
+//            }
+//        }
+
         if (setRemoveNum < lastSetNum){
+//            db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+
             Log.e("DatabaseHelper","RemoveSet Note: THIS IS NOT THE LAST SET");
             for (int i=1;i<=(lastSetNum-setRemoveNum);i++){
                 int nextSetNum = setRemoveNum + i;

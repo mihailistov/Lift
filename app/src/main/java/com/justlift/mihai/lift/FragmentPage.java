@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -112,19 +113,47 @@ public class FragmentPage extends Fragment {
                     Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
                     Bundle b = new Bundle();
                     b.putInt("fragmentNum", mNum);
-                    b.putInt("exerciseNum", groupPosition+1);
+                    b.putInt("exerciseNum", groupPosition + 1);
                     intent.putExtras(b);
 
                     startActivity(intent);
 
                     MainActivity.setEditDisabled();
 
-                    if(parent.isGroupExpanded(groupPosition))
+                    if (parent.isGroupExpanded(groupPosition))
                         return true;
                     else
                         return false;
                 } else
                     return false;
+            }
+        });
+
+        elv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Log.e("FragmentPage", "Clicked child: " + childPosition + " group: " + groupPosition);
+                List<Integer> setNum = new ArrayList<Integer>();
+                List<Integer> setReps = new ArrayList<Integer>();
+                List<Integer> setWeight = new ArrayList<Integer>();
+
+                myDbHelper.getExerciseStats(mNum, groupPosition+1, setNum, setReps, setWeight);
+
+                if (setNum.size() == 1 && setReps.get(0) == 0 && setWeight.get(0) == 0)
+                {
+                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("fragmentNum", mNum);
+                    b.putInt("exerciseNum", groupPosition+1);
+                    b.putInt("setNumClicked",childPosition+1);
+                    intent.putExtras(b);
+
+                    startActivity(intent);
+                }
+
+
+                return true;
             }
         });
 
@@ -138,8 +167,14 @@ public class FragmentPage extends Fragment {
                 if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
 
                     Log.e("FragmentPage","Long press detected on child item: " + childPosition + " of group: " + groupPosition);
-                    // You now have everything that you would as if this was an OnChildClickListener()
-                    // Add your logic here.
+                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("fragmentNum", mNum);
+                    b.putInt("exerciseNum", groupPosition+1);
+                    b.putInt("setNumClicked",childPosition+1);
+                    intent.putExtras(b);
+
+                    startActivity(intent);
 
                     // Return true as we are handling the event.
                     return true;
@@ -268,15 +303,32 @@ public class FragmentPage extends Fragment {
             String setNum = seperated[0];
             String repNum = seperated[1];
             String weightNum = seperated[2];
+            Log.e("FragmentPage","Children, repNum: " + repNum + ", weightNum: " + weightNum);
 
             TextView tv = (TextView) view.findViewById(R.id.childSetNum);
             TextView ltv = (TextView) view.findViewById(R.id.childSetReps);
             TextView ktv = (TextView) view.findViewById(R.id.childSetWeight);
+            TextView lbsTv = (TextView) view.findViewById(R.id.lbsTv);
+            TextView repsTv = (TextView) view.findViewById(R.id.repsTv);
 
-            tv.setText(setNum);
-            ltv.setText(repNum);
-            ktv.setText(weightNum);
+            if (!repNum.equals("0") && !weightNum.equals("0")){
+                tv.setVisibility(View.VISIBLE);
+                ltv.setVisibility(View.VISIBLE);
+                ktv.setVisibility(View.VISIBLE);
+                lbsTv.setVisibility(View.VISIBLE);
+                repsTv.setVisibility(View.VISIBLE);
 
+                tv.setText(setNum);
+                ltv.setText(repNum);
+                ktv.setText(weightNum);
+            } else {
+                tv.setVisibility(View.GONE);
+                ltv.setVisibility(View.GONE);
+                lbsTv.setVisibility(View.GONE);
+                repsTv.setVisibility(View.GONE);
+
+                ktv.setText("Click to add sets");
+            }
 //            holder.text.setText(getChild(i, i1).toString());
             return view;
         }

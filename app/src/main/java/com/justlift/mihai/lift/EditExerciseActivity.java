@@ -23,9 +23,13 @@ import java.util.List;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
+    final List<Integer> setNum = new ArrayList<Integer>();
+    final List<Integer> setReps = new ArrayList<Integer>();
+    final List<Integer> setWeight = new ArrayList<Integer>();
+
+    int currSetNum = 0;
     int currRepNum = 0;
     int currWeight = 0;
-    int currSetNum = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final int fragmentNum = intent.getIntExtra("fragmentNum", 0);
         final int exerciseNum = intent.getIntExtra("exerciseNum", 0);
+        final int setNumClicked = intent.getIntExtra("setNumClicked", 0);
 
         final DatabaseHelper myDbHelper;
         myDbHelper = new DatabaseHelper(this);
@@ -71,10 +76,6 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
 
         }
-
-        final List<Integer> setNum = new ArrayList<Integer>();
-        final List<Integer> setReps = new ArrayList<Integer>();
-        final List<Integer> setWeight = new ArrayList<Integer>();
         myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
 
         Log.e("EditExerciseActivity", "Number of sets to show: " + setNum.size());
@@ -82,15 +83,25 @@ public class EditExerciseActivity extends AppCompatActivity {
                 + "\nSet reps: \n" + setReps
                 + "\nSet weights: \n" + setWeight);
 
-        final String styledTitle = "<big>Edit.<font color='#33aebe'>Add/select a set</font></big>";
-        setTitle(Html.fromHtml(styledTitle));
-
         displayWeight(0);
         displayReps(0);
 
         final Button saveButton = (Button) findViewById(R.id.save_button);
         final Button clearButton = (Button) findViewById(R.id.clear_button);
         setButtonDefaults();
+
+        if (setNumClicked != 0){
+            currSetNum = setNumClicked-1;
+            currWeight = setWeight.get(currSetNum);
+            currRepNum = setReps.get(currSetNum);
+
+            displayWeight(currWeight);
+            displayReps(currRepNum);
+
+            setButtonUpdateMode();
+
+            Log.e("EditExerciseActivity", "Long press on child detected, editing Set: " + currSetNum);
+        }
 
         final TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
 
@@ -101,10 +112,6 @@ public class EditExerciseActivity extends AppCompatActivity {
                 currSetNum = (Integer)v.getTag();
                 currWeight = setWeight.get(currSetNum);
                 currRepNum = setReps.get(currSetNum);
-
-                // set title to "Edit.Set #"
-                String styledTitle = "<big>Edit.<font color='#33aebe'>Set " + setNum.get(currSetNum) + "</font></big>";
-                setTitle(Html.fromHtml(styledTitle));
 
                 // set buttons to show "Update" and "Delete"
                 setButtonUpdateMode();
@@ -315,6 +322,9 @@ public class EditExerciseActivity extends AppCompatActivity {
         clearButton.getBackground().setColorFilter(0xFF009DD7, PorterDuff.Mode.MULTIPLY);
         clearButton.setTextAppearance(R.style.ButtonEditSet);
         clearButton.setText("Clear");
+
+        String styledTitle = "<big>Edit.<font color='#33aebe'>Add/select a set</font></big>";
+        setTitle(Html.fromHtml(styledTitle));
     }
 
     private void setButtonUpdateMode(){
@@ -324,6 +334,10 @@ public class EditExerciseActivity extends AppCompatActivity {
         saveButton.setText("Update");
         clearButton.getBackground().setColorFilter(0xFFFA3D3D, PorterDuff.Mode.MULTIPLY);
         clearButton.setText("Delete");
+
+        // set title to "Edit.Set #"
+        String styledTitle = "<big>Edit.<font color='#33aebe'>Set " + setNum.get(currSetNum) + "</font></big>";
+        setTitle(Html.fromHtml(styledTitle));
     }
 
     public void increaseWeight(View view) {
