@@ -33,8 +33,15 @@ public class MainActivity extends AppCompatActivity {
     public static boolean setUpdated = false;
     private static MainActivity instance;
     private static boolean editEnabled = false;
+    private static boolean removeEnabled = false;
     private String exerciseName;
-    ViewPagerAdapter adapter = null;
+    public static ViewPagerAdapter adapter = null;
+    static FloatingActionMenu cancelAction;
+    static FloatingActionMenu menuMultipleActions;
+    static FloatingActionButton addButton;
+    static FloatingActionButton editButton;
+    static FloatingActionButton copyButton;
+    static FloatingActionButton removeButton;
 
     @Override
     protected void onResume(){
@@ -99,19 +106,62 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
+        menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
+        cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
         createCustomAnimation();
         menuMultipleActions.setClosedOnTouchOutside(true);
 
-        final FloatingActionButton addButton = (FloatingActionButton) findViewById(R.id.add_button);
-        final FloatingActionButton editButton = (FloatingActionButton) findViewById(R.id.edit_button);
+        addButton = (FloatingActionButton) findViewById(R.id.add_button);
+        editButton = (FloatingActionButton) findViewById(R.id.edit_button);
+        removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
+        copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
+
+        cancelAction.setOnMenuButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                cancelAction();
+            }
+        });
+
+        removeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addButton.setLabelVisibility(View.INVISIBLE);
+                editButton.setLabelVisibility(View.INVISIBLE);
+                removeButton.setLabelVisibility(View.INVISIBLE);
+                copyButton.setLabelVisibility(View.INVISIBLE);
+
+                menuMultipleActions.close(true);
+                menuMultipleActions.setAnimated(false);
+                menuMultipleActions.setIconAnimated(false);
+                menuMultipleActions.setVisibility(View.GONE);
+
+                Toast.makeText(MainActivity.this, "Select an exercise/set to remove", Toast.LENGTH_LONG).show();
+                removeEnabled = true;
+                cancelAction.setVisibility(View.VISIBLE);
+                cancelAction.setMenuButtonLabelText("Cancel remove");
+                cancelAction.open(true);
+            }
+        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                addButton.setLabelVisibility(View.INVISIBLE);
+                editButton.setLabelVisibility(View.INVISIBLE);
+                removeButton.setLabelVisibility(View.INVISIBLE);
+                copyButton.setLabelVisibility(View.INVISIBLE);
+
                 menuMultipleActions.close(true);
-                Toast.makeText(MainActivity.this, "Select exercise to edit", Toast.LENGTH_LONG).show();
+                menuMultipleActions.setAnimated(false);
+                menuMultipleActions.setIconAnimated(false);
+                menuMultipleActions.setVisibility(View.GONE);
+
+                Toast.makeText(MainActivity.this, "Select an exercise/set to edit", Toast.LENGTH_LONG).show();
                 editEnabled = true;
+                cancelAction.setVisibility(View.VISIBLE);
+                cancelAction.setMenuButtonLabelText("Cancel edit");
+                cancelAction.open(true);
             }
         });
 
@@ -131,29 +181,11 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         exerciseName = input.getText().toString();
-//                        exerciseName = myDbHelper.addExercise(exerciseName);
-//                        exerciseName = myDbHelper.returnExerciseName();
 
                         int fragNum = viewPager.getCurrentItem();
                         Log.e("MainActivity", "Current fragment number: " + fragNum);
 
                         myDbHelper.addExercise(fragNum, exerciseName);
-//                        myDbHelper.getExerciseHeaders(fragNum);
-//                        myDbHelper.getExerciseSets(fragNum);
-
-//                        if (!myDbHelper.workoutExists(fragNum)){
-//                            myDbHelper.createWorkout(fragNum);
-//                        } else {
-//                            long rowId = myDbHelper.getWorkoutId(fragNum);
-//                        }
-
-//                        String emptyChild[] = {""};
-//                        String fullChild[] = {"Set 1: 20x45", "Set 2: 12x95", "Set 3: 8x135", "Set 4: 8x185", "Set 5: 5x225"};
-
-//                        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:"
-//                                + R.id.viewpager + ":" + viewPager.getCurrentItem());
-
-//                        ElvDataHandler.addEntry(viewPager.getCurrentItem(), exerciseName, fullChild);
                         adapter.notifyDataSetChanged();
                         Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
                     }
@@ -169,9 +201,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
-//        getSupportActionBar().setIcon(R.drawable.ic_action_icon);
 
         viewPager = (ViewPager) findViewById(R.id.viewpager);
 
@@ -190,46 +219,11 @@ public class MainActivity extends AppCompatActivity {
             adapter.addFragment(newFrag, dayOfWeekEEE + "\n" + dayOfWeek(i));
         }
 
-//        adapter.addFragment(new FragmentPage().newInstance(0), "SUN\n" + dayOfWeek(-7));    // Tu W Th F Sa Su M
-//        adapter.addFragment(new FragmentPage().newInstance(1), "MON\n" + dayOfWeek(-6));;
-//        adapter.addFragment(new FragmentPage().newInstance(2), "TUE\n" + dayOfWeek(-5));;
-//        adapter.addFragment(new FragmentPage().newInstance(3), "WED\n" + dayOfWeek(-4));
-//        adapter.addFragment(new FragmentPage().newInstance(4), "THU\n" + dayOfWeek(-3));
-//        adapter.addFragment(new FragmentPage().newInstance(5), "FRI\n" + dayOfWeek(-2));
-//        adapter.addFragment(new FragmentPage().newInstance(6), "SAT\n" + dayOfWeek(-1));
-//        adapter.addFragment(new FragmentPage().newInstance(7), "SUN\n" + dayOfWeek(0));    // Tu W Th F Sa Su M
-//        adapter.addFragment(new FragmentPage().newInstance(8), "MON\n" + dayOfWeek(1));;
-//        adapter.addFragment(new FragmentPage().newInstance(9), "TUE\n" + dayOfWeek(2));;
-//        adapter.addFragment(new FragmentPage().newInstance(10), "WED\n" + dayOfWeek(3));
-//        adapter.addFragment(new FragmentPage().newInstance(11), "THU\n" + dayOfWeek(4));
-//        adapter.addFragment(new FragmentPage().newInstance(12), "FRI\n" + dayOfWeek(5));
-//        adapter.addFragment(new FragmentPage().newInstance(13), "SAT\n" + dayOfWeek(6));
-
         viewPager.setAdapter(adapter);
 
         final CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setSmoothScrollingEnabled(true);
-
-//        tabLayout.setOnTabSelectedListener(
-//                new TabLayout.ViewPagerOnTabSelectedListener(viewPager) {
-//                    @Override
-//                    public void onTabSelected(TabLayout.Tab tab) {
-//                        super.onTabSelected(tab);
-//                        int tabNum = viewPager.getCurrentItem();
-////                        Display display = getWindowManager().getDefaultDisplay();
-////                        Point size = new Point();
-////                        display.getSize(size);
-////                        int width = size.x;
-//
-//                        Log.e("MainActivity","Current tabNum: " + tabNum);
-//                        if (tabNum >= 7) {
-//                            tabLayout.smoothScrollTo(1078,0);
-//                            Log.e("MainActivity", "Scroll position: " + tabLayout.getScrollX());
-//                        }
-//                    }
-//                });
-
 
         // determine the day of the week it is today
         cal = Calendar.getInstance();
@@ -286,11 +280,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position);
-//                tabLayout.scrollTo(tabLayout.getChildAt(position), 0);
-//                tabLayout.getTabAt(position).select();
-//                if (position > 6)
-//                    tabLayout.setScrollX(1078);
-//                tabLayout.calculateScrollXForTab();
                 setActionBarTitle(titleStrings[position]);
             }
         });
@@ -299,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCustomAnimation() {
         final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
+        final FloatingActionMenu cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
 
         AnimatorSet set = new AnimatorSet();
 
@@ -319,6 +309,8 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationStart(Animator animation) {
                 menuMultipleActions.getMenuIconView().setImageResource(menuMultipleActions.isOpened()
                         ? R.drawable.ic_close : R.drawable.ic_list);
+                cancelAction.getMenuIconView().setImageResource(removeEnabled
+                        ? R.drawable.ic_delete : R.drawable.ic_edit);
             }
         });
 
@@ -327,28 +319,14 @@ public class MainActivity extends AppCompatActivity {
         set.setInterpolator(new OvershootInterpolator(2));
 
         menuMultipleActions.setIconToggleAnimatorSet(set);
+        cancelAction.setIconToggleAnimatorSet(set);
     }
-
-//    public static void editExercise(int fragmentNum, int groupPosition){
-//        int exerciseNum = groupPosition + 1;
-//
-//        Intent intent = new Intent(MainActivity.this, EditExerciseActivity.class);
-//        Bundle b = new Bundle();
-//        b.putInt("fragmentNum", fragmentNum);
-//        b.putInt("exerciseNum", exerciseNum);
-//        intent.putExtras(b);
-//
-//        startActivity(intent);
-//        finish();
-//    }
 
     public static MainActivity getInstance() {
         return instance;
     }
 
-    public static void updatedSet(){
-        setUpdated = true;
-    }
+    public static void updatedSet(){ setUpdated = true; }
 
     public static boolean getEditState(){
         return editEnabled;
@@ -360,6 +338,23 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setEditDisabled(){
         editEnabled = false;
+    }
+
+    public static boolean getRemoveState(){ return removeEnabled; }
+
+    public static void cancelAction(){
+        cancelAction.setVisibility(View.GONE);
+        menuMultipleActions.close(true);
+        menuMultipleActions.setVisibility(View.VISIBLE);
+        removeEnabled = false;
+        editEnabled = false;
+
+        menuMultipleActions.setAnimated(true);
+        menuMultipleActions.setIconAnimated(true);
+        addButton.setLabelVisibility(View.VISIBLE);
+        editButton.setLabelVisibility(View.VISIBLE);
+        removeButton.setLabelVisibility(View.VISIBLE);
+        copyButton.setLabelVisibility(View.VISIBLE);
     }
 
     public void setActionBarTitle(String title){

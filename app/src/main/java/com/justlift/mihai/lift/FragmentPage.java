@@ -1,9 +1,11 @@
 package com.justlift.mihai.lift;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,7 +109,8 @@ public class FragmentPage extends Fragment {
         elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                if (MainActivity.getEditState() == true) {
+                if (MainActivity.getEditState()) {
+
                     Log.e("FragmentPage", "Clicked group #: " + groupPosition);
 
                     Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
@@ -118,7 +121,9 @@ public class FragmentPage extends Fragment {
 
                     startActivity(intent);
 
-                    MainActivity.setEditDisabled();
+//                    MainActivity.setEditDisabled();
+
+                    MainActivity.cancelAction();
 
                     if (parent.isGroupExpanded(groupPosition))
                         return true;
@@ -140,7 +145,7 @@ public class FragmentPage extends Fragment {
 
                 myDbHelper.getExerciseStats(mNum, groupPosition+1, setNum, setReps, setWeight);
 
-                if (setNum.size() == 1 && setReps.get(0) == 0 && setWeight.get(0) == 0)
+                if (setNum.size() == 1 && setReps.get(0) == 0 && setWeight.get(0) == 0 || MainActivity.getEditState())
                 {
                     Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
                     Bundle b = new Bundle();
@@ -150,6 +155,35 @@ public class FragmentPage extends Fragment {
                     intent.putExtras(b);
 
                     startActivity(intent);
+
+                    if (MainActivity.getEditState())
+                        MainActivity.cancelAction();
+                } else if (MainActivity.getRemoveState()){
+
+                    final int removeExerciseNum = groupPosition + 1;
+                    final int removeSetNum = childPosition;
+
+                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
+                                    MainActivity.adapter.notifyDataSetChanged();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
+                    builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
+                            .setNegativeButton("No", removeDialogClickListener).show();
+
+                    MainActivity.cancelAction();
                 }
 
 
@@ -303,7 +337,7 @@ public class FragmentPage extends Fragment {
             String setNum = seperated[0];
             String repNum = seperated[1];
             String weightNum = seperated[2];
-            Log.e("FragmentPage","Children, repNum: " + repNum + ", weightNum: " + weightNum);
+//            Log.e("FragmentPage","Children, repNum: " + repNum + ", weightNum: " + weightNum);
 
             TextView tv = (TextView) view.findViewById(R.id.childSetNum);
             TextView ltv = (TextView) view.findViewById(R.id.childSetReps);

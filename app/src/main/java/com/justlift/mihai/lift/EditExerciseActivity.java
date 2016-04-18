@@ -1,9 +1,11 @@
 package com.justlift.mihai.lift;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
@@ -23,6 +25,11 @@ import java.util.List;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
+    boolean noSets = false;
+    int fragmentNum = 0;
+    int exerciseNum = 0;
+    int setNumClicked = 0;
+    String exerciseName;
     final List<Integer> setNum = new ArrayList<Integer>();
     final List<Integer> setReps = new ArrayList<Integer>();
     final List<Integer> setWeight = new ArrayList<Integer>();
@@ -32,14 +39,26 @@ public class EditExerciseActivity extends AppCompatActivity {
     int currWeight = 0;
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        final DatabaseHelper myDbHelper;
+        myDbHelper = new DatabaseHelper(this);
+
+        if (noSets){
+            myDbHelper.addSet(fragmentNum, exerciseNum, exerciseName, 0, 0);
+        }
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
 
         Intent intent = getIntent();
-        final int fragmentNum = intent.getIntExtra("fragmentNum", 0);
-        final int exerciseNum = intent.getIntExtra("exerciseNum", 0);
-        final int setNumClicked = intent.getIntExtra("setNumClicked", 0);
+        fragmentNum = intent.getIntExtra("fragmentNum", 0);
+        exerciseNum = intent.getIntExtra("exerciseNum", 0);
+        setNumClicked = intent.getIntExtra("setNumClicked", 0);
 
         final DatabaseHelper myDbHelper;
         myDbHelper = new DatabaseHelper(this);
@@ -76,7 +95,13 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
 
         }
+
+        exerciseName = myDbHelper.getExerciseName(fragmentNum, exerciseNum);
         myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
+
+        if (setNum.size() == 1 && setReps.get(0) == 0 && setWeight.get(0) == 0) {
+            setNumClicked = 1;
+        }
 
         Log.e("EditExerciseActivity", "Number of sets to show: " + setNum.size());
         Log.e("EditExerciseActivity", "Set numbers: \n" + setNum
@@ -174,73 +199,98 @@ public class EditExerciseActivity extends AppCompatActivity {
 
                 // currSetNum will from 0-4 for example
                 // lastSetNum will be from 1-5 for example
-                int lastSetNum = myDbHelper.getLastSetNum(fragmentNum, exerciseNum);
-                int removeSetNum = currSetNum + 1; // puts it in a more comparable format (1-5 like lastSetNum)
+                final int lastSetNum = myDbHelper.getLastSetNum(fragmentNum, exerciseNum);
+                final int removeSetNum = currSetNum + 1; // puts it in a more comparable format (1-5 like lastSetNum)
 
                 // if no sets selected clear the EditText boxes
                 if (currSetNum == -1){
                     mRepNum.setText("" + 0);
                     mWeightNum.setText("" + 0);
                 } else {
-                    // if a row is selected then delete that row
-                    Log.e("EditExerciseActivity", "Deleting row tag: " + currSetNum);
 
-                    // call database function to remove information from db
-                    myDbHelper.removeSet(fragmentNum, exerciseNum, currSetNum);
+                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    // if a row is selected then delete that row
+                                    Log.e("EditExerciseActivity", "Deleting row tag: " + currSetNum);
 
-                    // remove deleted row from table view
-                    TableRow deletedRow = (TableRow) table.findViewWithTag(currSetNum);
-                    table.removeView(deletedRow);
+                                    // call database function to remove information from db
+                                    myDbHelper.removeSet(fragmentNum, exerciseNum, currSetNum);
 
-                    Log.e("EditExerciseActivity", "Deleting... Last set num: " + lastSetNum);
+                                    // remove deleted row from table view
+                                    TableRow deletedRow = (TableRow) table.findViewWithTag(currSetNum);
+                                    table.removeView(deletedRow);
 
-                    // if the removed set is not the last set then remove the divider associated with it
-                    // as well fix the row/divider tags for the sets after the deleted set
-                    if (removeSetNum < lastSetNum) {
-                        int dividerTag = currSetNum+100;
-                        TableRow deletedDivider = (TableRow) table.findViewWithTag(dividerTag);
-                        table.removeView(deletedDivider);
+                                    Log.e("EditExerciseActivity", "Deleting... Last set num: " + lastSetNum);
 
-                        for (int i=1;i<=(lastSetNum-removeSetNum);i++) {
-                            int rowTag = currSetNum + i;
-                            int newRowTag = rowTag - 1;
+                                    // if the removed set is not the last set then remove the divider associated with it
+                                    // as well fix the row/divider tags for the sets after the deleted set
+                                    if (removeSetNum < lastSetNum) {
+                                        int dividerTag = currSetNum+100;
+                                        TableRow deletedDivider = (TableRow) table.findViewWithTag(dividerTag);
+                                        table.removeView(deletedDivider);
 
-                            dividerTag = rowTag+100;
-                            int newDividerTag = newRowTag + 100;
+                                        for (int i=1;i<=(lastSetNum-removeSetNum);i++) {
+                                            int rowTag = currSetNum + i;
+                                            int newRowTag = rowTag - 1;
 
-                            TableRow row = (TableRow) table.findViewWithTag(rowTag);
-                            row.setTag(Integer.valueOf(newRowTag));
+                                            dividerTag = rowTag+100;
+                                            int newDividerTag = newRowTag + 100;
 
-                            // update divider tags on all sets but the last one b/c is doesn't exist
-                            if (i < (lastSetNum-removeSetNum)) {
-                                TableRow rowDivider = (TableRow) table.findViewWithTag(dividerTag);
-                                rowDivider.setTag(newDividerTag);
+                                            TableRow row = (TableRow) table.findViewWithTag(rowTag);
+                                            row.setTag(Integer.valueOf(newRowTag));
+
+                                            // update divider tags on all sets but the last one b/c is doesn't exist
+                                            if (i < (lastSetNum-removeSetNum)) {
+                                                TableRow rowDivider = (TableRow) table.findViewWithTag(dividerTag);
+                                                rowDivider.setTag(newDividerTag);
+                                            }
+                                        }
+                                    } else {
+                                        // if the removed set is the last one simple remove the previous rows divider
+                                        // and remove the set row
+                                        int dividerTag = (currSetNum+100)-1;
+                                        TableRow deletedDivider = (TableRow) table.findViewWithTag(dividerTag);
+                                        table.removeView(deletedDivider);
+                                    }
+
+                                    // refresh db information
+                                    setNum.clear();
+                                    setReps.clear();
+                                    setWeight.clear();
+                                    myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
+
+                                    Log.e("EditExerciseActivity", "Number of sets after delete: " + setNum.size());
+
+                                    if(setNum.size() == 0)
+                                        noSets = true;
+
+                                    // update row set numbers
+                                    for(int i=0;i<setNum.size();i++){
+                                        TableRow row = (TableRow) table.findViewWithTag(i);
+                                        ((TextView)row.findViewById(R.id.setNum)).setText("" + setNum.get(i));
+                                    }
+
+                                    currSetNum = -1;
+                                    setButtonDefaults();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
                             }
                         }
-                    } else {
-                        // if the removed set is the last one simple remove the previous rows divider
-                        // and remove the set row
-                        int dividerTag = (currSetNum+100)-1;
-                        TableRow deletedDivider = (TableRow) table.findViewWithTag(dividerTag);
-                        table.removeView(deletedDivider);
-                    }
+                    };
 
-                    // refresh db information
-                    setNum.clear();
-                    setReps.clear();
-                    setWeight.clear();
-                    myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
+                    builder.setMessage("Are you sure you want to delete?")
+                            .setPositiveButton("Yes", removeDialogClickListener)
+                            .setNegativeButton("No", removeDialogClickListener).show();
 
-                    Log.e("EditExerciseActivity", "Number of sets after delete: " + setNum.size());
 
-                    // update row set numbers
-                    for(int i=0;i<setNum.size();i++){
-                        TableRow row = (TableRow) table.findViewWithTag(i);
-                        ((TextView)row.findViewById(R.id.setNum)).setText("" + setNum.get(i));
-                    }
 
-                    currSetNum = -1;
-                    setButtonDefaults();
                 }
             }
         });
@@ -258,6 +308,11 @@ public class EditExerciseActivity extends AppCompatActivity {
 
 
                 if (currSetNum != -1) {
+                    if (currRepNum == 0 || currWeight == 0){
+                        Toast.makeText(EditExerciseActivity.this, "Please enter non-zero values", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     myDbHelper.setSetStats(fragmentNum, exerciseNum, currSetNum, currRepNum, currWeight);
 
                     TableRow currRow = (TableRow) table.findViewWithTag(currSetNum);
@@ -272,15 +327,18 @@ public class EditExerciseActivity extends AppCompatActivity {
                     int lastSetNum = myDbHelper.getLastSetNum(fragmentNum, exerciseNum);
                     int newSetNum = lastSetNum + 1;
 
-                    myDbHelper.addSet(fragmentNum, exerciseNum, currRepNum, currWeight);
+                    myDbHelper.addSet(fragmentNum, exerciseNum, exerciseName, currRepNum, currWeight);
+                    noSets = false;
 
                     final TableRow divider = (TableRow) LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_divider, null);
 
                     int dividerTag = (lastSetNum + 100)-1;
 
-                    divider.setTag(dividerTag);
-                    Log.e("EditExerciseActivity","Setting divider tag to: " + dividerTag);
-                    table.addView(divider);
+                    if (dividerTag >= 100) {
+                        divider.setTag(dividerTag);
+                        Log.e("EditExerciseActivity", "Setting divider tag to: " + dividerTag);
+                        table.addView(divider);
+                    }
 
                     final TableRow row = (TableRow)LayoutInflater.from(EditExerciseActivity.this).inflate(R.layout.row_layout, null);
                     ((TextView)row.findViewById(R.id.setNum)).setText("" + newSetNum);

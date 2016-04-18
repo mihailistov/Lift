@@ -22,6 +22,8 @@
     <color name="parentColor">#7F9699</color>
     <color name="colorAccent">#6EC2CC</color>
 
+    <color name="redDelete">#FA3D3D</color>
+
     <color name="gray">#444440</color>
     <color name="light_gray">#bfbfbf</color>
     <color name="lighter_gray">#858583</color>

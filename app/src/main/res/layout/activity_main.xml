@@ -60,6 +60,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="visible"
         fab:menu_colorNormal="@color/colorPrimary"
         fab:menu_colorPressed="@color/colorPrimaryDark"
         fab:menu_fab_size="normal"
@@ -89,6 +90,7 @@
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/copy_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
@@ -98,6 +100,7 @@
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/remove_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
@@ -107,4 +110,16 @@
             fab:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/cancel_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
+        fab:menu_colorNormal="@color/redDelete"
+        fab:menu_colorPressed="@color/redDelete"
+        fab:menu_fab_size="normal"
+        fab:menu_fab_label="Cancel"/>
 </android.support.design.widget.CoordinatorLayout>

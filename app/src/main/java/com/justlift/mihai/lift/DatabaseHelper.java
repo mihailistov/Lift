@@ -223,7 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 //        MainActivity.adapter.notifyDataSetChanged();
     }
 
-    public void addSet(int fragmentNum, int exerciseNum, int setReps, int setWeight){
+    public void addSet(int fragmentNum, int exerciseNum, String exerciseName, int setReps, int setWeight){
         SQLiteDatabase db = this.getReadableDatabase();
 
         int lastSetNum = getLastSetNum(fragmentNum, exerciseNum);
@@ -232,7 +232,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_WORKOUT_LOG_DATE, getDate(fragmentNum));
         values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, exerciseNum);
-        values.put(KEY_WORKOUT_LOG_EXERCISE_NAME, getExerciseName(fragmentNum, exerciseNum));
+        values.put(KEY_WORKOUT_LOG_EXERCISE_NAME, exerciseName);
         values.put(KEY_WORKOUT_LOG_SET_NUM, newSetNum);
         values.put(KEY_WORKOUT_LOG_REPS, setReps);
         values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
@@ -313,26 +313,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
 
         db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-
-//        if (setRemoveNum == lastSetNum){
-//            Log.e("DatabaseHelper", "THIS IS THE LAST SET TO DELETE");
-//            selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
-//                    + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
-//                    + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
-//
-//            c = db.rawQuery(selectQuery, null);
-//
-//            if (c != null && c.getCount() == 1){
-//                Log.e("DatabaseHelper", "LAST AND ONLY SET, UPDATE TO NEW");
-//                ContentValues values = new ContentValues();
-//                values.put(KEY_WORKOUT_LOG_SET_NUM, 1);
-//                values.put(KEY_WORKOUT_LOG_WEIGHT, 0);
-//                values.put(KEY_WORKOUT_LOG_REPS, 0);
-//                db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-//            } else {
-//                db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-//            }
-//        }
 
 //        if (setRemoveNum == lastSetNum){
 //            Log.e("DatabaseHelper", "THIS IS THE LAST SET TO DELETE");
@@ -427,6 +407,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public List<String> getExerciseHeaders(int fragmentNum){
         List<String> exerciseList = new ArrayList<String>();
+        HashMap<Integer, String> exercises = new HashMap<Integer, String>();
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -435,15 +416,22 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        int i = 1;
+//        int i = 1;
+        int numOfExercises = getLastExerciseNum(fragmentNum);
+        int lastExerciseNum = 0;
 
         while(c.moveToNext()){
             int currExerciseNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NUM));
+            String exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
 
-            if(currExerciseNum == i) {
-                exerciseList.add(c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME)));
-                i++;
-            }
+            if (currExerciseNum != lastExerciseNum)
+                exercises.put(currExerciseNum, exerciseName);
+
+            lastExerciseNum = currExerciseNum;
+        }
+
+        for(int i=1;i<=numOfExercises;i++){
+            exerciseList.add(exercises.get(i));
         }
 
         c.close();
@@ -496,7 +484,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             c.close();
         }
 
-        Log.e("DatabaseHelper", "Hashmap of all sets saved for this workout:" + exercises);
+        Log.e("DatabaseHelper", "Hashmap of all sets saved for this frag: " + fragmentNum + " :" + exercises);
         return exercises;
     }
 
