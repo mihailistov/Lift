@@ -38,6 +38,8 @@ public class EditExerciseActivity extends AppCompatActivity {
     int currRepNum = 0;
     int currWeight = 0;
 
+    TableLayout table;
+
     @Override
     protected void onPause(){
         super.onPause();
@@ -115,20 +117,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         final Button clearButton = (Button) findViewById(R.id.clear_button);
         setButtonDefaults();
 
-        if (setNumClicked != 0){
-            currSetNum = setNumClicked-1;
-            currWeight = setWeight.get(currSetNum);
-            currRepNum = setReps.get(currSetNum);
-
-            displayWeight(currWeight);
-            displayReps(currRepNum);
-
-            setButtonUpdateMode();
-
-            Log.e("EditExerciseActivity", "Long press on child detected, editing Set: " + currSetNum);
-        }
-
-        final TableLayout table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
+        table = (TableLayout) EditExerciseActivity.this.findViewById(R.id.tableLayoutList);
 
         final View.OnClickListener tableRowOnClick = new View.OnClickListener() {
             @Override
@@ -147,25 +136,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
                 Log.e("EditExerciseActivity", "Selected set number is: " + currSetNum);
 
-                // clear highlight from any previously selected rows
-                for(int j=0;j<table.getChildCount();j++) {
-                    TableRow otherRows = (TableRow) table.getChildAt(j);
-                    otherRows.setBackgroundColor(Color.rgb(255,255,255));
-                }
-
-                // highlight the selected row
-                TableRow currRow = (TableRow) table.findViewWithTag(currSetNum);
-                currRow.setBackgroundColor(Color.rgb(237, 237, 237));
-                Log.e("EditExerciseHelper","Set background to gray on row tag: " + currRow.getTag());
-
-                // if selected row is not the last row, then highlight the divider row as well
-                if (currSetNum < setNum.size()-1)
-                {
-                    int dividerTag = currSetNum + 100;
-                    TableRow currDivider = (TableRow) table.findViewWithTag(dividerTag);
-                    Log.e("EditExerciseActivity","Attempting to set divider on set: " + currSetNum + " divider tag is: " + dividerTag);
-                    currDivider.setBackgroundColor(Color.rgb(237, 237, 237));
-                }
+                highlightCurrRow();
             }
         };
 
@@ -188,6 +159,22 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
 
             row.setOnClickListener(tableRowOnClick);
+        }
+
+        // if specific set is clicked
+        if (setNumClicked != 0){
+            currSetNum = setNumClicked-1;
+            highlightCurrRow();
+
+            currWeight = setWeight.get(currSetNum);
+            currRepNum = setReps.get(currSetNum);
+
+            displayWeight(currWeight);
+            displayReps(currRepNum);
+
+            setButtonUpdateMode();
+
+            Log.e("EditExerciseActivity", "Long press on child detected, editing Set: " + currSetNum);
         }
 
         // "Clear" or "Delete" button on click listener
@@ -396,6 +383,28 @@ public class EditExerciseActivity extends AppCompatActivity {
         // set title to "Edit.Set #"
         String styledTitle = "<big>Edit.<font color='#33aebe'>Set " + setNum.get(currSetNum) + "</font></big>";
         setTitle(Html.fromHtml(styledTitle));
+    }
+
+    private void highlightCurrRow(){
+        // clear highlight from any previously selected rows
+        for(int j=0;j<table.getChildCount();j++) {
+            TableRow otherRows = (TableRow) table.getChildAt(j);
+            otherRows.setBackgroundColor(Color.rgb(255,255,255));
+        }
+
+        // highlight the selected row
+        TableRow currRow = (TableRow) table.findViewWithTag(currSetNum);
+        currRow.setBackgroundColor(Color.rgb(237, 237, 237));
+        Log.e("EditExerciseHelper","Set background to gray on row tag: " + currRow.getTag());
+
+        // if selected row is not the last row, then highlight the divider row as well
+        if (currSetNum < setNum.size()-1)
+        {
+            int dividerTag = currSetNum + 100;
+            TableRow currDivider = (TableRow) table.findViewWithTag(dividerTag);
+            Log.e("EditExerciseActivity","Attempting to set divider on set: " + currSetNum + " divider tag is: " + dividerTag);
+            currDivider.setBackgroundColor(Color.rgb(237, 237, 237));
+        }
     }
 
     public void increaseWeight(View view) {

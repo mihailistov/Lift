@@ -5,7 +5,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -42,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     static FloatingActionButton editButton;
     static FloatingActionButton copyButton;
     static FloatingActionButton removeButton;
+    Toolbar toolbar;
 
     @Override
     protected void onResume(){
@@ -103,8 +108,70 @@ public class MainActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        toolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final int fragNum = viewPager.getCurrentItem();
+                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
+
+                alert.setTitle("Edit Workout Title");
+//                alert.setMessage("Enter name");
+
+                final EditText input = new EditText(instance);
+                input.setText(myDbHelper.getWorkoutTitle(fragNum));
+                alert.setView(input);
+
+                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String workoutTitle = input.getText().toString();
+
+                        myDbHelper.setWorkoutTitle(fragNum, workoutTitle);
+                        setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(fragNum));
+
+                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                                .coordinatorLayout);
+
+                        Snackbar snackbar = Snackbar
+                                .make(coordinatorLayout, "Updated title", Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
+                        snackbar.show();
+
+//                        Configuration croutonConfig = new Configuration.Builder()
+//                                .setInAnimation(android.R.anim.slide_in_left)
+//                                .setOutAnimation(android.R.anim.slide_out_right)
+//                                .build();
+//
+////                        Toast.makeText(MainActivity.this, "Updated workout title!", Toast.LENGTH_SHORT).show();
+//                        Style updatedStyle = new Style.Builder()
+//                                .setConfiguration(croutonConfig)
+//                                .setBackgroundColor(R.color.greenUpdate)
+//                                .setTextColor(R.color.white)
+//                                .build();
+//
+//                        Crouton updatedTitleMsg = Crouton.makeText(MainActivity.this, "Updated title", updatedStyle, R.id.alternate_view_group);
+//                        updatedTitleMsg.show();
+
+//                        AppMsg appMsg = AppMsg.makeText(MainActivity.this, "Updated title", AppMsg.STYLE_INFO);
+//                        appMsg.setDuration(AppMsg.LENGTH_SHORT);
+//                        appMsg.setLayoutGravity(Gravity.BOTTOM);
+//                        appMsg.show();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                    }
+                });
+
+                alert.show();
+            }
+        });
 
         menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
         cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
@@ -116,52 +183,104 @@ public class MainActivity extends AppCompatActivity {
         removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
         copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
 
-        cancelAction.setOnMenuButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                cancelAction();
-            }
-        });
+//        cancelAction.setOnMenuButtonClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v){
+//                cancelAction();
+//            }
+//        });
 
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addButton.setLabelVisibility(View.INVISIBLE);
-                editButton.setLabelVisibility(View.INVISIBLE);
-                removeButton.setLabelVisibility(View.INVISIBLE);
-                copyButton.setLabelVisibility(View.INVISIBLE);
+//                addButton.setLabelVisibility(View.INVISIBLE);
+//                editButton.setLabelVisibility(View.INVISIBLE);
+//                removeButton.setLabelVisibility(View.INVISIBLE);
+//                copyButton.setLabelVisibility(View.INVISIBLE);
+//
+//                menuMultipleActions.close(true);
+//                menuMultipleActions.setAnimated(false);
+//                menuMultipleActions.setIconAnimated(false);
+//                menuMultipleActions.setVisibility(View.GONE);
+//
+//                Toast.makeText(MainActivity.this, "Select an exercise/set to remove", Toast.LENGTH_LONG).show();
+//                removeEnabled = true;
+//                cancelAction.setVisibility(View.VISIBLE);
+//                cancelAction.setMenuButtonLabelText("Cancel remove");
+//                cancelAction.open(true);
 
                 menuMultipleActions.close(true);
-                menuMultipleActions.setAnimated(false);
-                menuMultipleActions.setIconAnimated(false);
-                menuMultipleActions.setVisibility(View.GONE);
-
-                Toast.makeText(MainActivity.this, "Select an exercise/set to remove", Toast.LENGTH_LONG).show();
+//                menuMultipleActions.setVisibility(View.GONE);
+                menuMultipleActions.hideMenu(true);
                 removeEnabled = true;
-                cancelAction.setVisibility(View.VISIBLE);
-                cancelAction.setMenuButtonLabelText("Cancel remove");
-                cancelAction.open(true);
+
+                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                        .coordinatorLayout);
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Select exercise/set to remove", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("CANCEL", new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view){
+                                removeEnabled = false;
+//                                menuMultipleActions.setVisibility(View.VISIBLE);
+                                menuMultipleActions.showMenu(true);
+                           }
+                        });
+                snackbar.setActionTextColor(Color.WHITE);
+
+                View snackBarView = snackbar.getView();
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackBarView.setBackgroundColor(getResources().getColor(R.color.redDelete));
+                snackbar.show();
             }
         });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addButton.setLabelVisibility(View.INVISIBLE);
-                editButton.setLabelVisibility(View.INVISIBLE);
-                removeButton.setLabelVisibility(View.INVISIBLE);
-                copyButton.setLabelVisibility(View.INVISIBLE);
+//                addButton.setLabelVisibility(View.INVISIBLE);
+//                editButton.setLabelVisibility(View.INVISIBLE);
+//                removeButton.setLabelVisibility(View.INVISIBLE);
+//                copyButton.setLabelVisibility(View.INVISIBLE);
+//
+//                menuMultipleActions.close(true);
+//                menuMultipleActions.setAnimated(false);
+//                menuMultipleActions.setIconAnimated(false);
+//                menuMultipleActions.setVisibility(View.GONE);
+//
+//                Toast.makeText(MainActivity.this, "Select an exercise/set to edit", Toast.LENGTH_LONG).show();
+//                editEnabled = true;
+//                cancelAction.setVisibility(View.VISIBLE);
+//                cancelAction.setMenuButtonLabelText("Cancel edit");
+//                cancelAction.open(true);
 
                 menuMultipleActions.close(true);
-                menuMultipleActions.setAnimated(false);
-                menuMultipleActions.setIconAnimated(false);
-                menuMultipleActions.setVisibility(View.GONE);
-
-                Toast.makeText(MainActivity.this, "Select an exercise/set to edit", Toast.LENGTH_LONG).show();
+//                menuMultipleActions.setVisibility(View.GONE);
+                menuMultipleActions.hideMenu(true);
                 editEnabled = true;
-                cancelAction.setVisibility(View.VISIBLE);
-                cancelAction.setMenuButtonLabelText("Cancel edit");
-                cancelAction.open(true);
+
+                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                        .coordinatorLayout);
+
+                Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Select exercise/set to edit", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("CANCEL", new View.OnClickListener(){
+                            @Override
+                            public void onClick(View view){
+                                editEnabled = false;
+//                                menuMultipleActions.setVisibility(View.VISIBLE);
+                                menuMultipleActions.showMenu(true);
+                            }
+                        });
+                snackbar.setActionTextColor(Color.WHITE);
+
+                View snackBarView = snackbar.getView();
+                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                textView.setTextColor(Color.WHITE);
+                snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
+                snackbar.show();
             }
         });
 
@@ -273,14 +392,14 @@ public class MainActivity extends AppCompatActivity {
                 "Lift.Rest"};
 
         // set title bar title based on today's day of the week
-        setActionBarTitle(titleStrings[tabNumber]);
+        setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(tabNumber));
 
         // update title bar based on tab/view changes
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position);
-                setActionBarTitle(titleStrings[position]);
+                setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(position));
             }
         });
 
@@ -288,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCustomAnimation() {
         final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
-        final FloatingActionMenu cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
+//        final FloatingActionMenu cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
 
         AnimatorSet set = new AnimatorSet();
 
@@ -309,8 +428,8 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationStart(Animator animation) {
                 menuMultipleActions.getMenuIconView().setImageResource(menuMultipleActions.isOpened()
                         ? R.drawable.ic_close : R.drawable.ic_list);
-                cancelAction.getMenuIconView().setImageResource(removeEnabled
-                        ? R.drawable.ic_delete : R.drawable.ic_edit);
+//                cancelAction.getMenuIconView().setImageResource(removeEnabled
+//                        ? R.drawable.ic_delete : R.drawable.ic_edit);
             }
         });
 
@@ -319,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
         set.setInterpolator(new OvershootInterpolator(2));
 
         menuMultipleActions.setIconToggleAnimatorSet(set);
-        cancelAction.setIconToggleAnimatorSet(set);
+//        cancelAction.setIconToggleAnimatorSet(set);
     }
 
     public static MainActivity getInstance() {
@@ -341,6 +460,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static boolean getRemoveState(){ return removeEnabled; }
+
+    public static void setRemoveEnabled() { removeEnabled = true;}
+
+    public static void setRemoveDisabled() { removeEnabled = false;}
 
     public static void cancelAction(){
         cancelAction.setVisibility(View.GONE);
@@ -386,6 +509,10 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.edit_title) {
+            toolbar.performClick();
+
             return true;
         }
 

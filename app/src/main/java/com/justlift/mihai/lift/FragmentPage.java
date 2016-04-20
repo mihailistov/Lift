@@ -8,11 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -57,10 +58,35 @@ public class FragmentPage extends Fragment {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        Log.i("", "Click");
+        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
+
+        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+        // Show context menu for groups
+        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+            menu.setHeaderTitle("Select option");
+            menu.add(Menu.NONE, v.getId(), 0, "Edit exercise sets");
+            menu.add(Menu.NONE, v.getId(), 0, "Remove exercise");
+
+            // Show context menu for children
+        } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+            menu.setHeaderTitle("Select option");
+            menu.add(Menu.NONE, v.getId(), 0, "Edit set");
+            menu.add(Menu.NONE, v.getId(), 0, "Remove set");
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
+        registerForContextMenu(elv);
 
 //        listDataHeader = ElvDataHandler.returnHeader(mNum);
 //        listDataChild = ElvDataHandler.returnChildren(mNum);
@@ -121,9 +147,38 @@ public class FragmentPage extends Fragment {
 
                     startActivity(intent);
 
-//                    MainActivity.setEditDisabled();
+//                    MainActivity.cancelAction();
 
-                    MainActivity.cancelAction();
+                    if (parent.isGroupExpanded(groupPosition))
+                        return true;
+                    else
+                        return false;
+                } else if (MainActivity.getRemoveState()){
+                    // add remove exercise db methods here
+
+                    final int removeExerciseNum = groupPosition+1;
+
+                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which){
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    myDbHelper.removeExercise(mNum, removeExerciseNum);
+                                    MainActivity.adapter.notifyDataSetChanged();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
+                    builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
+                            .setNegativeButton("No", removeDialogClickListener).show();
+
+//                    MainActivity.cancelAction();
 
                     if (parent.isGroupExpanded(groupPosition))
                         return true;
@@ -156,8 +211,8 @@ public class FragmentPage extends Fragment {
 
                     startActivity(intent);
 
-                    if (MainActivity.getEditState())
-                        MainActivity.cancelAction();
+//                    if (MainActivity.getEditState())
+//                        MainActivity.cancelAction();
                 } else if (MainActivity.getRemoveState()){
 
                     final int removeExerciseNum = groupPosition + 1;
@@ -183,7 +238,7 @@ public class FragmentPage extends Fragment {
                     builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
                             .setNegativeButton("No", removeDialogClickListener).show();
 
-                    MainActivity.cancelAction();
+//                    MainActivity.cancelAction();
                 }
 
 
@@ -191,43 +246,45 @@ public class FragmentPage extends Fragment {
             }
         });
 
-        elv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
-                int childPosition = ExpandableListView.getPackedPositionChild(id);
-                int itemType = ExpandableListView.getPackedPositionType(id);
-
-                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-
-                    Log.e("FragmentPage","Long press detected on child item: " + childPosition + " of group: " + groupPosition);
-                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("fragmentNum", mNum);
-                    b.putInt("exerciseNum", groupPosition+1);
-                    b.putInt("setNumClicked",childPosition+1);
-                    intent.putExtras(b);
-
-                    startActivity(intent);
-
-                    // Return true as we are handling the event.
-                    return true;
-                } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
-                {
-                    Log.e("FragmentPage","Long press detected on group item: " + groupPosition);
-                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("fragmentNum", mNum);
-                    b.putInt("exerciseNum", groupPosition+1);
-                    intent.putExtras(b);
-
-                    startActivity(intent);
-                    return true;
-                }
-
-                return false;
-            }
-        });
+        // Long-click listener for editing exercise groups or specific sets
+//        elv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                int groupPosition = ExpandableListView.getPackedPositionGroup(id);
+//                int childPosition = ExpandableListView.getPackedPositionChild(id);
+//                int itemType = ExpandableListView.getPackedPositionType(id);
+//
+//                // if set clicked, passed set number to edit exercise activity
+//                if (itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+//
+//                    Log.e("FragmentPage","Long press detected on child item: " + childPosition + " of group: " + groupPosition);
+//                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+//                    Bundle b = new Bundle();
+//                    b.putInt("fragmentNum", mNum);
+//                    b.putInt("exerciseNum", groupPosition+1);
+//                    b.putInt("setNumClicked",childPosition+1);
+//                    intent.putExtras(b);
+//
+//                    startActivity(intent);
+//
+//                    // Return true as we are handling the event.
+//                    return true;
+//                } else if (itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
+//                {
+//                    Log.e("FragmentPage","Long press detected on group item: " + groupPosition);
+//                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+//                    Bundle b = new Bundle();
+//                    b.putInt("fragmentNum", mNum);
+//                    b.putInt("exerciseNum", groupPosition+1);
+//                    intent.putExtras(b);
+//
+//                    startActivity(intent);
+//                    return true;
+//                }
+//
+//                return false;
+//            }
+//        });
 
         // Move indicator to right
         DisplayMetrics metrics = new DisplayMetrics();
@@ -328,15 +385,16 @@ public class FragmentPage extends Fragment {
 
 //                holder.text = (TextView) view.findViewById(R.id.lblListItem);
 //                view.setTag(holder);
-            } else {
-                holder = (ViewHolder) view.getTag();
             }
+//            else {
+//                holder = (ViewHolder) view.getTag();
+//            }
 
             String childString = getChild(i, i1).toString();
-            String[] seperated = childString.split(":");
-            String setNum = seperated[0];
-            String repNum = seperated[1];
-            String weightNum = seperated[2];
+            String[] separated = childString.split(":");
+            String setNum = separated[0];
+            String repNum = separated[1];
+            String weightNum = separated[2];
 //            Log.e("FragmentPage","Children, repNum: " + repNum + ", weightNum: " + weightNum);
 
             TextView tv = (TextView) view.findViewById(R.id.childSetNum);

@@ -9,7 +9,7 @@
     android:paddingRight="0dp"
     android:paddingTop="0dp"
     android:paddingBottom="0dp"
-    android:id="@+id/touch"
+    android:id="@+id/coordinatorLayout"
     tools:context=".SplashActivity">
 
     <!--<include-->
@@ -55,6 +55,7 @@
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu
+        app:layout_behavior="com.justlift.mihai.lift.FloatingActionMenuBehavior"
         android:id="@+id/fabmenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -65,6 +66,8 @@
         fab:menu_colorPressed="@color/colorPrimaryDark"
         fab:menu_fab_size="normal"
         fab:menu_animationDelayPerItem="0"
+        fab:menu_fab_show_animation="@anim/fab_slide_in_from_right"
+        fab:menu_fab_hide_animation="@anim/fab_slide_out_to_right"
         fab:menu_icon="@drawable/ic_list"
         fab:menu_labels_style="@style/menu_labels_style"
         fab:menu_labels_ellipsize="end">
@@ -86,7 +89,7 @@
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
             android:src="@drawable/ic_edit"
-            fab:fab_label="Edit"
+            fab:fab_label="Edit set"
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -106,20 +109,27 @@
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
             android:src="@drawable/ic_delete"
-            fab:fab_label="Remove exercise"
+            fab:fab_label="Remove exercise/set"
             fab:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/cancel_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        fab:menu_colorNormal="@color/redDelete"
-        fab:menu_colorPressed="@color/redDelete"
-        fab:menu_fab_size="normal"
-        fab:menu_fab_label="Cancel"/>
+    <!--<com.github.clans.fab.FloatingActionMenu-->
+        <!--android:id="@+id/cancel_action"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="bottom|end"-->
+        <!--android:layout_margin="@dimen/fab_margin"-->
+        <!--android:visibility="gone"-->
+        <!--fab:menu_colorNormal="@color/redDelete"-->
+        <!--fab:menu_colorPressed="@color/redDelete"-->
+        <!--fab:menu_fab_size="normal"-->
+        <!--fab:menu_fab_label="Cancel"/>-->
+
+    <!--<LinearLayout-->
+        <!--android:gravity="bottom"-->
+        <!--android:orientation="vertical"-->
+        <!--android:id="@+id/alternate_view_group"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 </android.support.design.widget.CoordinatorLayout>

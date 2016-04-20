@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.justlift.mihai.lift.MainActivity">
     <item
+        android:id="@+id/edit_title"
+        android:orderInCategory="100"
+        android:title="@string/edit_title"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

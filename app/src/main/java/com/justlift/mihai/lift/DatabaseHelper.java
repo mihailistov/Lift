@@ -39,8 +39,9 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     // Table Names
     private static final String TABLE_WORKOUT_LOG = "workoutLog";
+    private static final String TABLE_WORKOUT_TITLE = "workoutTitle";
 
-    // Exercises Table Columns
+    // Workout Log Columns
     private static final String KEY_WORKOUT_LOG_ID = "_id";
     private static final String KEY_WORKOUT_LOG_DATE = "date";
     private static final String KEY_WORKOUT_LOG_EXERCISE_NUM = "exerciseNum";
@@ -48,6 +49,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String KEY_WORKOUT_LOG_SET_NUM = "setNum";
     private static final String KEY_WORKOUT_LOG_REPS = "reps";
     private static final String KEY_WORKOUT_LOG_WEIGHT = "weight";
+
+    // Workout Title Columns
+    private static final String KEY_WORKOUT_TITLE_DATE = "date";
+    private static final String KEY_WORKOUT_TITLE_TITLE = "title";
 
     public DatabaseHelper(Context context) {
 
@@ -172,6 +177,48 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return df.format(cal.getTime());
     }
 
+    public String getWorkoutTitle(int fragmentNum){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String workoutTitle;
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_TITLE + " WHERE "
+                + KEY_WORKOUT_TITLE_DATE + " = '" + getDate(fragmentNum) + "'";
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        // if exists in db get string
+        if (c != null && c.getCount() == 1) {
+            c.moveToFirst();
+            workoutTitle = c.getString(c.getColumnIndex(KEY_WORKOUT_TITLE_TITLE));
+        } else // if doesn't exist, set title to blank
+            workoutTitle = "";
+
+        return workoutTitle;
+    }
+
+    public void setWorkoutTitle(int fragmentNum, String workoutTitle){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_TITLE + " WHERE "
+                + KEY_WORKOUT_TITLE_DATE + " = '" + getDate(fragmentNum) + "'";
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_WORKOUT_TITLE_TITLE, workoutTitle);
+
+        // if title already exists in db for current date
+        if (c != null && c.getCount() == 1) {
+            c.moveToFirst();
+            db.update(TABLE_WORKOUT_TITLE, values, KEY_WORKOUT_TITLE_DATE + "= '" + getDate(fragmentNum) + "'", null);
+        } else {
+            // if doesn't exist in db
+            values.put(KEY_WORKOUT_TITLE_DATE, getDate(fragmentNum));
+            db.insert(TABLE_WORKOUT_TITLE, null, values);
+        }
+    }
+
     public void getExerciseStats(int fragmentNum, int exerciseNum, final List<Integer> setNum,
                                     final List<Integer> setReps, final List<Integer> setWeight){
 //        List<String> exerciseSets = new ArrayList<String>();
@@ -286,6 +333,47 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return lastNum;
     }
 
+    public void removeExercise(int fragmentNum, int removeExerciseNum){
+        SQLiteDatabase db = this.getReadableDatabase();
+        // Notes: expects exerciseNum to start from 1
+
+        int lastExerciseNum = getLastExerciseNum(fragmentNum);
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + removeExerciseNum;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        while(c.moveToNext()){
+            long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+            db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+        }
+
+        if (removeExerciseNum < lastExerciseNum){
+//            Log.e("DatabaseHelper","Not the last exercise! " + (lastExerciseNum-removeExerciseNum) + " exercises to re-number!");
+            for(int i=1;i<=(lastExerciseNum-removeExerciseNum);i++){
+                int exerciseNum = removeExerciseNum + i;
+                int newExerciseNum = exerciseNum - 1;
+
+                selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                        + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                        + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
+
+                c = db.rawQuery(selectQuery, null);
+
+                while(c.moveToNext()){
+//                    Log.e("DatabaseHelper","Re-numbering exercise num: " + exerciseNum + " to num: " + newExerciseNum);
+                    long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+
+                    ContentValues values = new ContentValues();
+                    values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, newExerciseNum);
+                    db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+                }
+            }
+        }
+    }
+
     public void removeSet(int fragmentNum, int exerciseNum, int setNum){
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -313,23 +401,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
 
         db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-
-//        if (setRemoveNum == lastSetNum){
-//            Log.e("DatabaseHelper", "THIS IS THE LAST SET TO DELETE");
-//            c = db.rawQuery(selectQuery, null);
-//
-//            if (c.getCount() == 0) {
-//                Log.e("DatabaseHelper", "LAST AND ONLY SET, CREATE A NEW ONE");
-//                ContentValues values = new ContentValues();
-//                values.put(KEY_WORKOUT_LOG_DATE, getDate(fragmentNum));
-//                values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, exerciseNum);
-//                values.put(KEY_WORKOUT_LOG_EXERCISE_NAME, exerciseName);
-//                values.put(KEY_WORKOUT_LOG_SET_NUM, 1);
-//                values.put(KEY_WORKOUT_LOG_REPS, 0);
-//                values.put(KEY_WORKOUT_LOG_WEIGHT, 0);
-//                db.insert(TABLE_WORKOUT_LOG, null, values);
-//            }
-//        }
 
         if (setRemoveNum < lastSetNum){
 //            db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
