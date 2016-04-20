@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lift</string>
     <string name="action_settings">Settings</string>
-    <string name="edit_title">Edit Title</string>
+    <string name="edit_title">Edit title</string>
     <string name="calendar">Calendar</string>
     <string name="organizer">Organizer</string>
     <string name="one">Today</string>

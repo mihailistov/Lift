@@ -221,8 +221,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public void getExerciseStats(int fragmentNum, int exerciseNum, final List<Integer> setNum,
                                     final List<Integer> setReps, final List<Integer> setWeight){
-//        List<String> exerciseSets = new ArrayList<String>();
-
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
@@ -249,8 +247,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
                 + KEY_WORKOUT_LOG_SET_NUM + " = " + setNum;
 
-        Log.e("DatabaseHelper", selectQuery);
-
         Cursor c = db.rawQuery(selectQuery, null);
 
         long id = 0;
@@ -267,7 +263,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_WORKOUT_LOG_WEIGHT, setWeight);
         db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + id, null);
         MainActivity.updatedSet();
-//        MainActivity.adapter.notifyDataSetChanged();
     }
 
     public void addSet(int fragmentNum, int exerciseNum, String exerciseName, int setReps, int setWeight){
@@ -328,8 +323,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
         c.close();
 
-        Log.e("DatabaseHelper", "Last set found was: " + lastNum);
-
         return lastNum;
     }
 
@@ -351,7 +344,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         if (removeExerciseNum < lastExerciseNum){
-//            Log.e("DatabaseHelper","Not the last exercise! " + (lastExerciseNum-removeExerciseNum) + " exercises to re-number!");
             for(int i=1;i<=(lastExerciseNum-removeExerciseNum);i++){
                 int exerciseNum = removeExerciseNum + i;
                 int newExerciseNum = exerciseNum - 1;
@@ -363,7 +355,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 c = db.rawQuery(selectQuery, null);
 
                 while(c.moveToNext()){
-//                    Log.e("DatabaseHelper","Re-numbering exercise num: " + exerciseNum + " to num: " + newExerciseNum);
                     long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
 
                     ContentValues values = new ContentValues();
@@ -382,7 +373,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         String exerciseName = getExerciseName(fragmentNum, exerciseNum);
         int lastSetNum = getLastSetNum(fragmentNum, exerciseNum);
         int setRemoveNum = setNum + 1;
-        Log.e("DatabaseHelper", "Given set to remove: " + setRemoveNum + " Last set num: " + lastSetNum);
 
         String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
                 + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
@@ -403,9 +393,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
 
         if (setRemoveNum < lastSetNum){
-//            db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-
-            Log.e("DatabaseHelper","RemoveSet Note: THIS IS NOT THE LAST SET");
             for (int i=1;i<=(lastSetNum-setRemoveNum);i++){
                 int nextSetNum = setRemoveNum + i;
                 int newSetNum = nextSetNum - 1;
@@ -420,7 +407,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 if (c != null && c.getCount() == 1)
                     c.moveToFirst();
                 else {
-                    Log.e("DatabaseHelper", "Found more than one set to delete");
                     return;
                 }
 
@@ -471,9 +457,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(KEY_WORKOUT_LOG_REPS, 0);
         values.put(KEY_WORKOUT_LOG_WEIGHT, 0);
         db.insert(TABLE_WORKOUT_LOG, null, values);
-
-        Log.e("DatabaseHelper","Adding entry: " + getDate(fragmentNum) + " " + lastExerciseNum+1
-            + " " + exerciseName);
     }
 
     public List<String> getExerciseHeaders(int fragmentNum){
@@ -487,7 +470,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-//        int i = 1;
         int numOfExercises = getLastExerciseNum(fragmentNum);
         int lastExerciseNum = 0;
 
@@ -506,7 +488,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
         c.close();
-        Log.e("DatabaseHelper", "List of all exercises saved for this workout:" + exerciseList);
 
         return exerciseList;
     }
@@ -518,7 +499,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getReadableDatabase();
 
         int lastNum = getLastExerciseNum(fragmentNum);
-        Log.e("DatabaseHelper", "Last exercise number is " + lastNum);
 
         String selectQuery, exerciseName;
         Cursor c;
@@ -538,10 +518,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
                 while (c.moveToNext()) {
                     if (c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) > 0) {
-//                        exerciseSets.add("Set "
-//                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ": "
-//                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + "x"
-//                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "lbs");
                         exerciseSets.add(""
                                 + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ":"
                                 + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + ":"
@@ -554,8 +530,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             }
             c.close();
         }
-
-        Log.e("DatabaseHelper", "Hashmap of all sets saved for this frag: " + fragmentNum + " :" + exercises);
         return exercises;
     }
 

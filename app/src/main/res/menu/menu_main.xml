@@ -13,7 +13,7 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
     <item
-        android:id="@+id/calendar"
+        android:id="@+id/calendar_menu"
         android:icon="@drawable/ic_calendar"
         android:orderInCategory="100"
         android:title="@string/calendar"

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -309,7 +308,6 @@ public class EditExerciseActivity extends AppCompatActivity {
 
                     if (dividerTag >= 100) {
                         divider.setTag(dividerTag);
-                        Log.e("EditExerciseActivity", "Setting divider tag to: " + dividerTag);
                         table.addView(divider);
                     }
 
@@ -318,7 +316,6 @@ public class EditExerciseActivity extends AppCompatActivity {
                     ((TextView)row.findViewById(R.id.setReps)).setText("" + currRepNum);
                     ((TextView)row.findViewById(R.id.setWeight)).setText("" + currWeight);
                     row.setTag(Integer.valueOf(lastSetNum));
-                    Log.e("EditExerciseTag","Setting row tag to: " + lastSetNum);
                     table.addView(row);
 
                     row.setOnClickListener(tableRowOnClick);
@@ -381,14 +378,12 @@ public class EditExerciseActivity extends AppCompatActivity {
         // highlight the selected row
         TableRow currRow = (TableRow) table.findViewWithTag(currSetNum);
         currRow.setBackgroundColor(Color.rgb(237, 237, 237));
-        Log.e("EditExerciseHelper","Set background to gray on row tag: " + currRow.getTag());
 
         // if selected row is not the last row, then highlight the divider row as well
         if (currSetNum < setNum.size()-1)
         {
             int dividerTag = currSetNum + 100;
             TableRow currDivider = (TableRow) table.findViewWithTag(dividerTag);
-            Log.e("EditExerciseActivity","Attempting to set divider on set: " + currSetNum + " divider tag is: " + dividerTag);
             currDivider.setBackgroundColor(Color.rgb(237, 237, 237));
         }
     }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,7 +60,6 @@ public class FragmentPage extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        Log.i("", "Click");
         ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
 
         int type = ExpandableListView.getPackedPositionType(info.packedPosition);
@@ -113,7 +111,8 @@ public class FragmentPage extends Fragment {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     myDbHelper.removeExercise(mNum, removeExerciseNum);
-                                    MainActivity.adapter.notifyDataSetChanged();
+//                                    MainActivity.adapter.notifyDataSetChanged();
+                                    MainActivity.refreshFragment();
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -149,7 +148,8 @@ public class FragmentPage extends Fragment {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
-                                    MainActivity.adapter.notifyDataSetChanged();
+//                                    MainActivity.adapter.notifyDataSetChanged();
+                                    MainActivity.refreshFragment();
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -243,7 +243,8 @@ public class FragmentPage extends Fragment {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
                                     myDbHelper.removeExercise(mNum, removeExerciseNum);
-                                    MainActivity.adapter.notifyDataSetChanged();
+//                                    MainActivity.adapter.notifyDataSetChanged();
+                                    MainActivity.refreshFragment();
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -297,7 +298,8 @@ public class FragmentPage extends Fragment {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
                                     myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
-                                    MainActivity.adapter.notifyDataSetChanged();
+//                                    MainActivity.adapter.notifyDataSetChanged();
+                                    MainActivity.refreshFragment();
                                     break;
 
                                 case DialogInterface.BUTTON_NEGATIVE:

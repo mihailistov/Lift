@@ -5,10 +5,19 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +29,6 @@ import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -32,7 +40,10 @@ import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
-    public ViewPager viewPager;
+    DatabaseHelper myDbHelper;
+    CustomTabLayout tabLayout;
+    private MenuItem calendarMenu;
+    public static ViewPager viewPager;
     public static boolean setUpdated = false;
     private static MainActivity instance;
     private static boolean editEnabled = false;
@@ -52,8 +63,16 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         if (setUpdated) {
-            adapter.notifyDataSetChanged();
+            refreshFragment();
             setUpdated=false;
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                    .coordinatorLayout);
+
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "Updated exercise", Snackbar.LENGTH_LONG);
+            View snackBarView = snackbar.getView();
+            snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
+            snackbar.show();
         }
     }
 
@@ -65,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        final DatabaseHelper myDbHelper;
         myDbHelper = new DatabaseHelper(this);
 
         try {
@@ -244,8 +262,17 @@ public class MainActivity extends AppCompatActivity {
                         int fragNum = viewPager.getCurrentItem();
 
                         myDbHelper.addExercise(fragNum, exerciseName);
-                        adapter.notifyDataSetChanged();
-                        Toast.makeText(MainActivity.this, "Updated", Toast.LENGTH_SHORT).show();
+//                        adapter.notifyDataSetChanged();
+                        refreshFragment();
+
+                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                                .coordinatorLayout);
+
+                        Snackbar snackbar = Snackbar
+                                .make(coordinatorLayout, "Added new exercise", Snackbar.LENGTH_LONG);
+                        View snackBarView = snackbar.getView();
+                        snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
+                        snackbar.show();
                     }
                 });
 
@@ -279,43 +306,14 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
 
-        final CustomTabLayout tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
+        tabLayout = (CustomTabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setSmoothScrollingEnabled(true);
 
         // determine the day of the week it is today
-        cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DAY_OF_WEEK);
-        int tabNumber = 0;
-        switch (day) {
-            case Calendar.SUNDAY:
-                tabNumber = 7;
-                break;
-            case Calendar.MONDAY:
-                tabNumber = 8;
-                break;
-            case Calendar.TUESDAY:
-                tabNumber = 9;
-                break;
-            case Calendar.WEDNESDAY:
-                tabNumber = 10;
-                break;
-            case Calendar.THURSDAY:
-                tabNumber = 11;
-                break;
-            case Calendar.FRIDAY:
-                tabNumber = 12;
-                break;
-            case Calendar.SATURDAY:
-                tabNumber = 13;
-                break;
-        }
+        setTabToCurrentDate();
 
-        // set tab to today's day of the week
-        tabLayout.getTabAt(tabNumber).select();
-
-        // set title bar title based on today's day of the week
-        setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(tabNumber));
+//        MenuItem dateMenuItem = menu.findItem(R.id.calendar);
 
         // update title bar based on tab/view changes
         viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -365,7 +363,20 @@ public class MainActivity extends AppCompatActivity {
         return instance;
     }
 
-    public static void updatedSet(){ setUpdated = true; }
+    public static void updatedSet(){
+        setUpdated = true;
+    }
+
+    public static void refreshFragment(){
+        FragmentActivity activity = (FragmentActivity)viewPager.getContext();
+        FragmentManager manager = activity.getSupportFragmentManager();
+
+        Fragment page = adapter.getItem(viewPager.getCurrentItem());
+        manager.beginTransaction()
+                .detach(page)
+                .attach(page)
+                .commit();
+    }
 
     public static boolean getEditState(){
         return editEnabled;
@@ -413,10 +424,68 @@ public class MainActivity extends AppCompatActivity {
         return df.format(cal.getTime());
     }
 
+    public void setTabToCurrentDate(){
+        Calendar cal = Calendar.getInstance();
+        int day = cal.get(Calendar.DAY_OF_WEEK);
+        int tabNumber = 0;
+        switch (day) {
+            case Calendar.SUNDAY:
+                tabNumber = 7;
+                break;
+            case Calendar.MONDAY:
+                tabNumber = 8;
+                break;
+            case Calendar.TUESDAY:
+                tabNumber = 9;
+                break;
+            case Calendar.WEDNESDAY:
+                tabNumber = 10;
+                break;
+            case Calendar.THURSDAY:
+                tabNumber = 11;
+                break;
+            case Calendar.FRIDAY:
+                tabNumber = 12;
+                break;
+            case Calendar.SATURDAY:
+                tabNumber = 13;
+                break;
+        }
+
+        // set tab to today's day of the week
+        tabLayout.getTabAt(tabNumber).select();
+
+        // set title bar title based on today's day of the week
+        setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(tabNumber));
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        calendarMenu = menu.findItem(R.id.calendar_menu);
+
+        Bitmap calendarBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_calendar);
+        Bitmap mutableBitmap = calendarBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(mutableBitmap);
+        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        paint.setColor(Color.WHITE);
+        paint.setTextSize(45);
+        paint.setFakeBoldText(true);
+        paint.setTextAlign(Paint.Align.CENTER);
+
+        int xPos = (canvas.getWidth() / 2);
+        int yPos = (int) ((canvas.getHeight() / 2) - ((paint.descent() + paint.ascent()) / 2)) ;
+        yPos += 7.5;
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("d");
+        canvas.drawText(df.format(c.getTime()), xPos, yPos, paint);
+
+        Drawable calIcon = new BitmapDrawable(getResources(), mutableBitmap);
+        calendarMenu.setIcon(calIcon);
         return true;
     }
 
@@ -434,8 +503,9 @@ public class MainActivity extends AppCompatActivity {
             toolbar.performClick();
 
             return true;
+        } else if (id == R.id.calendar_menu) {
+            setTabToCurrentDate();
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

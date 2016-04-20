@@ -23,7 +23,6 @@
         <activity android:name=".MainActivity" />
         <activity
             android:name=".EditExerciseActivity"
-            android:label="Edit sets"
             android:theme="@style/AppDialogTheme">
         </activity>
     </application>
