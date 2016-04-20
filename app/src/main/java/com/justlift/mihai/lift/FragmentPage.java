@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -79,6 +80,97 @@ public class FragmentPage extends Fragment {
             menu.add(Menu.NONE, v.getId(), 0, "Edit set");
             menu.add(Menu.NONE, v.getId(), 0, "Remove set");
         }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        if (getUserVisibleHint()) {
+            ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item
+                    .getMenuInfo();
+            int type = ExpandableListView.getPackedPositionType(info.packedPosition);
+            int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
+            int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
+
+            Log.e("FragmentPage", "type: " + type + " groupPosition: " + groupPosition + " childPosition: " + childPosition);
+
+            final DatabaseHelper myDbHelper;
+            myDbHelper = new DatabaseHelper(MainActivity.getInstance());
+
+            if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
+                Log.e("FragmentPage", "Clicked group: " + groupPosition);
+                // do something with parent
+                if (item.getTitle() == "Edit exercise sets") {
+                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("fragmentNum", mNum);
+                    b.putInt("exerciseNum", groupPosition + 1);
+                    intent.putExtras(b);
+
+                    startActivity(intent);
+                } else if (item.getTitle() == "Remove exercise") {
+                    final int removeExerciseNum = groupPosition + 1;
+
+                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    myDbHelper.removeExercise(mNum, removeExerciseNum);
+                                    MainActivity.adapter.notifyDataSetChanged();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
+                    builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
+                            .setNegativeButton("No", removeDialogClickListener).show();
+                }
+
+            } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
+                Log.e("FragmentPage", "Clicked child: " + childPosition + " group: " + groupPosition);
+                // do someting with child
+                if (item.getTitle() == "Edit set") {
+                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
+                    Bundle b = new Bundle();
+                    b.putInt("fragmentNum", mNum);
+                    b.putInt("exerciseNum", groupPosition + 1);
+                    b.putInt("setNumClicked", childPosition + 1);
+                    intent.putExtras(b);
+
+                    startActivity(intent);
+                } else if (item.getTitle() == "Remove set") {
+                    final int removeExerciseNum = groupPosition + 1;
+                    final int removeSetNum = childPosition;
+
+                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
+                                    MainActivity.adapter.notifyDataSetChanged();
+                                    break;
+
+                                case DialogInterface.BUTTON_NEGATIVE:
+                                    //No button clicked
+                                    break;
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
+                    builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
+                            .setNegativeButton("No", removeDialogClickListener).show();
+                }
+            }
+            return super.onContextItemSelected(item);
+        }
+        return false;
     }
 
     @Override

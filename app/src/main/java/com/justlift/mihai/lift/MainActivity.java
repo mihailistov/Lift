@@ -127,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        editEnabled = false;
+                        removeEnabled = false;
+                        menuMultipleActions.showMenu(true);
+
                         String workoutTitle = input.getText().toString();
 
                         myDbHelper.setWorkoutTitle(fragNum, workoutTitle);
