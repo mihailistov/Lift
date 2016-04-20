@@ -13,7 +13,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -144,26 +143,6 @@ public class MainActivity extends AppCompatActivity {
                         View snackBarView = snackbar.getView();
                         snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
                         snackbar.show();
-
-//                        Configuration croutonConfig = new Configuration.Builder()
-//                                .setInAnimation(android.R.anim.slide_in_left)
-//                                .setOutAnimation(android.R.anim.slide_out_right)
-//                                .build();
-//
-////                        Toast.makeText(MainActivity.this, "Updated workout title!", Toast.LENGTH_SHORT).show();
-//                        Style updatedStyle = new Style.Builder()
-//                                .setConfiguration(croutonConfig)
-//                                .setBackgroundColor(R.color.greenUpdate)
-//                                .setTextColor(R.color.white)
-//                                .build();
-//
-//                        Crouton updatedTitleMsg = Crouton.makeText(MainActivity.this, "Updated title", updatedStyle, R.id.alternate_view_group);
-//                        updatedTitleMsg.show();
-
-//                        AppMsg appMsg = AppMsg.makeText(MainActivity.this, "Updated title", AppMsg.STYLE_INFO);
-//                        appMsg.setDuration(AppMsg.LENGTH_SHORT);
-//                        appMsg.setLayoutGravity(Gravity.BOTTOM);
-//                        appMsg.show();
                     }
                 });
 
@@ -187,34 +166,10 @@ public class MainActivity extends AppCompatActivity {
         removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
         copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
 
-//        cancelAction.setOnMenuButtonClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v){
-//                cancelAction();
-//            }
-//        });
-
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addButton.setLabelVisibility(View.INVISIBLE);
-//                editButton.setLabelVisibility(View.INVISIBLE);
-//                removeButton.setLabelVisibility(View.INVISIBLE);
-//                copyButton.setLabelVisibility(View.INVISIBLE);
-//
-//                menuMultipleActions.close(true);
-//                menuMultipleActions.setAnimated(false);
-//                menuMultipleActions.setIconAnimated(false);
-//                menuMultipleActions.setVisibility(View.GONE);
-//
-//                Toast.makeText(MainActivity.this, "Select an exercise/set to remove", Toast.LENGTH_LONG).show();
-//                removeEnabled = true;
-//                cancelAction.setVisibility(View.VISIBLE);
-//                cancelAction.setMenuButtonLabelText("Cancel remove");
-//                cancelAction.open(true);
-
                 menuMultipleActions.close(true);
-//                menuMultipleActions.setVisibility(View.GONE);
                 menuMultipleActions.hideMenu(true);
                 removeEnabled = true;
 
@@ -227,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view){
                                 removeEnabled = false;
-//                                menuMultipleActions.setVisibility(View.VISIBLE);
                                 menuMultipleActions.showMenu(true);
                            }
                         });
@@ -244,24 +198,7 @@ public class MainActivity extends AppCompatActivity {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addButton.setLabelVisibility(View.INVISIBLE);
-//                editButton.setLabelVisibility(View.INVISIBLE);
-//                removeButton.setLabelVisibility(View.INVISIBLE);
-//                copyButton.setLabelVisibility(View.INVISIBLE);
-//
-//                menuMultipleActions.close(true);
-//                menuMultipleActions.setAnimated(false);
-//                menuMultipleActions.setIconAnimated(false);
-//                menuMultipleActions.setVisibility(View.GONE);
-//
-//                Toast.makeText(MainActivity.this, "Select an exercise/set to edit", Toast.LENGTH_LONG).show();
-//                editEnabled = true;
-//                cancelAction.setVisibility(View.VISIBLE);
-//                cancelAction.setMenuButtonLabelText("Cancel edit");
-//                cancelAction.open(true);
-
                 menuMultipleActions.close(true);
-//                menuMultipleActions.setVisibility(View.GONE);
                 menuMultipleActions.hideMenu(true);
                 editEnabled = true;
 
@@ -274,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view){
                                 editEnabled = false;
-//                                menuMultipleActions.setVisibility(View.VISIBLE);
                                 menuMultipleActions.showMenu(true);
                             }
                         });
@@ -306,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
                         exerciseName = input.getText().toString();
 
                         int fragNum = viewPager.getCurrentItem();
-                        Log.e("MainActivity", "Current fragment number: " + fragNum);
 
                         myDbHelper.addExercise(fragNum, exerciseName);
                         adapter.notifyDataSetChanged();
@@ -379,22 +314,6 @@ public class MainActivity extends AppCompatActivity {
         // set tab to today's day of the week
         tabLayout.getTabAt(tabNumber).select();
 
-        // title bar titles for each tab
-        final String[] titleStrings = {"Lift.Rest",
-                "Lift.Chest",
-                "Lift.Back",
-                "Lift.Chest/Cardio",
-                "Lift.Legs",
-                "Lift.Shoulders+Chest",
-                "Lift.Rest",
-                "Lift.Rest",
-                "Lift.Chest",
-                "Lift.Back",
-                "Lift.Chest/Cardio",
-                "Lift.Legs",
-                "Lift.Shoulders+Chest",
-                "Lift.Rest"};
-
         // set title bar title based on today's day of the week
         setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(tabNumber));
 
@@ -432,8 +351,6 @@ public class MainActivity extends AppCompatActivity {
             public void onAnimationStart(Animator animation) {
                 menuMultipleActions.getMenuIconView().setImageResource(menuMultipleActions.isOpened()
                         ? R.drawable.ic_close : R.drawable.ic_list);
-//                cancelAction.getMenuIconView().setImageResource(removeEnabled
-//                        ? R.drawable.ic_delete : R.drawable.ic_edit);
             }
         });
 
@@ -442,7 +359,6 @@ public class MainActivity extends AppCompatActivity {
         set.setInterpolator(new OvershootInterpolator(2));
 
         menuMultipleActions.setIconToggleAnimatorSet(set);
-//        cancelAction.setIconToggleAnimatorSet(set);
     }
 
     public static MainActivity getInstance() {

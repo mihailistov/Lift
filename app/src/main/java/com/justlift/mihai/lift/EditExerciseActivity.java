@@ -105,11 +105,6 @@ public class EditExerciseActivity extends AppCompatActivity {
             setNumClicked = 1;
         }
 
-        Log.e("EditExerciseActivity", "Number of sets to show: " + setNum.size());
-        Log.e("EditExerciseActivity", "Set numbers: \n" + setNum
-                + "\nSet reps: \n" + setReps
-                + "\nSet weights: \n" + setWeight);
-
         displayWeight(0);
         displayReps(0);
 
@@ -133,8 +128,6 @@ public class EditExerciseActivity extends AppCompatActivity {
                 // display numbers in EditText for the set
                 displayWeight(currWeight);
                 displayReps(currRepNum);
-
-                Log.e("EditExerciseActivity", "Selected set number is: " + currSetNum);
 
                 highlightCurrRow();
             }
@@ -173,8 +166,6 @@ public class EditExerciseActivity extends AppCompatActivity {
             displayReps(currRepNum);
 
             setButtonUpdateMode();
-
-            Log.e("EditExerciseActivity", "Long press on child detected, editing Set: " + currSetNum);
         }
 
         // "Clear" or "Delete" button on click listener
@@ -201,7 +192,6 @@ public class EditExerciseActivity extends AppCompatActivity {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
                                     // if a row is selected then delete that row
-                                    Log.e("EditExerciseActivity", "Deleting row tag: " + currSetNum);
 
                                     // call database function to remove information from db
                                     myDbHelper.removeSet(fragmentNum, exerciseNum, currSetNum);
@@ -209,8 +199,6 @@ public class EditExerciseActivity extends AppCompatActivity {
                                     // remove deleted row from table view
                                     TableRow deletedRow = (TableRow) table.findViewWithTag(currSetNum);
                                     table.removeView(deletedRow);
-
-                                    Log.e("EditExerciseActivity", "Deleting... Last set num: " + lastSetNum);
 
                                     // if the removed set is not the last set then remove the divider associated with it
                                     // as well fix the row/divider tags for the sets after the deleted set
@@ -248,8 +236,6 @@ public class EditExerciseActivity extends AppCompatActivity {
                                     setReps.clear();
                                     setWeight.clear();
                                     myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
-
-                                    Log.e("EditExerciseActivity", "Number of sets after delete: " + setNum.size());
 
                                     if(setNum.size() == 0)
                                         noSets = true;
