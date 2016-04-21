@@ -10,6 +10,10 @@
     <string name="four">Tuesday</string>
     <string name="five">Wednesday</string>
 
+    <string name="home">Home</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
     <string-array name="list">
         <item>Barbell Front Squat</item>
         <item>KB One-Legged Deadlift</item>

@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,7 +19,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,8 +44,8 @@ import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity {
-    DatabaseHelper myDbHelper;
-    CustomTabLayout tabLayout;
+    private DatabaseHelper myDbHelper;
+    private CustomTabLayout tabLayout;
     private MenuItem calendarMenu;
     public static ViewPager viewPager;
     public static boolean setUpdated = false;
@@ -56,7 +60,10 @@ public class MainActivity extends AppCompatActivity {
     static FloatingActionButton editButton;
     static FloatingActionButton copyButton;
     static FloatingActionButton removeButton;
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private DrawerLayout mDrawer;
+    private ActionBarDrawerToggle drawerToggle;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onResume(){
@@ -64,9 +71,13 @@ public class MainActivity extends AppCompatActivity {
 
         if (setUpdated) {
             refreshFragment();
+
+            if (menuMultipleActions.isMenuHidden())
+                menuMultipleActions.showMenu(true);
+
             setUpdated=false;
-            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                    .coordinatorLayout);
+            removeEnabled = false;
+            editEnabled = false;
 
             Snackbar snackbar = Snackbar
                     .make(coordinatorLayout, "Updated exercise", Snackbar.LENGTH_LONG);
@@ -77,6 +88,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
@@ -84,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        myDbHelper = new DatabaseHelper(this);
+        myDbHelper = DatabaseHelper.getInstance(this);
 
         try {
 
@@ -128,6 +151,12 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerToggle = setupDrawerToggle();
+        mDrawer.addDrawerListener(drawerToggle);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,9 +181,6 @@ public class MainActivity extends AppCompatActivity {
 
                         myDbHelper.setWorkoutTitle(fragNum, workoutTitle);
                         setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(fragNum));
-
-                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                                .coordinatorLayout);
 
                         Snackbar snackbar = Snackbar
                                 .make(coordinatorLayout, "Updated title", Snackbar.LENGTH_LONG);
@@ -191,9 +217,6 @@ public class MainActivity extends AppCompatActivity {
                 menuMultipleActions.hideMenu(true);
                 removeEnabled = true;
 
-                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                        .coordinatorLayout);
-
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, "Select exercise/set to remove", Snackbar.LENGTH_INDEFINITE)
                         .setAction("CANCEL", new View.OnClickListener(){
@@ -219,9 +242,6 @@ public class MainActivity extends AppCompatActivity {
                 menuMultipleActions.close(true);
                 menuMultipleActions.hideMenu(true);
                 editEnabled = true;
-
-                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                        .coordinatorLayout);
 
                 Snackbar snackbar = Snackbar
                         .make(coordinatorLayout, "Select exercise/set to edit", Snackbar.LENGTH_INDEFINITE)
@@ -264,9 +284,6 @@ public class MainActivity extends AppCompatActivity {
                         myDbHelper.addExercise(fragNum, exerciseName);
 //                        adapter.notifyDataSetChanged();
                         refreshFragment();
-
-                        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id
-                                .coordinatorLayout);
 
                         Snackbar snackbar = Snackbar
                                 .make(coordinatorLayout, "Added new exercise", Snackbar.LENGTH_LONG);
@@ -326,6 +343,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private ActionBarDrawerToggle setupDrawerToggle() {
+        return new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.drawer_open,  R.string.drawer_close);
+    }
+
     private void createCustomAnimation() {
         final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) findViewById(R.id.fabmenu);
 //        final FloatingActionMenu cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
@@ -372,10 +393,13 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = activity.getSupportFragmentManager();
 
         Fragment page = adapter.getItem(viewPager.getCurrentItem());
-        manager.beginTransaction()
-                .detach(page)
-                .attach(page)
-                .commit();
+
+        if (page != null && page.isAdded()) {
+            manager.beginTransaction()
+                    .detach(page)
+                    .attach(page)
+                    .commit();
+        }
     }
 
     public static boolean getEditState(){
@@ -496,15 +520,22 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == android.R.id.home){
+            mDrawer.openDrawer(GravityCompat.START);
+            return true;
+        } else if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.edit_title) {
             toolbar.performClick();
-
             return true;
         } else if (id == R.id.calendar_menu) {
             setTabToCurrentDate();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

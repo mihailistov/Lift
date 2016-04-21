@@ -33,6 +33,7 @@ public class FragmentPage extends Fragment {
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     int mNum;
+    private DatabaseHelper myDbHelper;
 
     static FragmentPage newInstance(int num) {
         FragmentPage f = new FragmentPage();
@@ -89,8 +90,7 @@ public class FragmentPage extends Fragment {
             int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
             int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
 
-            final DatabaseHelper myDbHelper;
-            myDbHelper = new DatabaseHelper(MainActivity.getInstance());
+            myDbHelper = DatabaseHelper.getInstance(MainActivity.getInstance());
 
             if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
                 // do something with parent
@@ -176,8 +176,7 @@ public class FragmentPage extends Fragment {
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
         registerForContextMenu(elv);
 
-        final DatabaseHelper myDbHelper;
-        myDbHelper = new DatabaseHelper(MainActivity.getInstance());
+        myDbHelper = DatabaseHelper.getInstance(MainActivity.getInstance());
 
         try {
 

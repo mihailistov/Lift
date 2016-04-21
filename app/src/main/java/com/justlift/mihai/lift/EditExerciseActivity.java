@@ -24,6 +24,7 @@ import java.util.List;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
+    private DatabaseHelper myDbHelper;
     boolean noSets = false;
     int fragmentNum = 0;
     int exerciseNum = 0;
@@ -42,8 +43,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
-        final DatabaseHelper myDbHelper;
-        myDbHelper = new DatabaseHelper(this);
+        myDbHelper = DatabaseHelper.getInstance(this);
 
         if (noSets){
             myDbHelper.addSet(fragmentNum, exerciseNum, exerciseName, 0, 0);
@@ -61,8 +61,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         exerciseNum = intent.getIntExtra("exerciseNum", 0);
         setNumClicked = intent.getIntExtra("setNumClicked", 0);
 
-        final DatabaseHelper myDbHelper;
-        myDbHelper = new DatabaseHelper(this);
+        myDbHelper = DatabaseHelper.getInstance(this);
         try {
 
             myDbHelper.createDatabase();

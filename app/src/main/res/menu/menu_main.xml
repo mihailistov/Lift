@@ -18,10 +18,10 @@
         android:orderInCategory="100"
         android:title="@string/calendar"
         app:showAsAction="always" />
-    <item
+    <!--<item
         android:id="@+id/organizer"
         android:icon="@drawable/ic_organizer"
         android:orderInCategory="100"
         android:title="@string/organizer"
-        app:showAsAction="always" />
+        app:showAsAction="always" />-->
 </menu>

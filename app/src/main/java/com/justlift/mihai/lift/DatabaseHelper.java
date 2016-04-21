@@ -25,6 +25,8 @@ import java.util.List;
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
 
+    private static DatabaseHelper mInstance = null;
+
     private static String DB_PATH = "/data/data/com.justlift.mihai.lift/databases/";
     private static String DB_NAME = "liftData";
     private SQLiteDatabase myDatabase;
@@ -54,7 +56,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String KEY_WORKOUT_TITLE_DATE = "date";
     private static final String KEY_WORKOUT_TITLE_TITLE = "title";
 
-    public DatabaseHelper(Context context) {
+    public static synchronized DatabaseHelper getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DatabaseHelper(context.getApplicationContext());
+        }
+        return mInstance;
+    }
+
+    private DatabaseHelper(Context context) {
 
         super(context, DB_NAME, null, 1);
         this.myContext = context;
@@ -187,13 +196,18 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        // if exists in db get string
-        if (c != null && c.getCount() == 1) {
-            c.moveToFirst();
-            workoutTitle = c.getString(c.getColumnIndex(KEY_WORKOUT_TITLE_TITLE));
-        } else // if doesn't exist, set title to blank
-            workoutTitle = "";
+        try {
+            // if exists in db get string
+            if (c != null && c.getCount() == 1) {
+                c.moveToFirst();
+                workoutTitle = c.getString(c.getColumnIndex(KEY_WORKOUT_TITLE_TITLE));
+            } else // if doesn't exist, set title to blank
+                workoutTitle = "";
 
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
         return workoutTitle;
     }
 
@@ -208,14 +222,19 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(KEY_WORKOUT_TITLE_TITLE, workoutTitle);
 
-        // if title already exists in db for current date
-        if (c != null && c.getCount() == 1) {
-            c.moveToFirst();
-            db.update(TABLE_WORKOUT_TITLE, values, KEY_WORKOUT_TITLE_DATE + "= '" + getDate(fragmentNum) + "'", null);
-        } else {
-            // if doesn't exist in db
-            values.put(KEY_WORKOUT_TITLE_DATE, getDate(fragmentNum));
-            db.insert(TABLE_WORKOUT_TITLE, null, values);
+        try {
+            // if title already exists in db for current date
+            if (c != null && c.getCount() == 1) {
+                c.moveToFirst();
+                db.update(TABLE_WORKOUT_TITLE, values, KEY_WORKOUT_TITLE_DATE + "= '" + getDate(fragmentNum) + "'", null);
+            } else {
+                // if doesn't exist in db
+                values.put(KEY_WORKOUT_TITLE_DATE, getDate(fragmentNum));
+                db.insert(TABLE_WORKOUT_TITLE, null, values);
+            }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
     }
 
@@ -229,12 +248,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        while(c.moveToNext()){
-            setNum.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)));
-            setReps.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)));
-            setWeight.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)));
+        try {
+            while(c.moveToNext()){
+                setNum.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)));
+                setReps.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)));
+                setWeight.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)));
+            }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
-        c.close();
     }
 
     public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, int setWeight){
@@ -250,13 +273,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         Cursor c = db.rawQuery(selectQuery, null);
 
         long id = 0;
-        if (c != null && c.getCount() == 1) {
-            c.moveToFirst();
-            id = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
-        } else
-            Log.e("DatabaseHelper","Matched more than one entry for set number");
 
-        c.close();
+        try {
+            if (c != null && c.getCount() == 1) {
+                c.moveToFirst();
+                id = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+            } else
+                Log.e("DatabaseHelper", "Matched more than one entry for set number");
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
 
         ContentValues values = new ContentValues();
         values.put(KEY_WORKOUT_LOG_REPS, setReps);
@@ -285,18 +312,23 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     public String getExerciseName(int fragmentNum, int exerciseNum){
         SQLiteDatabase db = this.getReadableDatabase();
 
+        String exerciseName;
+
         String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
                 + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
                 + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        if (c != null)
-            c.moveToFirst();
+        try {
+            if (c != null)
+                c.moveToFirst();
 
-        String exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
-
-        c.close();
+            exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
 
         return exerciseName;
     }
@@ -315,13 +347,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         lastNum = 0;
         curNum = 0;
 
-        while(c.moveToNext()){
-            curNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM));
+        try {
+            while (c.moveToNext()) {
+                curNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM));
 
-            if (curNum > lastNum)
-                lastNum = curNum;
+                if (curNum > lastNum)
+                    lastNum = curNum;
+            }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
-        c.close();
 
         return lastNum;
     }
@@ -338,30 +374,35 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        while(c.moveToNext()){
-            long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
-            db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-        }
+        try {
+            while (c.moveToNext()) {
+                long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+                db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+            }
 
-        if (removeExerciseNum < lastExerciseNum){
-            for(int i=1;i<=(lastExerciseNum-removeExerciseNum);i++){
-                int exerciseNum = removeExerciseNum + i;
-                int newExerciseNum = exerciseNum - 1;
+            if (removeExerciseNum < lastExerciseNum) {
+                for (int i = 1; i <= (lastExerciseNum - removeExerciseNum); i++) {
+                    int exerciseNum = removeExerciseNum + i;
+                    int newExerciseNum = exerciseNum - 1;
 
-                selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
-                        + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
-                        + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
+                    selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                            + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                            + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
 
-                c = db.rawQuery(selectQuery, null);
+                    c = db.rawQuery(selectQuery, null);
 
-                while(c.moveToNext()){
-                    long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+                    while (c.moveToNext()) {
+                        long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
 
-                    ContentValues values = new ContentValues();
-                    values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, newExerciseNum);
-                    db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+                        ContentValues values = new ContentValues();
+                        values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, newExerciseNum);
+                        db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+                    }
                 }
             }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
     }
 
@@ -381,41 +422,46 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor c = db.rawQuery(selectQuery, null);
 
-        if (c != null && c.getCount() == 1)
-            c.moveToFirst();
-        else {
-            Log.e("DatabaseHelper", "Found more than one set to delete");
-            return;
-        }
-
-        long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
-
-        db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
-
-        if (setRemoveNum < lastSetNum){
-            for (int i=1;i<=(lastSetNum-setRemoveNum);i++){
-                int nextSetNum = setRemoveNum + i;
-                int newSetNum = nextSetNum - 1;
-
-                selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
-                        + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
-                        + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
-                        + KEY_WORKOUT_LOG_SET_NUM + " = " + nextSetNum;
-
-                c = db.rawQuery(selectQuery, null);
-
-                if (c != null && c.getCount() == 1)
-                    c.moveToFirst();
-                else {
-                    return;
-                }
-
-                rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
-
-                ContentValues values = new ContentValues();
-                values.put(KEY_WORKOUT_LOG_SET_NUM, newSetNum);
-                db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+        try {
+            if (c != null && c.getCount() == 1)
+                c.moveToFirst();
+            else {
+                Log.e("DatabaseHelper", "Found more than one set to delete");
+                return;
             }
+
+            long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+
+            db.delete(TABLE_WORKOUT_LOG, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+
+            if (setRemoveNum < lastSetNum) {
+                for (int i = 1; i <= (lastSetNum - setRemoveNum); i++) {
+                    int nextSetNum = setRemoveNum + i;
+                    int newSetNum = nextSetNum - 1;
+
+                    selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                            + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                            + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum + " AND "
+                            + KEY_WORKOUT_LOG_SET_NUM + " = " + nextSetNum;
+
+                    c = db.rawQuery(selectQuery, null);
+
+                    if (c != null && c.getCount() == 1)
+                        c.moveToFirst();
+                    else {
+                        return;
+                    }
+
+                    rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+
+                    ContentValues values = new ContentValues();
+                    values.put(KEY_WORKOUT_LOG_SET_NUM, newSetNum);
+                    db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+                }
+            }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
         MainActivity.updatedSet();
     }
@@ -433,13 +479,17 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         lastNum = 0;
         curNum = 0;
 
-        while(c.moveToNext()){
-            curNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NUM));
+        try {
+            while (c.moveToNext()) {
+                curNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NUM));
 
-            if (curNum > lastNum)
-                lastNum = curNum;
+                if (curNum > lastNum)
+                    lastNum = curNum;
+            }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
-        c.close();
 
         return lastNum;
     }
@@ -473,21 +523,24 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         int numOfExercises = getLastExerciseNum(fragmentNum);
         int lastExerciseNum = 0;
 
-        while(c.moveToNext()){
-            int currExerciseNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NUM));
-            String exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
+        try {
+            while (c.moveToNext()) {
+                int currExerciseNum = c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NUM));
+                String exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
 
-            if (currExerciseNum != lastExerciseNum)
-                exercises.put(currExerciseNum, exerciseName);
+                if (currExerciseNum != lastExerciseNum)
+                    exercises.put(currExerciseNum, exerciseName);
 
-            lastExerciseNum = currExerciseNum;
+                lastExerciseNum = currExerciseNum;
+            }
+
+            for (int i = 1; i <= numOfExercises; i++) {
+                exerciseList.add(exercises.get(i));
+            }
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
         }
-
-        for(int i=1;i<=numOfExercises;i++){
-            exerciseList.add(exercises.get(i));
-        }
-
-        c.close();
 
         return exerciseList;
     }
@@ -511,24 +564,28 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
             exerciseSets = new ArrayList<String>();
 
-            if (c != null) {
-                c.moveToNext();
-                exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
-                c.moveToPrevious();
+            try {
+                if (c != null) {
+                    c.moveToNext();
+                    exerciseName = c.getString(c.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME));
+                    c.moveToPrevious();
 
-                while (c.moveToNext()) {
-                    if (c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) > 0) {
-                        exerciseSets.add(""
-                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ":"
-                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + ":"
-                                + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "");
-                    } else {
-                        exerciseSets.add("1:0:0");
+                    while (c.moveToNext()) {
+                        if (c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) > 0) {
+                            exerciseSets.add(""
+                                    + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ":"
+                                    + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + ":"
+                                    + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "");
+                        } else {
+                            exerciseSets.add("1:0:0");
+                        }
                     }
-                }
                     exercises.put(exerciseName, exerciseSets);
+                }
+            } finally {
+                if (c != null && !c.isClosed())
+                    c.close();
             }
-            c.close();
         }
         return exercises;
     }

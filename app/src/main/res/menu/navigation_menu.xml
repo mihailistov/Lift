@@ -1,0 +1,20 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.justlift.mihai.lift.MainActivity">
+    <item
+        android:id="@+id/first"
+        android:title="Home" />
+    <item
+        android:id="@+id/second"
+        android:title="History" />
+    <item
+        android:id="@+id/third"
+        android:title="Stats" />
+    <item
+        android:id="@+id/fourth"
+        android:title="Workout Plans" />
+    <item
+        android:id="@+id/fifth"
+        android:title="Settings" />
+</menu>
