@@ -12,6 +12,7 @@
         android:divider="@null"
         android:background="@color/white"
         android:groupIndicator="@drawable/group_indicator"
+        android:fastScrollEnabled="false"
         android:transcriptMode="disabled" />
 
 </LinearLayout>
