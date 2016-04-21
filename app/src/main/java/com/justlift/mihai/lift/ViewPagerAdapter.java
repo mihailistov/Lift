@@ -3,7 +3,6 @@ package com.justlift.mihai.lift;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.e("ViewPagerAdapter","Get fragment at position: " + position);
         return mFragmentList.get(position);
     }
 

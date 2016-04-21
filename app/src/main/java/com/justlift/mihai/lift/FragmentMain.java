@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * Created by mihai on 16-03-26.
  */
-public class FragmentPage extends Fragment {
+public class FragmentMain extends Fragment {
     View rootView;
     public static ExpandableListView elv;
     List<String> listDataHeader;
@@ -35,8 +35,8 @@ public class FragmentPage extends Fragment {
     int mNum;
     private DatabaseHelper myDbHelper;
 
-    static FragmentPage newInstance(int num) {
-        FragmentPage f = new FragmentPage();
+    static FragmentMain newInstance(int num) {
+        FragmentMain f = new FragmentMain();
 
         Bundle args = new Bundle();
         args.putInt("num", num);

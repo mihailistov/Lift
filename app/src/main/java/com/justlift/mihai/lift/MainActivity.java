@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -266,40 +267,44 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 menuMultipleActions.close(true);
-                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
 
-                alert.setTitle("New Exercise");
-                alert.setMessage("Enter name");
+                Intent intent = new Intent(MainActivity.getInstance(), AddExerciseActivity.class);
+                startActivity(intent);
 
-                final EditText input = new EditText(instance);
-                alert.setView(input);
-
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        exerciseName = input.getText().toString();
-
-                        int fragNum = viewPager.getCurrentItem();
-
-                        myDbHelper.addExercise(fragNum, exerciseName);
-//                        adapter.notifyDataSetChanged();
-                        refreshFragment();
-
-                        Snackbar snackbar = Snackbar
-                                .make(coordinatorLayout, "Added new exercise", Snackbar.LENGTH_LONG);
-                        View snackBarView = snackbar.getView();
-                        snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
-                        snackbar.show();
-                    }
-                });
-
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Canceled.
-                    }
-                });
-
-                alert.show();
+//                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
+//
+//                alert.setTitle("New Exercise");
+//                alert.setMessage("Enter name");
+//
+//                final EditText input = new EditText(instance);
+//                alert.setView(input);
+//
+//                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        exerciseName = input.getText().toString();
+//
+//                        int fragNum = viewPager.getCurrentItem();
+//
+//                        myDbHelper.addExercise(fragNum, exerciseName);
+////                        adapter.notifyDataSetChanged();
+//                        refreshFragment();
+//
+//                        Snackbar snackbar = Snackbar
+//                                .make(coordinatorLayout, "Added new exercise", Snackbar.LENGTH_LONG);
+//                        View snackBarView = snackbar.getView();
+//                        snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
+//                        snackbar.show();
+//                    }
+//                });
+//
+//                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int whichButton) {
+//                        // Canceled.
+//                    }
+//                });
+//
+//                alert.show();
 
             }
         });
@@ -316,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             SimpleDateFormat df = new SimpleDateFormat("EEE");
             String dayOfWeekEEE =  df.format(cal.getTime());
 
-            FragmentPage newFrag = new FragmentPage().newInstance(i + 7);
+            FragmentMain newFrag = new FragmentMain().newInstance(i + 7);
 
             adapter.addFragment(newFrag, dayOfWeekEEE + "\n" + dayOfWeek(i));
         }

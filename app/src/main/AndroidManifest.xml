@@ -25,6 +25,10 @@
             android:name=".EditExerciseActivity"
             android:theme="@style/AppDialogTheme">
         </activity>
+        <activity
+            android:name=".AddExerciseActivity"
+            android:theme="@style/AppDialogTheme">
+        </activity>
     </application>
 
 </manifest>
