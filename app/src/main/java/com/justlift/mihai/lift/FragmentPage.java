@@ -18,8 +18,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -177,40 +175,6 @@ public class FragmentPage extends Fragment {
         registerForContextMenu(elv);
 
         myDbHelper = DatabaseHelper.getInstance(MainActivity.getInstance());
-
-        try {
-
-            myDbHelper.createDatabase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.createDatabase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDatabase();
-
-        }catch(SQLException sqle){
-
-            try {
-                throw sqle;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
 
         listDataHeader = myDbHelper.getExerciseHeaders(mNum);
         listDataChild = myDbHelper.getExerciseChildren(mNum);

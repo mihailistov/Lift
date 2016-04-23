@@ -17,8 +17,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,39 +60,6 @@ public class EditExerciseActivity extends AppCompatActivity {
         setNumClicked = intent.getIntExtra("setNumClicked", 0);
 
         myDbHelper = DatabaseHelper.getInstance(this);
-        try {
-
-            myDbHelper.createDatabase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.createDatabase();
-
-        } catch (IOException ioe) {
-
-            throw new Error("Unable to create database");
-
-        }
-
-        try {
-
-            myDbHelper.openDatabase();
-
-        }catch(SQLException sqle){
-
-            try {
-                throw sqle;
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-        }
 
         exerciseName = myDbHelper.getExerciseName(fragmentNum, exerciseNum);
         myDbHelper.getExerciseStats(fragmentNum, exerciseNum, setNum, setReps, setWeight);
