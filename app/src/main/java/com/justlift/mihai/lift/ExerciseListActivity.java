@@ -30,7 +30,7 @@ public class ExerciseListActivity extends AppCompatActivity {
 
         myDbHelper = DatabaseHelper.getInstance(this);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView) findViewById(R.id.exercise_list);
 
         ArrayList<String> exerciseList = new ArrayList<String>();
         exerciseList = myDbHelper.getExercises(category);

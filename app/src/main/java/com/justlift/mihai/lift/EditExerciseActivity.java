@@ -23,11 +23,11 @@ import java.util.List;
 public class EditExerciseActivity extends AppCompatActivity {
 
     private DatabaseHelper myDbHelper;
-    boolean noSets = false;
-    int fragmentNum = 0;
-    int exerciseNum = 0;
+    public static boolean noSets = false;
+    public static int fragmentNum = 0;
+    public static int exerciseNum = 0;
     int setNumClicked = 0;
-    String exerciseName;
+    public static String exerciseName;
     final List<Integer> setNum = new ArrayList<Integer>();
     final List<Integer> setReps = new ArrayList<Integer>();
     final List<Integer> setWeight = new ArrayList<Integer>();
@@ -38,16 +38,16 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     TableLayout table;
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        myDbHelper = DatabaseHelper.getInstance(this);
-
-        if (noSets){
-            myDbHelper.addSet(fragmentNum, exerciseNum, exerciseName, 0, 0);
-        }
-
-    }
+//    @Override
+//    protected void onPause(){
+//        super.onPause();
+//        myDbHelper = DatabaseHelper.getInstance(this);
+//
+//        if (noSets){
+//            myDbHelper.addSet(fragmentNum, exerciseNum, exerciseName, 0, 0);
+//        }
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

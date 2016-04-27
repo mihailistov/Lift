@@ -298,6 +298,28 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
     }
 
+    public int getNumofSets(int fragmentNum, int exerciseNum){
+        int numOfSets = 0;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + exerciseNum;
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        try {
+            if(c != null)
+                numOfSets = c.getCount();
+        } finally {
+            if (c != null && !c.isClosed())
+                c.close();
+        }
+
+        return numOfSets;
+    }
+
     public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, int setWeight){
         SQLiteDatabase db = this.getReadableDatabase();
 

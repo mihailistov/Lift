@@ -65,10 +65,16 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle drawerToggle;
     private CoordinatorLayout coordinatorLayout;
+    public static Snackbar snackbarRemove;
 
     @Override
     protected void onResume(){
         super.onResume();
+
+        if (EditExerciseActivity.noSets){
+            myDbHelper.addSet(EditExerciseActivity.fragmentNum, EditExerciseActivity.exerciseNum,
+                    EditExerciseActivity.exerciseName, 0, 0);
+        }
 
         if (setUpdated) {
             refreshFragment();
@@ -208,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 menuMultipleActions.hideMenu(true);
                 removeEnabled = true;
 
-                Snackbar snackbar = Snackbar
+                snackbarRemove = Snackbar
                         .make(coordinatorLayout, "Select exercise/set to remove", Snackbar.LENGTH_INDEFINITE)
                         .setAction("CANCEL", new View.OnClickListener(){
                             @Override
@@ -217,13 +223,13 @@ public class MainActivity extends AppCompatActivity {
                                 menuMultipleActions.showMenu(true);
                            }
                         });
-                snackbar.setActionTextColor(Color.WHITE);
+                snackbarRemove.setActionTextColor(Color.WHITE);
 
-                View snackBarView = snackbar.getView();
+                View snackBarView = snackbarRemove.getView();
                 TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
                 textView.setTextColor(Color.WHITE);
                 snackBarView.setBackgroundColor(getResources().getColor(R.color.redDelete));
-                snackbar.show();
+                snackbarRemove.show();
             }
         });
 

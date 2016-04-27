@@ -9,30 +9,4 @@
     android:elevation="4dp"
     android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/showday"
-        android:textSize="16sp"
-        android:paddingLeft="30dp"
-        android:background="@null"
-        android:textColor="#000"
-        android:text="Today"/>
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/showweek"
-        android:textSize="16sp"
-        android:background="@null"
-        android:textColor="#000"
-        android:text="Week"/>
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/showplan"
-        android:textSize="16sp"
-        android:background="@null"
-        android:textColor="#000"
-        android:text="Plan"/>
 </android.support.v7.widget.Toolbar>

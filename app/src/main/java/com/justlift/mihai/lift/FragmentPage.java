@@ -145,8 +145,13 @@ public class FragmentPage extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case DialogInterface.BUTTON_POSITIVE:
+                                    String removeExerciseName = myDbHelper.getExerciseName(mNum, removeExerciseNum);
                                     myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
 //                                    MainActivity.adapter.notifyDataSetChanged();
+
+                                    if (myDbHelper.getNumofSets(mNum, removeExerciseNum) == 0)
+                                        myDbHelper.addSet(mNum, removeExerciseNum, removeExerciseName, 0, 0);
+
                                     MainActivity.refreshFragment();
                                     break;
 
@@ -207,6 +212,7 @@ public class FragmentPage extends Fragment {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     myDbHelper.removeExercise(mNum, removeExerciseNum);
 //                                    MainActivity.adapter.notifyDataSetChanged();
+
                                     MainActivity.refreshFragment();
                                     break;
 
@@ -241,6 +247,12 @@ public class FragmentPage extends Fragment {
 
                 if (setNum.size() == 1 && setReps.get(0) == 0 && setWeight.get(0) == 0 || MainActivity.getEditState())
                 {
+                    if(MainActivity.getRemoveState() == true) {
+                        MainActivity.menuMultipleActions.showMenu(true);
+                        MainActivity.snackbarRemove.dismiss();
+                        MainActivity.setRemoveDisabled();
+                    }
+
                     Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
                     Bundle b = new Bundle();
                     b.putInt("fragmentNum", mNum);
@@ -260,7 +272,11 @@ public class FragmentPage extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which){
                                 case DialogInterface.BUTTON_POSITIVE:
+                                    String removeExerciseName = myDbHelper.getExerciseName(mNum,removeExerciseNum);
                                     myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
+
+                                    if (myDbHelper.getNumofSets(mNum, removeExerciseNum) == 0)
+                                        myDbHelper.addSet(mNum, removeExerciseNum, removeExerciseName, 0, 0);
 //                                    MainActivity.adapter.notifyDataSetChanged();
                                     MainActivity.refreshFragment();
                                     break;

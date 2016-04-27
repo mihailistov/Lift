@@ -3,13 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/list"
+        android:id="@+id/exercise_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:divider="@color/gray_divider"
         android:dividerHeight="1dp"
         android:cacheColorHint="#00000000"/>
+
+    <LinearLayout
+        android:id="@+id/buttonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:background="@drawable/border"
+            android:id="@+id/new_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New"
+            android:layout_weight="0.5"/>
+
+        <Button
+            android:background="@drawable/border"
+            android:id="@+id/done_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
 </LinearLayout>
