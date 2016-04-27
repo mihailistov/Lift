@@ -29,6 +29,8 @@
         </activity>
         <activity android:name=".AddExerciseActivity"
             android:theme="@style/AppDialogTheme"/>
+        <activity android:name=".ExerciseListActivity"
+            android:theme="@style/AppDialogTheme"/>
     </application>
 
 </manifest>

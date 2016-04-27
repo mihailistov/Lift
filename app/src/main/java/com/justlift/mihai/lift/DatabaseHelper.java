@@ -42,6 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     // Table Names
     private static final String TABLE_WORKOUT_LOG = "workoutLog";
     private static final String TABLE_WORKOUT_TITLE = "workoutTitle";
+    private static final String TABLE_EXERCISE_LIST = "exerciseList";
 
     // Workout Log Columns
     private static final String KEY_WORKOUT_LOG_ID = "_id";
@@ -55,6 +56,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     // Workout Title Columns
     private static final String KEY_WORKOUT_TITLE_DATE = "date";
     private static final String KEY_WORKOUT_TITLE_TITLE = "title";
+
+    // Exercise List Columns
+    private static final String KEY_EXERCISE_LIST_ID = "_id";
+    private static final String KEY_EXERCISE_LIST_NAME = "name";
+    private static final String KEY_EXERCISE_LIST_CATEGORY = "category";
+    private static final String KEY_EXERCISE_LIST_TAGS = "tags";
 
     public static synchronized DatabaseHelper getInstance(Context context) {
         if (mInstance == null) {
@@ -173,6 +180,37 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public ArrayList<String> getCategories(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<String> categoryList = new ArrayList<String>();
+
+        Cursor c = db.query(true, "exerciseList", new String[] {"category"}, null,
+                null, "category", null, null, null);
+
+        while (c.moveToNext())
+            categoryList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_LIST_CATEGORY)));
+
+        Log.e("DatabaseHelper","Following unique categories:\n" + categoryList);
+        return categoryList;
+    }
+
+    public ArrayList<String> getExercises(String category){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<String> exerciseList = new ArrayList<String>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_EXERCISE_LIST + " WHERE "
+                + KEY_EXERCISE_LIST_CATEGORY + " = '" + category + "'";
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        while(c.moveToNext())
+            exerciseList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_LIST_NAME)));
+
+        return exerciseList;
     }
 
     public String getDate(int fragmentNum){

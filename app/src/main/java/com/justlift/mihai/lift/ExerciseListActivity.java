@@ -13,26 +13,30 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 /**
- * Created by mihai on 16-04-21.
+ * Created by mihai on 16-04-26.
  */
-public class AddExerciseActivity extends AppCompatActivity {
+public class ExerciseListActivity extends AppCompatActivity {
     private DatabaseHelper myDbHelper;
+    String category;
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_add_exercise);
+        setContentView(R.layout.activity_exercise_list);
+
+        Intent intent = getIntent();
+        category = intent.getStringExtra("category");
 
         myDbHelper = DatabaseHelper.getInstance(this);
 
         ListView listView = (ListView) findViewById(R.id.list);
 
-        ArrayList<String> categoryList = new ArrayList<String>();
-        categoryList = myDbHelper.getCategories();
+        ArrayList<String> exerciseList = new ArrayList<String>();
+        exerciseList = myDbHelper.getExercises(category);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, categoryList);
+                android.R.layout.simple_list_item_1, android.R.id.text1, exerciseList);
 
         listView.setAdapter(adapter);
 
@@ -40,26 +44,14 @@ public class AddExerciseActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String catClicked = (String)parent.getItemAtPosition(position);
-                Log.e("AddExerciseActivity","Category selected: " + catClicked);
-                Intent intent = new Intent(MainActivity.getInstance(), ExerciseListActivity.class);
-                intent.putExtra("category", catClicked);
-                startActivityForResult(intent, 1);
-            }
-        });
-
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
-                String exerciseClicked = data.getStringExtra("exercise");
+                String exerciseClicked = (String) parent.getItemAtPosition(position);
+                Log.e("AddExerciseActivity", "Exercise selected: " + exerciseClicked);
                 Intent intent = new Intent();
                 intent.putExtra("exercise", exerciseClicked);
                 setResult(RESULT_OK, intent);
                 finish();
             }
-        }
+        });
+
     }
 }

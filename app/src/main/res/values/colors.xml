@@ -29,6 +29,7 @@
     <color name="gray">#444440</color>
     <color name="light_gray">#bfbfbf</color>
     <color name="lighter_gray">#858583</color>
+    <color name="gray_divider">#ededed</color>
     <color name="white">#FFFFFF</color>
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#000000</color>

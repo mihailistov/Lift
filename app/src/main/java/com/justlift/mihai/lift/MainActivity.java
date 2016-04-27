@@ -257,9 +257,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 menuMultipleActions.close(true);
-                Intent intent = new Intent(MainActivity.getInstance(), AddExerciseActivity.class);
-                startActivity(intent);
 
+                int fragNum = viewPager.getCurrentItem();
+
+                Intent intent = new Intent(MainActivity.getInstance(), AddExerciseActivity.class);
+                intent.putExtra("fragNum", fragNum);
+                startActivityForResult(intent, 1);
+//
 //                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
 //
 //                alert.setTitle("New Exercise");
@@ -335,6 +339,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                String exercise = data.getStringExtra("exercise");
+
+                int fragNum = viewPager.getCurrentItem();
+
+                myDbHelper.addExercise(fragNum, exercise);
+                refreshFragment();
+            }
+        }
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {
