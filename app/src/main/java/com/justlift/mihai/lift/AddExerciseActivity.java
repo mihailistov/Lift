@@ -7,13 +7,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -22,12 +23,23 @@ import java.util.ArrayList;
  * Created by mihai on 16-04-21.
  */
 public class AddExerciseActivity extends AppCompatActivity {
-    private DatabaseHelper myDbHelper;
+    public static DatabaseHelper myDbHelper;
     ArrayAdapter<String> adapter;
-    ArrayList<String> categoryList;
-    ListView listView;
-    boolean exercisesDisp = false;
-    private Toolbar toolbar;
+    public static ArrayList<String> categoryList, exercisesAdded, exerciseList;
+    public static CustomListView listView;
+    public static boolean exercisesDisp = false;
+    public static Toolbar toolbar;
+    public static String exerciseClicked;
+    public static Context myContext;
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        myDbHelper = DatabaseHelper.getInstance(this);
+
+        exercisesDisp = false;
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -36,14 +48,38 @@ public class AddExerciseActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_add_exercise);
 
+        myContext = this;
+
         toolbar = (Toolbar) findViewById(R.id.dialog_toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Choose category");
 
+        myDbHelper = DatabaseHelper.getInstance(this);
+
+        exercisesAdded = new ArrayList<String>();
+
+        categoryList = new ArrayList<String>();
+        categoryList = myDbHelper.getCategories();
+
+        listView = (CustomListView) findViewById(R.id.list_layout);
+        setAdapterToList(categoryList);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                int len = listView.getCount();
+//
+//                SparseBooleanArray checked = listView.getCheckedItemPositions();
+//                for (int i = 0; i < len; i++) {
+//                    if (checked.get(i)) {
+//                        String item = exerciseList.get(i);
+//                        exercisesAdded.add(item);
+//                    }
+//                }
+//
+//                Log.e("AddExerciseActivity", "Exercises checked:\n" + exercisesAdded);
+
                 toolbar.setNavigationIcon(null);
                 setAdapterToList(categoryList);
                 exercisesDisp = false;
@@ -51,45 +87,53 @@ public class AddExerciseActivity extends AppCompatActivity {
             }
         });
 
-        myDbHelper = DatabaseHelper.getInstance(this);
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                if (!exercisesDisp) {
+//                    String catClicked = (String) parent.getItemAtPosition(position);
+//                    toolbar.setTitle(catClicked);
+//                    toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
+//
+//                    exerciseList = new ArrayList<String>();
+//                    exerciseList = myDbHelper.getExercises(catClicked);
+//
+//                    setAdapterToMultipleList(exerciseList);
+//
+//                    exercisesDisp = true;
+//
+//                }
+//            }
+//        });
 
-        categoryList = new ArrayList<String>();
-        categoryList = myDbHelper.getCategories();
+        Button doneButton = (Button) findViewById(R.id.done_button);
+        Button addButton = (Button) findViewById(R.id.add_button);
 
-        listView = (ListView) findViewById(R.id.list_layout);
-        setAdapterToList(categoryList);
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                if (!exercisesDisp) {
-                    String catClicked = (String) parent.getItemAtPosition(position);
-                    toolbar.setTitle(catClicked);
-                    toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-
-                    ArrayList<String> exerciseList = new ArrayList<String>();
-                    exerciseList = myDbHelper.getExercises(catClicked);
-
-                    setAdapterToList(exerciseList);
-
-                    exercisesDisp = true;
-
-                } else if (exercisesDisp) {
-                    String exerciseClicked = (String) parent.getItemAtPosition(position);
-                    Intent intent = new Intent();
-                    intent.putExtra("exercise", exerciseClicked);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("exercisesAdded", exercisesAdded);
+                Log.e("AddExerciseActivity", "Passing exercises to MainActivity:\n" + exercisesAdded);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
 
-    public void setAdapterToList(ArrayList<String> list){
-        adapter = new ArrayAdapter<String>(this,
+    public static void setAdapterToList(ArrayList<String> list){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(myContext,
                 android.R.layout.simple_list_item_1, android.R.id.text1, list);
         listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+    }
+
+    public static void setAdapterToMultipleList(ArrayList<String> list){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(myContext,
+                android.R.layout.simple_list_item_multiple_choice, android.R.id.text1, list);
+        listView.setAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -119,9 +163,9 @@ public class AddExerciseActivity extends AppCompatActivity {
                         setAdapterToList(categoryList);
                         exercisesDisp = false;
                     } else {
-                        ArrayList<String> resultsList = new ArrayList<String>();
-                        resultsList = myDbHelper.getSearchResults(newText);
-                        setAdapterToList(resultsList);
+                        exerciseList = new ArrayList<String>();
+                        exerciseList = myDbHelper.getSearchResults(newText);
+                        setAdapterToMultipleList(exerciseList);
                         exercisesDisp = true;
                     }
                     return false;

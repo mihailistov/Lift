@@ -41,6 +41,7 @@ import com.github.clans.fab.FloatingActionMenu;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -351,11 +352,14 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if(resultCode == RESULT_OK){
-                String exercise = data.getStringExtra("exercise");
+                ArrayList<String> exercisesAdded;
+                exercisesAdded = data.getStringArrayListExtra("exercisesAdded");
 
                 int fragNum = viewPager.getCurrentItem();
 
-                myDbHelper.addExercise(fragNum, exercise);
+                for (int i=0;i<exercisesAdded.size();i++) {
+                    myDbHelper.addExercise(fragNum, exercisesAdded.get(i));
+                }
                 refreshFragment();
             }
         }
