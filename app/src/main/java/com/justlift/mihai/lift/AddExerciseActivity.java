@@ -44,29 +44,19 @@ public class AddExerciseActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (exercisesDisp) {
-                    toolbar.setNavigationIcon(null);
-                    setAdapterToList(categoryList);
-                    exercisesDisp = false;
-                    toolbar.setTitle("Add exercise");
-                }
+                toolbar.setNavigationIcon(null);
+                setAdapterToList(categoryList);
+                exercisesDisp = false;
+                toolbar.setTitle("Choose category");
             }
         });
 
         myDbHelper = DatabaseHelper.getInstance(this);
 
-        listView = (ListView) findViewById(R.id.list_layout);
-
         categoryList = new ArrayList<String>();
-        ArrayList<String> exercisesToAdd = new ArrayList<String>();
-
         categoryList = myDbHelper.getCategories();
 
-//        adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_list_item_1, android.R.id.text1, categoryList);
-//
-//        listView.setAdapter(adapter);
-
+        listView = (ListView) findViewById(R.id.list_layout);
         setAdapterToList(categoryList);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,11 +72,6 @@ public class AddExerciseActivity extends AppCompatActivity {
                     exerciseList = myDbHelper.getExercises(catClicked);
 
                     setAdapterToList(exerciseList);
-
-                    //                Log.e("AddExerciseActivity","Category selected: " + catClicked);
-                    //                Intent intent = new Intent(AddExerciseActivity.this, ExerciseListActivity.class);
-                    //                intent.putExtra("category", catClicked);
-                    //                startActivityForResult(intent, 1);
 
                     exercisesDisp = true;
 
@@ -121,21 +106,31 @@ public class AddExerciseActivity extends AppCompatActivity {
         }
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(AddExerciseActivity.this.getComponentName()));
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (newText.equals("")){
+                        setAdapterToList(categoryList);
+                        exercisesDisp = false;
+                    } else {
+                        ArrayList<String> resultsList = new ArrayList<String>();
+                        resultsList = myDbHelper.getSearchResults(newText);
+                        setAdapterToList(resultsList);
+                        exercisesDisp = true;
+                    }
+                    return false;
+                }
+            });
         }
+
         return super.onCreateOptionsMenu(menu);
     }
 
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == 1) {
-//            if(resultCode == RESULT_OK){
-//                String exerciseClicked = data.getStringExtra("exercise");
-//                Intent intent = new Intent();
-//                intent.putExtra("exercise", exerciseClicked);
-//                setResult(RESULT_OK, intent);
-//                finish();
-//            }
-//        }
-//    }
-//
+
 }

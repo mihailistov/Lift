@@ -193,7 +193,6 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         while (c.moveToNext())
             categoryList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_LIST_CATEGORY)));
 
-        Log.e("DatabaseHelper","Following unique categories:\n" + categoryList);
         return categoryList;
     }
 
@@ -211,6 +210,24 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             exerciseList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_LIST_NAME)));
 
         return exerciseList;
+    }
+
+    public ArrayList<String> getSearchResults(String search){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        ArrayList<String> resultsList = new ArrayList<String>();
+
+        String selectQuery = "SELECT * FROM " + TABLE_EXERCISE_LIST + " WHERE "
+                + KEY_EXERCISE_LIST_CATEGORY + " LIKE '%" + search + "%' OR "
+                + KEY_EXERCISE_LIST_NAME + " LIKE '%" + search + "%' OR "
+                + KEY_EXERCISE_LIST_TAGS + " LIKE '%" + search + "%'";
+
+        Cursor c = db.rawQuery(selectQuery,null);
+
+        while(c.moveToNext())
+            resultsList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_LIST_NAME)));
+
+        return resultsList;
     }
 
     public String getDate(int fragmentNum){
