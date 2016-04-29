@@ -182,13 +182,35 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     }
 
+    public Cursor getHeaderCursor(int fragmentNum){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor headerCursor = db.query(
+                true,
+                TABLE_WORKOUT_LOG,
+                new String[] {KEY_WORKOUT_LOG_ID, KEY_WORKOUT_LOG_EXERCISE_NAME},
+                KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'",
+                null,
+                null, null, null, null);
+
+        while(headerCursor.moveToNext())
+            Log.e("DatabaseHelper","" + headerCursor.getString(headerCursor.getColumnIndex(KEY_WORKOUT_LOG_EXERCISE_NAME)));
+
+        return headerCursor;
+    }
+
     public ArrayList<String> getCategories(){
         SQLiteDatabase db = this.getReadableDatabase();
 
         ArrayList<String> categoryList = new ArrayList<String>();
 
-        Cursor c = db.query(true, "exerciseList", new String[] {"category"}, null,
-                null, "category", null, null, null);
+        Cursor c = db.query(
+                true,
+                "exerciseList",
+                new String[] {"category"},
+                null,
+                null,
+                "category", null, null, null);
 
         while (c.moveToNext())
             categoryList.add(c.getString(c.getColumnIndex(KEY_EXERCISE_LIST_CATEGORY)));

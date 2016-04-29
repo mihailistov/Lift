@@ -94,7 +94,7 @@
             fab:fab_label="Edit"
             fab:fab_size="mini"/>
 
-        <com.github.clans.fab.FloatingActionButton
+        <!--<com.github.clans.fab.FloatingActionButton
             android:id="@+id/copy_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             fab:fab_colorPressed="@color/colorPrimaryDark"
             android:src="@drawable/ic_content_copy"
             fab:fab_label="Copy"
-            fab:fab_size="mini"/>
+            fab:fab_size="mini"/>-->
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/remove_button"

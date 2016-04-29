@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             editEnabled = false;
 
             Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Updated exercise", Snackbar.LENGTH_LONG);
+                    .make(coordinatorLayout, "Updated workout", Snackbar.LENGTH_LONG);
             View snackBarView = snackbar.getView();
             snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
             snackbar.show();
@@ -206,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         addButton = (FloatingActionButton) findViewById(R.id.add_button);
         editButton = (FloatingActionButton) findViewById(R.id.edit_button);
         removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
-        copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
+//        copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
 
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -360,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i=0;i<exercisesAdded.size();i++) {
                     myDbHelper.addExercise(fragNum, exercisesAdded.get(i));
                 }
-                refreshFragment();
+//                refreshFragment();
             }
         }
     }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_one"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
@@ -15,4 +14,13 @@
         android:fastScrollEnabled="false"
         android:transcriptMode="disabled" />
 
-</LinearLayout>
+    <com.mobeta.android.dslv.DragSortListView
+        android:id="@+id/dragList"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:fastScrollEnabled="false"
+        android:transcriptMode="disabled" />
+
+</RelativeLayout>

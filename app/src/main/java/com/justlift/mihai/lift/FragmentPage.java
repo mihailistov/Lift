@@ -18,6 +18,10 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.justlift.mihai.lift.dragndroplist.DragNDropListView;
+import com.mobeta.android.dslv.DragSortListView;
+import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,9 @@ import java.util.List;
 public class FragmentPage extends Fragment {
     View rootView;
     public static ExpandableListView elv;
+    public DragNDropListView dragList;
+    public DragSortListView dslv;
+    public SimpleDragSortCursorAdapter dslvAdapter;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
     int mNum;
@@ -69,6 +76,7 @@ public class FragmentPage extends Fragment {
         if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
             menu.setHeaderTitle("Select option");
             menu.add(Menu.NONE, v.getId(), 0, "Edit exercise sets");
+            menu.add(Menu.NONE, v.getId(), 0, "Reorder exercises");
             menu.add(Menu.NONE, v.getId(), 0, "Remove exercise");
 
             // Show context menu for children
@@ -123,6 +131,9 @@ public class FragmentPage extends Fragment {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
                     builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
                             .setNegativeButton("No", removeDialogClickListener).show();
+                } else if (item.getTitle() == "Reorder exercises") {
+                    elv.setVisibility(View.GONE);
+                    dslv.setVisibility(View.VISIBLE);
                 }
 
             } else if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
@@ -176,13 +187,42 @@ public class FragmentPage extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+//        dragList = (DragNDropListView) view.findViewById(R.id.dragList);
+
+        dslv = (DragSortListView) view.findViewById(R.id.dragList);
+
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
         registerForContextMenu(elv);
 
         myDbHelper = DatabaseHelper.getInstance(MainActivity.getInstance());
 
+//        List<String> listDataHeader;
+//        HashMap<String, List<String>> listDataChild;
         listDataHeader = myDbHelper.getExerciseHeaders(mNum);
         listDataChild = myDbHelper.getExerciseChildren(mNum);
+
+        dslvAdapter = new SimpleDragSortCursorAdapter(MainActivity.getInstance(),
+                R.layout.row_drag,
+                myDbHelper.getHeaderCursor(mNum),
+                new String[] {"exerciseName"},
+                new int[] {R.id.text_drag},
+                0);
+        dslv.setAdapter(dslvAdapter);
+
+//        DragNDropSimpleAdapter dragAdapter = new DragNDropSimpleAdapter(
+//                MainActivity.getInstance(),
+//                fillMaps,
+//                R.layout.)
+
+//        DragNDropCursorAdapter dragAdapter = new DragNDropCursorAdapter(MainActivity.getInstance(),
+//                R.layout.row_drag,
+//                myDbHelper.getHeaderCursor(mNum),
+//                new String[] {"exerciseName"},
+//                new int[] {R.id.text_drag},
+//                R.id.handler);
+//
+//        dragList.setDragNDropAdapter(dragAdapter);
+
         elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
         elv.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {

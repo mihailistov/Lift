@@ -27,6 +27,14 @@ public class CustomListView extends ListView {
             AddExerciseActivity.exerciseList = AddExerciseActivity.myDbHelper.getExercises(catClicked);
 
             AddExerciseActivity.setAdapterToMultipleList(AddExerciseActivity.exerciseList);
+
+            for (int i=0;i<AddExerciseActivity.exercisesAdded.size();i++){
+                for(int j=0;j<AddExerciseActivity.exerciseList.size();j++){
+                    if (AddExerciseActivity.exercisesAdded.get(i).matches(AddExerciseActivity.exerciseList.get(j)))
+                        setItemChecked(j, true);
+                }
+            }
+
             AddExerciseActivity.exercisesDisp = true;
 
         } else if (AddExerciseActivity.exercisesDisp) {

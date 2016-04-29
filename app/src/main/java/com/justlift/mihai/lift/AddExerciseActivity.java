@@ -113,6 +113,10 @@ public class AddExerciseActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(exercisesAdded.size() > 0)
+                    MainActivity.updatedSet();
+
                 Intent intent = new Intent();
                 intent.putExtra("exercisesAdded", exercisesAdded);
                 Log.e("AddExerciseActivity", "Passing exercises to MainActivity:\n" + exercisesAdded);
@@ -166,6 +170,14 @@ public class AddExerciseActivity extends AppCompatActivity {
                         exerciseList = new ArrayList<String>();
                         exerciseList = myDbHelper.getSearchResults(newText);
                         setAdapterToMultipleList(exerciseList);
+
+                        for (int i=0;i<exercisesAdded.size();i++){
+                            for(int j=0;j<exerciseList.size();j++){
+                                if (exercisesAdded.get(i).matches(exerciseList.get(j)))
+                                    listView.setItemChecked(j, true);
+                            }
+                        }
+
                         exercisesDisp = true;
                     }
                     return false;
