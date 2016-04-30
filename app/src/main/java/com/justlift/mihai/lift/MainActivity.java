@@ -33,7 +33,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -213,58 +212,67 @@ public class MainActivity extends AppCompatActivity {
 
         addButton = (FloatingActionButton) findViewById(R.id.add_button);
         editButton = (FloatingActionButton) findViewById(R.id.edit_button);
-        removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
+//        removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
 //        copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
 
-        removeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuMultipleActions.close(true);
-                menuMultipleActions.hideMenu(true);
-                removeEnabled = true;
-
-                snackbarRemove = Snackbar
-                        .make(coordinatorLayout, "Select exercise/set to remove", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("CANCEL", new View.OnClickListener(){
-                            @Override
-                            public void onClick(View view){
-                                removeEnabled = false;
-                                menuMultipleActions.showMenu(true);
-                           }
-                        });
-                snackbarRemove.setActionTextColor(Color.WHITE);
-
-                View snackBarView = snackbarRemove.getView();
-                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.WHITE);
-                snackBarView.setBackgroundColor(getResources().getColor(R.color.redDelete));
-                snackbarRemove.show();
-            }
-        });
+//        removeButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                menuMultipleActions.close(true);
+//                menuMultipleActions.hideMenu(true);
+//                removeEnabled = true;
+//
+//                snackbarRemove = Snackbar
+//                        .make(coordinatorLayout, "Select exercise/set to remove", Snackbar.LENGTH_INDEFINITE)
+//                        .setAction("CANCEL", new View.OnClickListener(){
+//                            @Override
+//                            public void onClick(View view){
+//                                removeEnabled = false;
+//                                menuMultipleActions.showMenu(true);
+//                           }
+//                        });
+//                snackbarRemove.setActionTextColor(Color.WHITE);
+//
+//                View snackBarView = snackbarRemove.getView();
+//                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+//                textView.setTextColor(Color.WHITE);
+//                snackBarView.setBackgroundColor(getResources().getColor(R.color.redDelete));
+//                snackbarRemove.show();
+//            }
+//        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                menuMultipleActions.close(true);
-                menuMultipleActions.hideMenu(true);
-                editEnabled = true;
+                FragmentActivity activity = (FragmentActivity)viewPager.getContext();
+                FragmentManager manager = activity.getSupportFragmentManager();
 
-                Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Select exercise/set to edit", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("CANCEL", new View.OnClickListener(){
-                            @Override
-                            public void onClick(View view){
-                                editEnabled = false;
-                                menuMultipleActions.showMenu(true);
-                            }
-                        });
-                snackbar.setActionTextColor(Color.WHITE);
+                FragmentPage page = adapter.getItem(viewPager.getCurrentItem());
 
-                View snackBarView = snackbar.getView();
-                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                textView.setTextColor(Color.WHITE);
-                snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
-                snackbar.show();
+                if (page != null && page.isAdded()) {
+                    page.setEditModeEnabled();
+                }
+
+//                menuMultipleActions.close(true);
+//                menuMultipleActions.hideMenu(true);
+//                editEnabled = true;
+//
+//                Snackbar snackbar = Snackbar
+//                        .make(coordinatorLayout, "Select exercise/set to edit", Snackbar.LENGTH_INDEFINITE)
+//                        .setAction("CANCEL", new View.OnClickListener(){
+//                            @Override
+//                            public void onClick(View view){
+//                                editEnabled = false;
+//                                menuMultipleActions.showMenu(true);
+//                            }
+//                        });
+//                snackbar.setActionTextColor(Color.WHITE);
+//
+//                View snackBarView = snackbar.getView();
+//                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+//                textView.setTextColor(Color.WHITE);
+//                snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
+//                snackbar.show();
             }
         });
 
@@ -278,41 +286,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.getInstance(), AddExerciseActivity.class);
                 intent.putExtra("fragNum", fragNum);
                 startActivityForResult(intent, 1);
-//
-//                AlertDialog.Builder alert = new AlertDialog.Builder(instance);
-//
-//                alert.setTitle("New Exercise");
-//                alert.setMessage("Enter name");
-//
-//                final EditText input = new EditText(instance);
-//                alert.setView(input);
-//
-//                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        exerciseName = input.getText().toString();
-//
-//                        int fragNum = viewPager.getCurrentItem();
-//
-//                        myDbHelper.addExercise(fragNum, exerciseName);
-////                        adapter.notifyDataSetChanged();
-//                        refreshFragment();
-//
-//                        Snackbar snackbar = Snackbar
-//                                .make(coordinatorLayout, "Added new exercise", Snackbar.LENGTH_LONG);
-//                        View snackBarView = snackbar.getView();
-//                        snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
-//                        snackbar.show();
-//                    }
-//                });
-//
-//                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int whichButton) {
-//                        // Canceled.
-//                    }
-//                });
-//
-//                alert.show();
 
             }
         });

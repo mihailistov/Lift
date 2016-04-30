@@ -81,7 +81,7 @@
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
             android:src="@drawable/ic_add"
-            fab:fab_label="Add"
+            fab:fab_label="Add exercises"
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
@@ -91,7 +91,7 @@
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
             android:src="@drawable/ic_edit"
-            fab:fab_label="Edit"
+            fab:fab_label="Edit workout"
             fab:fab_size="mini"/>
 
         <!--<com.github.clans.fab.FloatingActionButton
@@ -104,7 +104,7 @@
             fab:fab_label="Copy"
             fab:fab_size="mini"/>-->
 
-        <com.github.clans.fab.FloatingActionButton
+        <!--<com.github.clans.fab.FloatingActionButton
             android:id="@+id/remove_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
             fab:fab_colorPressed="@color/colorPrimaryDark"
             android:src="@drawable/ic_delete"
             fab:fab_label="Remove"
-            fab:fab_size="mini"/>
+            fab:fab_size="mini"/>-->
 
     </com.github.clans.fab.FloatingActionMenu>
 

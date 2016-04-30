@@ -9,10 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -64,189 +61,6 @@ public class FragmentPage extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_one, container, false);
         return rootView;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) menuInfo;
-
-        int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-//        int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-//        int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
-
-        // Show context menu for groups
-//        if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-//            menu.setHeaderTitle("Select option");
-//            menu.add(Menu.NONE, v.getId(), 0, "Edit exercise sets");
-//            menu.add(Menu.NONE, v.getId(), 0, "Reorder exercises");
-//            menu.add(Menu.NONE, v.getId(), 0, "Remove exercise");
-//
-//            // Show context menu for children
-//        } else
-        if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-            menu.setHeaderTitle("Select option");
-            menu.add(Menu.NONE, v.getId(), 0, "Edit set");
-            menu.add(Menu.NONE, v.getId(), 0, "Remove set");
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (getUserVisibleHint()) {
-            ExpandableListView.ExpandableListContextMenuInfo info = (ExpandableListView.ExpandableListContextMenuInfo) item
-                    .getMenuInfo();
-            int type = ExpandableListView.getPackedPositionType(info.packedPosition);
-            int groupPosition = ExpandableListView.getPackedPositionGroup(info.packedPosition);
-            int childPosition = ExpandableListView.getPackedPositionChild(info.packedPosition);
-
-            myDbHelper = DatabaseHelper.getInstance(MainActivity.getInstance());
-
-//            if (type == ExpandableListView.PACKED_POSITION_TYPE_GROUP) {
-//                // do something with parent
-//                if (item.getTitle() == "Edit exercise sets") {
-//                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
-//                    Bundle b = new Bundle();
-//                    b.putInt("fragmentNum", mNum);
-//                    b.putInt("exerciseNum", groupPosition + 1);
-//                    intent.putExtras(b);
-//
-//                    startActivity(intent);
-//                } else if (item.getTitle() == "Remove exercise") {
-//                    final int removeExerciseNum = groupPosition + 1;
-//
-//                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            switch (which) {
-//                                case DialogInterface.BUTTON_POSITIVE:
-//                                    myDbHelper.removeExercise(mNum, removeExerciseNum);
-////                                    MainActivity.adapter.notifyDataSetChanged();
-//                                    MainActivity.refreshFragment();
-//                                    break;
-//
-//                                case DialogInterface.BUTTON_NEGATIVE:
-//                                    //No button clicked
-//                                    break;
-//                            }
-//                        }
-//                    };
-//
-//                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
-//                    builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
-//                            .setNegativeButton("No", removeDialogClickListener).show();
-//                } else if (item.getTitle() == "Reorder exercises") {
-////                    elv.setVisibility(View.GONE);
-////                    dslv.setVisibility(View.VISIBLE);
-//
-//                    MainActivity.menuMultipleActions.close(true);
-//                    MainActivity.menuMultipleActions.hideMenu(true);
-//
-//                    final RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.fragment_one);
-//                    rl.removeAllViews();
-//                    rl.addView(View.inflate(MainActivity.getInstance(), R.layout.dslv_layout, null));
-//
-////                    View dslvView = inflater.inflate(R.layout.fragment_one, container, false);
-//
-//                    dslv = (DragSortListView) rootView.findViewById(R.id.dragList);
-//
-//                    MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "exerciseName"});
-//
-//                    for(int i=0;i<listDataHeader.size();i++){
-//                        cursor.newRow()
-//                                .add(i)
-//                                .add(listDataHeader.get(i));
-//                    }
-//
-//                    dslvAdapter = new MAdapter(MainActivity.getInstance(),
-//                            R.layout.row_drag,
-//                            null,
-//                            new String[] {"exerciseName"},
-//                            new int[] {R.id.text_drag},
-//                            0);
-//                    dslv.setAdapter(dslvAdapter);
-//
-//                    dslvAdapter.changeCursor(cursor);
-//
-////                    LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-////                    LinearLayout dslvLayout = (LinearLayout) inflater.inflate(R.layout.row_drag, null);
-////
-//////                    ImageView imgRemove = (ImageView) dslvLayout.findViewById(R.id.click_remove);
-////                    ImageView imgEdit = (ImageView) dslvLayout.findViewById(R.id.click_edit);
-////                    imgEdit.setClickable(true);
-////
-////                    imgEdit.setOnClickListener(new View.OnClickListener() {
-////                        @Override
-////                        public void onClick(View v) {
-////                            Toast.makeText(MainActivity.getInstance(), "Clicked edit",
-////                                    Toast.LENGTH_SHORT).show();
-////                        }
-////                    });
-//
-//                    Snackbar snackbar = Snackbar
-//                            .make(MainActivity.coordinatorLayout, "Drag and drop to reorder", Snackbar.LENGTH_INDEFINITE)
-//                            .setAction("DONE", new View.OnClickListener(){
-//                                @Override
-//                                public void onClick(View view){
-//                                    MainActivity.menuMultipleActions.showMenu(true);
-//                                    MainActivity.refreshFragment();
-//                                }
-//                            });
-//                    snackbar.setActionTextColor(Color.WHITE);
-//
-//                    View snackBarView = snackbar.getView();
-//                    TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-//                    textView.setTextColor(Color.WHITE);
-//                    snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
-//                    snackbar.show();
-//                }
-//
-//            } else
-            if (type == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
-                // do something with child
-                if (item.getTitle() == "Edit set") {
-                    Intent intent = new Intent(MainActivity.getInstance(), EditExerciseActivity.class);
-                    Bundle b = new Bundle();
-                    b.putInt("fragmentNum", mNum);
-                    b.putInt("exerciseNum", groupPosition + 1);
-                    b.putInt("setNumClicked", childPosition + 1);
-                    intent.putExtras(b);
-
-                    startActivity(intent);
-                } else if (item.getTitle() == "Remove set") {
-                    final int removeExerciseNum = groupPosition + 1;
-                    final int removeSetNum = childPosition;
-
-                    DialogInterface.OnClickListener removeDialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case DialogInterface.BUTTON_POSITIVE:
-                                    String removeExerciseName = myDbHelper.getExerciseName(mNum, removeExerciseNum);
-                                    myDbHelper.removeSet(mNum, removeExerciseNum, removeSetNum);
-//                                    MainActivity.adapter.notifyDataSetChanged();
-
-                                    if (myDbHelper.getNumofSets(mNum, removeExerciseNum) == 0)
-                                        myDbHelper.addSet(mNum, removeExerciseNum, removeExerciseName, 0, 0);
-
-                                    MainActivity.refreshFragment();
-                                    break;
-
-                                case DialogInterface.BUTTON_NEGATIVE:
-                                    //No button clicked
-                                    break;
-                            }
-                        }
-                    };
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.getInstance());
-                    builder.setMessage("Are you sure you want to delete?").setPositiveButton("Yes", removeDialogClickListener)
-                            .setNegativeButton("No", removeDialogClickListener).show();
-                }
-            }
-            return super.onContextItemSelected(item);
-        }
-        return false;
     }
 
     private class MAdapter extends SimpleDragSortCursorAdapter {
@@ -314,33 +128,13 @@ public class FragmentPage extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        dragList = (DragNDropListView) view.findViewById(R.id.dragList);
-
         elv = (ExpandableListView) view.findViewById(R.id.expListView);
-//        registerForContextMenu(elv);
 
         myDbHelper = DatabaseHelper.getInstance(MainActivity.getInstance());
 
-//        List<String> listDataHeader;
-//        HashMap<String, List<String>> listDataChild;
         listDataHeader = myDbHelper.getExerciseHeaders(mNum);
         listDataChild = myDbHelper.getExerciseChildren(mNum);
 
-
-
-//        DragNDropSimpleAdapter dragAdapter = new DragNDropSimpleAdapter(
-//                MainActivity.getInstance(),
-//                fillMaps,
-//                R.layout.)
-
-//        DragNDropCursorAdapter dragAdapter = new DragNDropCursorAdapter(MainActivity.getInstance(),
-//                R.layout.row_drag,
-//                myDbHelper.getHeaderCursor(mNum),
-//                new String[] {"exerciseName"},
-//                new int[] {R.id.text_drag},
-//                R.id.handler);
-//
-//        dragList.setDragNDropAdapter(dragAdapter);
 
         elv.setAdapter(new ExpandableListAdapter(listDataHeader, listDataChild));
 
@@ -353,33 +147,7 @@ public class FragmentPage extends Fragment {
 
                 if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
                 {
-                    MainActivity.menuMultipleActions.close(true);
-                    MainActivity.menuMultipleActions.hideMenu(true);
-
-                    final RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.fragment_one);
-                    rl.removeAllViews();
-                    rl.addView(View.inflate(MainActivity.getInstance(), R.layout.dslv_layout, null));
-
-                    dslv = (DragSortListView) rootView.findViewById(R.id.dragList);
-
-                    MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "exerciseName"});
-
-                    for(int i=0;i<listDataHeader.size();i++){
-                        cursor.newRow()
-                                .add(i)
-                                .add(listDataHeader.get(i));
-                    }
-
-                    dslvAdapter = new MAdapter(MainActivity.getInstance(),
-                            R.layout.row_drag,
-                            null,
-                            new String[]{"exerciseName"},
-                            new int[]{R.id.text_drag},
-                            0);
-                    dslv.setAdapter(dslvAdapter);
-
-                    dslvAdapter.changeCursor(cursor);
-                    MainActivity.sbEditMode.show();
+                    setEditModeEnabled();
 
                     return true;
                 } else if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_CHILD) {
@@ -520,6 +288,36 @@ public class FragmentPage extends Fragment {
         } else {
             elv.setIndicatorBoundsRelative(width - GetPixelFromDips(50), width - GetPixelFromDips(10));
         }
+    }
+
+    public void setEditModeEnabled(){
+        MainActivity.menuMultipleActions.close(true);
+        MainActivity.menuMultipleActions.hideMenu(true);
+
+        final RelativeLayout rl = (RelativeLayout) rootView.findViewById(R.id.fragment_one);
+        rl.removeAllViews();
+        rl.addView(View.inflate(MainActivity.getInstance(), R.layout.dslv_layout, null));
+
+        dslv = (DragSortListView) rootView.findViewById(R.id.dragList);
+
+        MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "exerciseName"});
+
+        for(int i=0;i<listDataHeader.size();i++){
+            cursor.newRow()
+                    .add(i)
+                    .add(listDataHeader.get(i));
+        }
+
+        dslvAdapter = new MAdapter(MainActivity.getInstance(),
+                R.layout.row_drag,
+                null,
+                new String[]{"exerciseName"},
+                new int[]{R.id.text_drag},
+                0);
+        dslv.setAdapter(dslvAdapter);
+
+        dslvAdapter.changeCursor(cursor);
+        MainActivity.sbEditMode.show();
     }
 
     public int GetPixelFromDips(float pixels) {
