@@ -315,7 +315,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         clearButton.setTextAppearance(R.style.ButtonEditSet);
         clearButton.setText("Clear");
 
-        String styledTitle = "<big>Edit.<font color='#33aebe'>Add/select a set</font></big>";
+        String styledTitle = "<big>Edit.<font color='#33aebe'>" + exerciseName + "</font></big>";
         setTitle(Html.fromHtml(styledTitle));
     }
 
@@ -328,8 +328,8 @@ public class EditExerciseActivity extends AppCompatActivity {
         clearButton.setText("Delete");
 
         // set title to "Edit.Set #"
-        String styledTitle = "<big>Edit.<font color='#33aebe'>Set " + setNum.get(currSetNum) + "</font></big>";
-        setTitle(Html.fromHtml(styledTitle));
+//        String styledTitle = "<big>Edit.<font color='#33aebe'>Set " + setNum.get(currSetNum) + "</font></big>";
+//        setTitle(Html.fromHtml(styledTitle));
     }
 
     private void highlightCurrRow(){

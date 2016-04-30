@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row_drag"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingStart="5dp"
+    android:paddingEnd="10dp"
+    android:background="@color/parentColor">
+
+    <ImageView
+        android:id="@+id/handler"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:src="@drawable/ic_cursor_move"
+        android:layout_gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/text_drag"
-        android:layout_width="match_parent"
+        android:layout_alignEnd="@+id/handler_layout"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="?android:attr/listPreferredItemHeightSmall"
         android:paddingStart="?android:attr/listPreferredItemPaddingStart"
@@ -13,22 +28,27 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:gravity="center_vertical"
         android:textSize="18sp"
-        android:background="@color/parentColor"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textAllCaps="true"
+        android:layout_weight="1"
         />
 
-    <LinearLayout
-        android:id="@+id/handler"
-        android:layout_alignRight="@id/text_drag"
+    <ImageView
+        android:id="@+id/click_edit"
+        android:background="@drawable/ic_edit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_edit"
-            android:scaleType="fitXY"
-        />
-    </LinearLayout>
-</RelativeLayout>
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false" />
+
+    <ImageView
+        android:id="@+id/click_remove"
+        android:background="@drawable/ic_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"/>
+
+</LinearLayout>

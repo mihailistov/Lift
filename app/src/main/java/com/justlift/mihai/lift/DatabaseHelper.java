@@ -188,7 +188,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         Cursor headerCursor = db.query(
                 true,
                 TABLE_WORKOUT_LOG,
-                new String[] {KEY_WORKOUT_LOG_ID, KEY_WORKOUT_LOG_EXERCISE_NAME},
+                new String[] {KEY_WORKOUT_LOG_EXERCISE_NAME},
                 KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'",
                 null,
                 null, null, null, null);

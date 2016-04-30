@@ -14,13 +14,4 @@
         android:fastScrollEnabled="false"
         android:transcriptMode="disabled" />
 
-    <com.mobeta.android.dslv.DragSortListView
-        android:id="@+id/dragList"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:fastScrollEnabled="false"
-        android:transcriptMode="disabled" />
-
 </RelativeLayout>

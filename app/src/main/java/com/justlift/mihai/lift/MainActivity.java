@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private CoordinatorLayout coordinatorLayout;
-    public static Snackbar snackbarRemove;
+    public static CoordinatorLayout coordinatorLayout;
+    public static Snackbar snackbarRemove, sbEditMode, sbUpdated;
 
     @Override
     protected void onResume(){
@@ -79,19 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (setUpdated) {
             refreshFragment();
-
-            if (menuMultipleActions.isMenuHidden())
-                menuMultipleActions.showMenu(true);
-
-            setUpdated=false;
-            removeEnabled = false;
-            editEnabled = false;
-
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "Updated workout", Snackbar.LENGTH_LONG);
-            View snackBarView = snackbar.getView();
-            snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
-            snackbar.show();
         }
     }
 
@@ -154,6 +141,27 @@ public class MainActivity extends AppCompatActivity {
         mDrawer.addDrawerListener(drawerToggle);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        // Configure edit mode snackbar
+        sbEditMode = Snackbar
+                .make(MainActivity.coordinatorLayout, "Edit mode", Snackbar.LENGTH_INDEFINITE)
+                .setAction("DONE", new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view){
+                        MainActivity.menuMultipleActions.showMenu(true);
+                        MainActivity.refreshFragment();
+                    }
+                });
+        sbEditMode.setActionTextColor(Color.WHITE);
+
+        View sbEditModeView = sbEditMode.getView();
+        sbEditModeView.setBackgroundColor(getResources().getColor(R.color.redDelete));
+
+        // Configure update notifcation snackbar
+        sbUpdated = Snackbar
+                .make(coordinatorLayout, "Updated workout", Snackbar.LENGTH_LONG);
+        View sbUpdatedView = sbUpdated.getView();
+        sbUpdatedView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
 
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -411,6 +419,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void refreshFragment(){
+        if(sbEditMode.isShown())
+            sbEditMode.dismiss();
+
+        if (menuMultipleActions.isMenuHidden())
+            menuMultipleActions.showMenu(true);
+
+        setUpdated=false;
+        removeEnabled = false;
+        editEnabled = false;
+
+        sbUpdated.show();
+
         FragmentActivity activity = (FragmentActivity)viewPager.getContext();
         FragmentManager manager = activity.getSupportFragmentManager();
 
