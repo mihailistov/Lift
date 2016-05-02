@@ -7,15 +7,15 @@ import android.preference.PreferenceManager;
 /**
  * Created by mihai on 16-03-31.
  */
-public class PrefManager {
-    private static PrefManager mInstance;
+public class prefManager {
+    private static prefManager mInstance;
     private Context mContext;
     private SharedPreferences mMyPreferences;
 
-    private PrefManager(){}
+    private prefManager(){}
 
-    public static PrefManager getInstance(){
-        if (mInstance == null) mInstance = new PrefManager();
+    public static prefManager getInstance(){
+        if (mInstance == null) mInstance = new prefManager();
         return mInstance;
     }
 

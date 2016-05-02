@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,10 +43,11 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
-    private DatabaseHelper myDbHelper;
+    private static DatabaseHelper myDbHelper;
     private CustomTabLayout tabLayout;
     private MenuItem calendarMenu;
     public static ViewPager viewPager;
@@ -392,6 +394,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static void refreshFragment(){
+        FragmentActivity activity = (FragmentActivity)viewPager.getContext();
+        FragmentManager manager = activity.getSupportFragmentManager();
+        FragmentPage page = adapter.getItem(viewPager.getCurrentItem());
+
+//        if (page.updatedOrder && page != null && page.isAdded()) {
+//            int updatedFragNum = page.mNum;
+//            myDbHelper.updateExerciseNum(updatedFragNum, page.oldHeader, page.updatedHeader);
+////            Log.e("MainActivity", "New exercise order:\n" + page.updatedHeader);
+//            page.updatedOrder = false;
+//        }
+
         if(sbEditMode.isShown())
             sbEditMode.dismiss();
 
@@ -403,11 +416,6 @@ public class MainActivity extends AppCompatActivity {
         editEnabled = false;
 
         sbUpdated.show();
-
-        FragmentActivity activity = (FragmentActivity)viewPager.getContext();
-        FragmentManager manager = activity.getSupportFragmentManager();
-
-        Fragment page = adapter.getItem(viewPager.getCurrentItem());
 
         if (page != null && page.isAdded()) {
             manager.beginTransaction()

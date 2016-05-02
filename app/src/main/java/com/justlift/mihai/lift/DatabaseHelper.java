@@ -182,6 +182,65 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     }
 
+    public void updateExerciseNum (int fragmentNum, List<String> oldHeader, List<String> updatedHeader) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Log.e("DatabaseHelper","Old table:\n" + oldHeader + "\nNew Table:\n" + updatedHeader);
+        String selectQuery, currName;
+        Cursor c;
+
+//        for (int i = 0; i < oldHeader.size(); i++){
+//            int oldNum = i + 1;
+//            int newNum = oldNum;
+//            String exerciseName = oldHeader.get(i);
+//
+//            for (int j = 0; j < updatedHeader.size(); j++){
+//                if (updatedHeader.get(j).matches(exerciseName))
+//                    newNum = j + 1;
+//            }
+//
+//            selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+//                    + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+//                    + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + oldNum + " AND "
+//                    + KEY_WORKOUT_LOG_EXERCISE_NAME + " = '" + exerciseName + "'";
+//
+//            c = db.rawQuery(selectQuery, null);
+//
+//            while (c.moveToNext()) {
+//                long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+//                ContentValues values = new ContentValues();
+//                values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, newNum);
+//                db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+//            }
+//        }
+
+        int oldNum, newNum;
+        for (int i = 0; i < updatedHeader.size(); i++) {
+            newNum = i + 1;
+            oldNum = newNum;
+            currName = updatedHeader.get(i);
+
+            for (int j=0; j < oldHeader.size(); j++){
+                if (currName.matches(oldHeader.get(j)))
+                    oldNum = j + 1;
+            }
+
+            selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
+                    + KEY_WORKOUT_LOG_DATE + " = '" + getDate(fragmentNum) + "'" + " AND "
+                    + KEY_WORKOUT_LOG_EXERCISE_NUM + " = " + oldNum + " AND "
+                    + KEY_WORKOUT_LOG_EXERCISE_NAME + " = '" + currName + "'";
+
+            c = db.rawQuery(selectQuery, null);
+
+            while (c.moveToNext()) {
+                long rowId = c.getLong(c.getColumnIndex(KEY_WORKOUT_LOG_ID));
+                ContentValues values = new ContentValues();
+                values.put(KEY_WORKOUT_LOG_EXERCISE_NUM, newNum);
+                db.update(TABLE_WORKOUT_LOG, values, KEY_WORKOUT_LOG_ID + "=" + rowId, null);
+            }
+        }
+    }
+
     public Cursor getHeaderCursor(int fragmentNum){
         SQLiteDatabase db = this.getReadableDatabase();
 

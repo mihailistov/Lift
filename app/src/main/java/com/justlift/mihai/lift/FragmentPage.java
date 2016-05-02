@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,13 +34,15 @@ import java.util.List;
  */
 public class FragmentPage extends Fragment {
     View rootView;
+    MatrixCursor cursor;
     public static ExpandableListView elv;
     public DragSortListView dslv;
     public SimpleDragSortCursorAdapter dslvAdapter;
-    List<String> listDataHeader;
+    public List<String> listDataHeader, oldHeader, updatedHeader;
     HashMap<String, List<String>> listDataChild;
     int mNum;
     private DatabaseHelper myDbHelper;
+    public boolean updatedOrder = false;
 
     static FragmentPage newInstance(int num) {
         FragmentPage f = new FragmentPage();
@@ -62,6 +66,28 @@ public class FragmentPage extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_one, container, false);
         return rootView;
     }
+
+    private final DragSortListView.DropListener mDropListener =
+            new DragSortListView.DropListener() {
+                @Override
+                public void drop(int from, int to) {
+                    if (from != to) {
+//                        if (!updatedOrder) {
+//                            updatedHeader = listDataHeader;
+//                            updatedOrder = true;
+//                        }
+                        updatedHeader = new ArrayList<String>(listDataHeader);
+                        String itemToMove = updatedHeader.get(from);
+                        Log.e("FragmentPage", "Moved " + itemToMove + " from " + from + " to " + to);
+
+                        dslvAdapter.drop(from, to);
+                        updatedHeader.remove(from);
+                        updatedHeader.add(to, itemToMove);
+                        myDbHelper.updateExerciseNum(mNum, listDataHeader, updatedHeader);
+                        MainActivity.refreshFragment();
+                    }
+                }
+            };
 
     private class MAdapter extends SimpleDragSortCursorAdapter {
         private Context mContext;
@@ -147,6 +173,9 @@ public class FragmentPage extends Fragment {
 
                 if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
                 {
+//                    updatedOrder = false;
+//                    oldHeader = listDataHeader;
+                    Log.e("FragmentPage","Old table:\n" + listDataHeader);
                     setEditModeEnabled();
 
                     return true;
@@ -300,7 +329,7 @@ public class FragmentPage extends Fragment {
 
         dslv = (DragSortListView) rootView.findViewById(R.id.dragList);
 
-        MatrixCursor cursor = new MatrixCursor(new String[] {"_id", "exerciseName"});
+        cursor = new MatrixCursor(new String[] {"_id", "exerciseName"});
 
         for(int i=0;i<listDataHeader.size();i++){
             cursor.newRow()
@@ -315,6 +344,8 @@ public class FragmentPage extends Fragment {
                 new int[]{R.id.text_drag},
                 0);
         dslv.setAdapter(dslvAdapter);
+
+        dslv.setDropListener(mDropListener);
 
         dslvAdapter.changeCursor(cursor);
         MainActivity.sbEditMode.show();
