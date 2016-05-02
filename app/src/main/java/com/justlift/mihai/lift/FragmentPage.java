@@ -72,19 +72,18 @@ public class FragmentPage extends Fragment {
                 @Override
                 public void drop(int from, int to) {
                     if (from != to) {
-//                        if (!updatedOrder) {
-//                            updatedHeader = listDataHeader;
-//                            updatedOrder = true;
-//                        }
-                        updatedHeader = new ArrayList<String>(listDataHeader);
+                        if (!updatedOrder) {
+                            updatedHeader = new ArrayList<String>(listDataHeader);
+                            updatedOrder = true;
+                        }
                         String itemToMove = updatedHeader.get(from);
                         Log.e("FragmentPage", "Moved " + itemToMove + " from " + from + " to " + to);
 
                         dslvAdapter.drop(from, to);
                         updatedHeader.remove(from);
                         updatedHeader.add(to, itemToMove);
-                        myDbHelper.updateExerciseNum(mNum, listDataHeader, updatedHeader);
-                        MainActivity.refreshFragment();
+//                        myDbHelper.updateExerciseNum(mNum, listDataHeader, updatedHeader);
+//                        MainActivity.refreshFragment();
                     }
                 }
             };
@@ -173,7 +172,7 @@ public class FragmentPage extends Fragment {
 
                 if ( itemType == ExpandableListView.PACKED_POSITION_TYPE_GROUP)
                 {
-//                    updatedOrder = false;
+                    updatedOrder = false;
 //                    oldHeader = listDataHeader;
                     Log.e("FragmentPage","Old table:\n" + listDataHeader);
                     setEditModeEnabled();

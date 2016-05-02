@@ -398,12 +398,12 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager manager = activity.getSupportFragmentManager();
         FragmentPage page = adapter.getItem(viewPager.getCurrentItem());
 
-//        if (page.updatedOrder && page != null && page.isAdded()) {
-//            int updatedFragNum = page.mNum;
-//            myDbHelper.updateExerciseNum(updatedFragNum, page.oldHeader, page.updatedHeader);
-////            Log.e("MainActivity", "New exercise order:\n" + page.updatedHeader);
-//            page.updatedOrder = false;
-//        }
+        if (page.updatedOrder && page != null && page.isAdded()) {
+            int updatedFragNum = page.mNum;
+            myDbHelper.updateExerciseNum(updatedFragNum, page.listDataHeader, page.updatedHeader);
+            Log.e("MainActivity", "New exercise order:\n" + page.updatedHeader);
+            page.updatedOrder = false;
+        }
 
         if(sbEditMode.isShown())
             sbEditMode.dismiss();
