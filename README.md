@@ -4,9 +4,9 @@ Workout app with a focus on simplicity in design and user experience while cater
 ## Features
 - Built-in exercise directory with exercise quick tips and full demonstrations
 - Add your own custom exercises
-- Create workout templates to select from when starting a new workout
+- Create workout templates to select from
 - Share workouts with friends
-- Create a workout schedule, specify which templates you want to repeat on what days of the week
+- Create a workout schedule and specify which workouts you want to repeat on what days of the week
 - Ability to coach others and suggest workouts/exercises
 - Statistics for specific exercises, including plots of reps & weight
 - Body statistics, keep track of your weight and your targets for food intake and expenditure
