@@ -14,7 +14,7 @@ Workout app with a focus on simplicity in design and user experience while cater
 
 ## Preview
 <p align="center">
-  <img src="http://i.imgur.com/3hCYyKG.png" width="350"/>
+  <img src="http://i.imgur.com/8dJKqnG.png" width="350"/>
   <img src="http://i.imgur.com/pdX8ZNe.png" width="350"/>
   <img src="http://i.imgur.com/PWd8kpx.png" width="350"/>
   <img src="http://i.imgur.com/FiZUOtA.png" width="350"/>
