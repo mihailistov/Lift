@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,12 +34,36 @@ public class EditExerciseActivity extends AppCompatActivity {
     final List<Integer> setNum = new ArrayList<Integer>();
     final List<Integer> setReps = new ArrayList<Integer>();
     final List<Integer> setWeight = new ArrayList<Integer>();
+    boolean mWeightAutoIncr = false;
+    boolean mWeightAutoDecr = false;
+    boolean mRepsAutoIncr = false;
+    boolean mRepsAutoDecr = false;
+    private Handler repeatUpdateHandler = new Handler();
+
 
     int currSetNum = 0;
     int currRepNum = 0;
     int currWeight = 0;
 
     TableLayout table;
+
+    class RptUpdater implements Runnable {
+        public void run() {
+            if( mRepsAutoIncr ){
+                increaseReps();
+                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+            } else if( mRepsAutoDecr ){
+                decreaseReps();
+                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+            } else if ( mWeightAutoIncr ) {
+                increaseWeight();
+                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+            } else if ( mWeightAutoDecr ){
+                decreaseWeight();
+                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +86,71 @@ public class EditExerciseActivity extends AppCompatActivity {
 
         displayWeight(0);
         displayReps(0);
+
+        Button decreaseRepsButton = (Button) findViewById(R.id.decreaseReps);
+        Button increaseRepsButton = (Button) findViewById(R.id.increaseReps);
+        Button decreaseWeightButton = (Button) findViewById(R.id.decreaseWeight);
+        Button increaseWeightButton = (Button) findViewById(R.id.increaseWeight);
+
+        decreaseRepsButton.setOnTouchListener( new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
+                        && mRepsAutoDecr ){
+                    mRepsAutoDecr = false;
+                    decreaseReps();
+                } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoDecr) {
+                    mRepsAutoDecr = true;
+                    repeatUpdateHandler.post( new RptUpdater() );
+                }
+                return false;
+            }
+        });
+
+        increaseRepsButton.setOnTouchListener( new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
+                        && mRepsAutoIncr ){
+                    mRepsAutoIncr = false;
+                    increaseReps();
+                } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoIncr) {
+                    mRepsAutoIncr = true;
+                    repeatUpdateHandler.post( new RptUpdater() );
+                }
+                return false;
+            }
+        });
+
+        decreaseWeightButton.setOnTouchListener( new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
+                        && mWeightAutoDecr ){
+                    mWeightAutoDecr = false;
+                    decreaseWeight();
+                } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoDecr) {
+                    mWeightAutoDecr = true;
+                    repeatUpdateHandler.post( new RptUpdater() );
+                }
+                return false;
+            }
+        });
+
+        increaseWeightButton.setOnTouchListener( new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
+                        && mWeightAutoIncr ){
+                    mWeightAutoIncr = false;
+                    increaseWeight();
+                } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoIncr) {
+                    mWeightAutoIncr = true;
+                    repeatUpdateHandler.post( new RptUpdater() );
+                }
+                return false;
+            }
+        });
 
         final Button saveButton = (Button) findViewById(R.id.save_button);
         final Button clearButton = (Button) findViewById(R.id.clear_button);
@@ -341,11 +433,11 @@ public class EditExerciseActivity extends AppCompatActivity {
         }
     }
 
-    public void increaseWeight(View view) {
+    public void increaseWeight() {
         currWeight = currWeight + 5;
         displayWeight(currWeight);
 
-    }public void decreaseWeight(View view) {
+    }public void decreaseWeight() {
         if (currWeight > 5)
             currWeight = currWeight - 5;
         else
@@ -360,11 +452,11 @@ public class EditExerciseActivity extends AppCompatActivity {
         displayReps.setText("" + currWeight);
     }
 
-    public void increaseReps(View view) {
+    public void increaseReps() {
         currRepNum = currRepNum + 1;
         displayReps(currRepNum);
 
-    }public void decreaseReps(View view) {
+    }public void decreaseReps() {
         if (currRepNum > 0)
             currRepNum = currRepNum - 1;
 
