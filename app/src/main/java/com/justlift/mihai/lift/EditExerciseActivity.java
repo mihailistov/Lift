@@ -27,6 +27,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     private DatabaseHelper myDbHelper;
     public static boolean noSets = false;
+    private static long mDeBounce = 0;
     public static int fragmentNum = 0;
     public static int exerciseNum = 0;
     int setNumClicked = 0;
@@ -38,6 +39,8 @@ public class EditExerciseActivity extends AppCompatActivity {
     boolean mWeightAutoDecr = false;
     boolean mRepsAutoIncr = false;
     boolean mRepsAutoDecr = false;
+    int incrementRepsDelay;
+    int incrementWeightDelay;
     private Handler repeatUpdateHandler = new Handler();
 
 
@@ -51,16 +54,20 @@ public class EditExerciseActivity extends AppCompatActivity {
         public void run() {
             if( mRepsAutoIncr ){
                 increaseReps();
-                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+                repeatUpdateHandler.postDelayed(new RptUpdater(), incrementRepsDelay);
+                incrementRepsDelay /= 1.15;
             } else if( mRepsAutoDecr ){
                 decreaseReps();
-                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+                repeatUpdateHandler.postDelayed(new RptUpdater(), incrementRepsDelay);
+                incrementRepsDelay /= 1.15;
             } else if ( mWeightAutoIncr ) {
                 increaseWeight();
-                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+                repeatUpdateHandler.postDelayed(new RptUpdater(), incrementWeightDelay);
+                incrementWeightDelay /= 1.25;
             } else if ( mWeightAutoDecr ){
                 decreaseWeight();
-                repeatUpdateHandler.postDelayed( new RptUpdater(), 50 );
+                repeatUpdateHandler.postDelayed(new RptUpdater(), incrementWeightDelay);
+                incrementWeightDelay /= 1.25;
             }
         }
     }
@@ -95,11 +102,30 @@ public class EditExerciseActivity extends AppCompatActivity {
         decreaseRepsButton.setOnTouchListener( new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
-                        && mRepsAutoDecr ){
+                if ( Math.abs(mDeBounce - event.getEventTime()) < 250) {
+                    //Ignore if it's been less then 250ms since
+                    //the item was last clicked
+                    return true;
+                }
+
+                int intCurrentY = Math.round(event.getY());
+                int intCurrentX = Math.round(event.getX());
+                int intStartY = event.getHistorySize() > 0 ? Math.round(event.getHistoricalY(0)) : intCurrentY;
+                int intStartX = event.getHistorySize() > 0 ? Math.round(event.getHistoricalX(0)) : intCurrentX;
+
+                if( (event.getAction()==MotionEvent.ACTION_UP)
+                        && mRepsAutoDecr && (Math.abs(intCurrentX - intStartX) < 3) && (Math.abs(intCurrentY - intStartY) < 3) ){
+                    if ( mDeBounce > event.getDownTime() ) {
+                        //Still got occasional duplicates without this
+                        return true;
+                    }
+
                     mRepsAutoDecr = false;
-                    decreaseReps();
+
+                    mDeBounce = event.getEventTime();
+                    return true;
                 } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoDecr) {
+                    incrementRepsDelay = 500;
                     mRepsAutoDecr = true;
                     repeatUpdateHandler.post( new RptUpdater() );
                 }
@@ -110,11 +136,30 @@ public class EditExerciseActivity extends AppCompatActivity {
         increaseRepsButton.setOnTouchListener( new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
-                        && mRepsAutoIncr ){
+                if ( Math.abs(mDeBounce - event.getEventTime()) < 250) {
+                    //Ignore if it's been less then 250ms since
+                    //the item was last clicked
+                    return true;
+                }
+
+                int intCurrentY = Math.round(event.getY());
+                int intCurrentX = Math.round(event.getX());
+                int intStartY = event.getHistorySize() > 0 ? Math.round(event.getHistoricalY(0)) : intCurrentY;
+                int intStartX = event.getHistorySize() > 0 ? Math.round(event.getHistoricalX(0)) : intCurrentX;
+
+                if( (event.getAction()==MotionEvent.ACTION_UP)
+                        && mRepsAutoIncr && (Math.abs(intCurrentX - intStartX) < 3) && (Math.abs(intCurrentY - intStartY) < 3) ){
+                    if ( mDeBounce > event.getDownTime() ) {
+                        //Still got occasional duplicates without this
+                        return true;
+                    }
+
                     mRepsAutoIncr = false;
-                    increaseReps();
+
+                    mDeBounce = event.getEventTime();
+                    return true;
                 } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoIncr) {
+                    incrementRepsDelay = 500;
                     mRepsAutoIncr = true;
                     repeatUpdateHandler.post( new RptUpdater() );
                 }
@@ -125,11 +170,30 @@ public class EditExerciseActivity extends AppCompatActivity {
         decreaseWeightButton.setOnTouchListener( new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
-                        && mWeightAutoDecr ){
+                if ( Math.abs(mDeBounce - event.getEventTime()) < 250) {
+                    //Ignore if it's been less then 250ms since
+                    //the item was last clicked
+                    return true;
+                }
+
+                int intCurrentY = Math.round(event.getY());
+                int intCurrentX = Math.round(event.getX());
+                int intStartY = event.getHistorySize() > 0 ? Math.round(event.getHistoricalY(0)) : intCurrentY;
+                int intStartX = event.getHistorySize() > 0 ? Math.round(event.getHistoricalX(0)) : intCurrentX;
+
+                if( (event.getAction()==MotionEvent.ACTION_UP)
+                        && mWeightAutoDecr && (Math.abs(intCurrentX - intStartX) < 3) && (Math.abs(intCurrentY - intStartY) < 3) ){
+                    if ( mDeBounce > event.getDownTime() ) {
+                        //Still got occasional duplicates without this
+                        return true;
+                    }
+
                     mWeightAutoDecr = false;
-                    decreaseWeight();
+
+                    mDeBounce = event.getEventTime();
+                    return true;
                 } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoDecr) {
+                    incrementWeightDelay = 500;
                     mWeightAutoDecr = true;
                     repeatUpdateHandler.post( new RptUpdater() );
                 }
@@ -140,11 +204,30 @@ public class EditExerciseActivity extends AppCompatActivity {
         increaseWeightButton.setOnTouchListener( new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if( (event.getAction()==MotionEvent.ACTION_UP || event.getAction()==MotionEvent.ACTION_CANCEL)
-                        && mWeightAutoIncr ){
+                if ( Math.abs(mDeBounce - event.getEventTime()) < 250) {
+                    //Ignore if it's been less then 250ms since
+                    //the item was last clicked
+                    return true;
+                }
+
+                int intCurrentY = Math.round(event.getY());
+                int intCurrentX = Math.round(event.getX());
+                int intStartY = event.getHistorySize() > 0 ? Math.round(event.getHistoricalY(0)) : intCurrentY;
+                int intStartX = event.getHistorySize() > 0 ? Math.round(event.getHistoricalX(0)) : intCurrentX;
+
+                if( (event.getAction()==MotionEvent.ACTION_UP)
+                        && mWeightAutoIncr && (Math.abs(intCurrentX - intStartX) < 3) && (Math.abs(intCurrentY - intStartY) < 3) ){
+                    if ( mDeBounce > event.getDownTime() ) {
+                        //Still got occasional duplicates without this
+                        return true;
+                    }
+
                     mWeightAutoIncr = false;
-                    increaseWeight();
+
+                    mDeBounce = event.getEventTime();
+                    return true;
                 } else if ( event.getAction()==MotionEvent.ACTION_DOWN && !mRepsAutoIncr) {
+                    incrementWeightDelay = 500;
                     mWeightAutoIncr = true;
                     repeatUpdateHandler.post( new RptUpdater() );
                 }
@@ -434,12 +517,12 @@ public class EditExerciseActivity extends AppCompatActivity {
     }
 
     public void increaseWeight() {
-        currWeight = currWeight + 5;
+        currWeight = currWeight + 1;
         displayWeight(currWeight);
 
     }public void decreaseWeight() {
-        if (currWeight > 5)
-            currWeight = currWeight - 5;
+        if (currWeight > 0)
+            currWeight = currWeight - 1;
         else
             currWeight = 0;
 
