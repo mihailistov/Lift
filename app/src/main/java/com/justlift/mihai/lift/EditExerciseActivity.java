@@ -346,7 +346,11 @@ public class EditExerciseActivity extends AppCompatActivity {
         displayWeight(currWeight);
 
     }public void decreaseWeight(View view) {
-        currWeight = currWeight - 5;
+        if (currWeight > 5)
+            currWeight = currWeight - 5;
+        else
+            currWeight = 0;
+
         displayWeight(currWeight);
     }
 
@@ -361,7 +365,9 @@ public class EditExerciseActivity extends AppCompatActivity {
         displayReps(currRepNum);
 
     }public void decreaseReps(View view) {
-        currRepNum = currRepNum - 1;
+        if (currRepNum > 0)
+            currRepNum = currRepNum - 1;
+
         displayReps(currRepNum);
     }
 
