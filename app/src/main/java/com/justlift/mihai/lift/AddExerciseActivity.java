@@ -68,17 +68,6 @@ public class AddExerciseActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                int len = listView.getCount();
-//
-//                SparseBooleanArray checked = listView.getCheckedItemPositions();
-//                for (int i = 0; i < len; i++) {
-//                    if (checked.get(i)) {
-//                        String item = exerciseList.get(i);
-//                        exercisesAdded.add(item);
-//                    }
-//                }
-//
-//                Log.e("AddExerciseActivity", "Exercises checked:\n" + exercisesAdded);
 
                 toolbar.setNavigationIcon(null);
                 setAdapterToList(categoryList);
@@ -86,26 +75,6 @@ public class AddExerciseActivity extends AppCompatActivity {
                 toolbar.setTitle("Choose category");
             }
         });
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//
-//                if (!exercisesDisp) {
-//                    String catClicked = (String) parent.getItemAtPosition(position);
-//                    toolbar.setTitle(catClicked);
-//                    toolbar.setNavigationIcon(R.drawable.ic_arrow_back_white);
-//
-//                    exerciseList = new ArrayList<String>();
-//                    exerciseList = myDbHelper.getExercises(catClicked);
-//
-//                    setAdapterToMultipleList(exerciseList);
-//
-//                    exercisesDisp = true;
-//
-//                }
-//            }
-//        });
 
         Button doneButton = (Button) findViewById(R.id.done_button);
         Button addButton = (Button) findViewById(R.id.add_button);

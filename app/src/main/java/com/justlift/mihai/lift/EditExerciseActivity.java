@@ -38,17 +38,6 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     TableLayout table;
 
-//    @Override
-//    protected void onPause(){
-//        super.onPause();
-//        myDbHelper = DatabaseHelper.getInstance(this);
-//
-//        if (noSets){
-//            myDbHelper.addSet(fragmentNum, exerciseNum, exerciseName, 0, 0);
-//        }
-//
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

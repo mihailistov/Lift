@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-//        PrefManager.getInstance().Initalize(getApplicationContext());
-
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_main);
 
@@ -214,34 +212,6 @@ public class MainActivity extends AppCompatActivity {
 
         addButton = (FloatingActionButton) findViewById(R.id.add_button);
         editButton = (FloatingActionButton) findViewById(R.id.edit_button);
-//        removeButton = (FloatingActionButton) findViewById(R.id.remove_button);
-//        copyButton = (FloatingActionButton) findViewById(R.id.copy_button);
-
-//        removeButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                menuMultipleActions.close(true);
-//                menuMultipleActions.hideMenu(true);
-//                removeEnabled = true;
-//
-//                snackbarRemove = Snackbar
-//                        .make(coordinatorLayout, "Select exercise/set to remove", Snackbar.LENGTH_INDEFINITE)
-//                        .setAction("CANCEL", new View.OnClickListener(){
-//                            @Override
-//                            public void onClick(View view){
-//                                removeEnabled = false;
-//                                menuMultipleActions.showMenu(true);
-//                           }
-//                        });
-//                snackbarRemove.setActionTextColor(Color.WHITE);
-//
-//                View snackBarView = snackbarRemove.getView();
-//                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-//                textView.setTextColor(Color.WHITE);
-//                snackBarView.setBackgroundColor(getResources().getColor(R.color.redDelete));
-//                snackbarRemove.show();
-//            }
-//        });
 
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,27 +224,6 @@ public class MainActivity extends AppCompatActivity {
                 if (page != null && page.isAdded()) {
                     page.setEditModeEnabled();
                 }
-
-//                menuMultipleActions.close(true);
-//                menuMultipleActions.hideMenu(true);
-//                editEnabled = true;
-//
-//                Snackbar snackbar = Snackbar
-//                        .make(coordinatorLayout, "Select exercise/set to edit", Snackbar.LENGTH_INDEFINITE)
-//                        .setAction("CANCEL", new View.OnClickListener(){
-//                            @Override
-//                            public void onClick(View view){
-//                                editEnabled = false;
-//                                menuMultipleActions.showMenu(true);
-//                            }
-//                        });
-//                snackbar.setActionTextColor(Color.WHITE);
-//
-//                View snackBarView = snackbar.getView();
-//                TextView textView = (TextView) snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-//                textView.setTextColor(Color.WHITE);
-//                snackBarView.setBackgroundColor(getResources().getColor(R.color.greenUpdate));
-//                snackbar.show();
             }
         });
 
@@ -433,30 +382,13 @@ public class MainActivity extends AppCompatActivity {
         editEnabled = true;
     }
 
-    public static void setEditDisabled(){
-        editEnabled = false;
-    }
+    public static void setEditDisabled(){editEnabled = false;}
 
     public static boolean getRemoveState(){ return removeEnabled; }
 
     public static void setRemoveEnabled() { removeEnabled = true;}
 
     public static void setRemoveDisabled() { removeEnabled = false;}
-
-    public static void cancelAction(){
-        cancelAction.setVisibility(View.GONE);
-        menuMultipleActions.close(true);
-        menuMultipleActions.setVisibility(View.VISIBLE);
-        removeEnabled = false;
-        editEnabled = false;
-
-        menuMultipleActions.setAnimated(true);
-        menuMultipleActions.setIconAnimated(true);
-        addButton.setLabelVisibility(View.VISIBLE);
-        editButton.setLabelVisibility(View.VISIBLE);
-        removeButton.setLabelVisibility(View.VISIBLE);
-        copyButton.setLabelVisibility(View.VISIBLE);
-    }
 
     public void setActionBarTitle(String title){
         getSupportActionBar().setTitle(title);
