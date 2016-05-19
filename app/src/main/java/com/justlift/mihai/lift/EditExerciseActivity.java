@@ -34,7 +34,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     public static String exerciseName;
     final List<Integer> setNum = new ArrayList<Integer>();
     final List<Integer> setReps = new ArrayList<Integer>();
-    final List<Integer> setWeight = new ArrayList<Integer>();
+    final List<Double> setWeight = new ArrayList<Double>();
     boolean mWeightAutoIncr = false;
     boolean mWeightAutoDecr = false;
     boolean mRepsAutoIncr = false;
@@ -46,7 +46,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     int currSetNum = 0;
     int currRepNum = 0;
-    int currWeight = 0;
+    double currWeight = 0;
 
     TableLayout table;
 
@@ -404,7 +404,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                 EditText mWeightNum = (EditText) findViewById(R.id.weightNum);
 
                 currRepNum = Integer.parseInt(mRepNum.getText().toString());
-                currWeight = Integer.parseInt(mWeightNum.getText().toString());
+                currWeight = Double.parseDouble(mWeightNum.getText().toString());
 
 
                 if (currSetNum != -1) {
@@ -517,7 +517,8 @@ public class EditExerciseActivity extends AppCompatActivity {
     }
 
     public void increaseWeight() {
-        currWeight = currWeight + 1;
+        if (currWeight < 585)
+            currWeight = currWeight + 1;
         displayWeight(currWeight);
 
     }public void decreaseWeight() {
@@ -529,14 +530,15 @@ public class EditExerciseActivity extends AppCompatActivity {
         displayWeight(currWeight);
     }
 
-    private void displayWeight(int weight) {
+    private void displayWeight(double weight) {
         EditText displayReps = (EditText) findViewById(
                 R.id.weightNum);
         displayReps.setText("" + currWeight);
     }
 
     public void increaseReps() {
-        currRepNum = currRepNum + 1;
+        if (currRepNum < 50)
+            currRepNum = currRepNum + 1;
         displayReps(currRepNum);
 
     }public void decreaseReps() {

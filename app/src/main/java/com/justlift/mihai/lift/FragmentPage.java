@@ -249,7 +249,7 @@ public class FragmentPage extends Fragment {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 List<Integer> setNum = new ArrayList<Integer>();
                 List<Integer> setReps = new ArrayList<Integer>();
-                List<Integer> setWeight = new ArrayList<Integer>();
+                List<Double> setWeight = new ArrayList<Double>();
 
                 myDbHelper.getExerciseStats(mNum, groupPosition+1, setNum, setReps, setWeight);
 

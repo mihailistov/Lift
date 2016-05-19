@@ -350,7 +350,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
     public void getExerciseStats(int fragmentNum, int exerciseNum, final List<Integer> setNum,
-                                    final List<Integer> setReps, final List<Integer> setWeight){
+                                    final List<Integer> setReps, final List<Double> setWeight){
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + TABLE_WORKOUT_LOG + " WHERE "
@@ -363,7 +363,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             while(c.moveToNext()){
                 setNum.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)));
                 setReps.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)));
-                setWeight.add(c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)));
+                setWeight.add(c.getDouble(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)));
             }
         } finally {
             if (c != null && !c.isClosed())
@@ -393,7 +393,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return numOfSets;
     }
 
-    public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, int setWeight){
+    public void setSetStats(int fragmentNum, int exerciseNum, int setNum, int setReps, double setWeight){
         SQLiteDatabase db = this.getReadableDatabase();
 
         setNum += 1;
@@ -425,7 +425,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         MainActivity.updatedSet();
     }
 
-    public void addSet(int fragmentNum, int exerciseNum, String exerciseName, int setReps, int setWeight){
+    public void addSet(int fragmentNum, int exerciseNum, String exerciseName, int setReps, double setWeight){
         SQLiteDatabase db = this.getReadableDatabase();
 
         int lastSetNum = getLastSetNum(fragmentNum, exerciseNum);
@@ -708,7 +708,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                             exerciseSets.add(""
                                     + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_SET_NUM)) + ":"
                                     + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_REPS)) + ":"
-                                    + c.getInt(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "");
+                                    + c.getDouble(c.getColumnIndex(KEY_WORKOUT_LOG_WEIGHT)) + "");
                         } else {
                             exerciseSets.add("1:0:0");
                         }

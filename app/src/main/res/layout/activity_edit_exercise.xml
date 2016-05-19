@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/weightNum"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:selectAllOnFocus="true"/>
         <TextView
             android:layout_width="wrap_content"
