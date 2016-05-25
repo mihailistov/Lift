@@ -27,6 +27,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -274,7 +275,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 viewPager.setCurrentItem(position);
-                setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(position));
+
+                String exerciseTitle = myDbHelper.getWorkoutTitle(position);
+
+                if (exerciseTitle.matches("")) {
+                    Log.e("MainActivity","No workout title!");
+                    exerciseTitle = "Lift.<font color='#95d5dd'>Tap to title</font>";
+                    toolbar.setTitle(Html.fromHtml(exerciseTitle));
+                } else
+                    setActionBarTitle("Lift." + exerciseTitle);
             }
         });
 
@@ -435,7 +444,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(tabNumber).select();
 
         // set title bar title based on today's day of the week
-        setActionBarTitle("Lift." + myDbHelper.getWorkoutTitle(tabNumber));
+        String exerciseTitle = myDbHelper.getWorkoutTitle(tabNumber);
+
+        if (exerciseTitle.matches("")) {
+            exerciseTitle = "Lift.<font color='#95d5dd'>Tap to title</font>";
+            toolbar.setTitle(Html.fromHtml(exerciseTitle));
+        } else
+            setActionBarTitle("Lift." + exerciseTitle);
     }
 
     @Override

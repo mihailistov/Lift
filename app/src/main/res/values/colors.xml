@@ -21,6 +21,7 @@
     <color name="colorPrimaryDark">#26818C</color>
     <color name="parentColor">#7F9699</color>
     <color name="colorAccent">#6EC2CC</color>
+    <color name="titleAccent">#95d5dd</color>
 
     <color name="redDelete">#FA3D3D</color>
     <color name="greenUpdate">#23A96E</color>
