@@ -25,7 +25,6 @@ import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.SimpleDragSortCursorAdapter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
