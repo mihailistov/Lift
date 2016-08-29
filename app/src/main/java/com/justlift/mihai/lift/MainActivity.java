@@ -17,7 +17,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -38,17 +37,28 @@ import android.widget.EditText;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.justlift.mihai.lift.Realm.RealmExercise;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 public class MainActivity extends AppCompatActivity {
     private static DatabaseHelper myDbHelper;
+    private Realm realm;
     private CustomTabLayout tabLayout;
     private MenuItem calendarMenu;
     public static ViewPager viewPager;
@@ -104,7 +114,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        realm = Realm.getInstance(realmConfiguration);
+
         myDbHelper = DatabaseHelper.getInstance(this);
+        List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
+
+        try {
+            realmExerciseList = getRealmExercises();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Log.e("MainActivity","All exercises: " + realmExerciseList);
 
         try {
 
@@ -287,6 +309,82 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public List<RealmExercise> getRealmExercises() throws IOException {
+        loadJsonFromStream();
+//        loadJsonFromJsonObject();
+//        loadJsonFromString();
+
+        return realm.where(RealmExercise.class).findAll();
+    }
+
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("exerciseBible.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    private void loadJsonFromStream() throws IOException {
+        try {
+            JSONObject obj = new JSONObject(loadJSONFromAsset());
+            JSONArray m_jArry = obj.getJSONArray("exercises"); // exercises array (1066 total)
+            ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
+            HashMap<String, String> m_li;
+
+            for (int i=0; i < m_jArry.length(); i++){
+                JSONObject jo_inside = m_jArry.getJSONObject(i); // gets a single exercise
+                RealmExercise realmExercise = new RealmExercise();
+                realmExercise.name = jo_inside.getString("name");
+                realmExercise.rating = jo_inside.getString("rating");
+                realmExercise.type = jo_inside.getString("type");
+                realmExercise.muscle = jo_inside.getString("muscle");
+                realmExercise.otherMuscles = jo_inside.getString("otherMuscles");
+                realmExercise.equipment = jo_inside.getString("equipment");
+                realmExercise.mechanics = jo_inside.getString("mechanics");
+                realmExercise.level = jo_inside.getString("level");
+                realmExercise.force = jo_inside.getString("force");
+
+//                JSONArray m_kArry = obj.getJSONArray("guideimgurls");
+//
+//                for (int j=0; j < m_kArry.length(); j++){
+//                    String test2 = m_kArry.get(j).toString();
+//                    Log.d("tag", test2);
+//                }
+
+//                JSONArray m_kArry = obj.getJSONArray("guide_imgurls");
+//                realmExercise.guide_imgurls = jo_inside.getString("guide_imgurls");
+//                public RealmList<RealmString> guide_items;
+//                public String note_title;
+//                public RealmList<RealmString> notes;
+//                public String sport;
+//                public String url;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+//        realm.beginTransaction();
+//        try {
+//            realm.createObjectFromJson(RealmExercise.class, stream);
+//            realm.commitTransaction();
+//        } catch (IOException e) {
+//            realm.cancelTransaction();
+//        } finally {
+//            if (stream != null) {
+//                stream.close();
+//            }
+//        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
