@@ -3,7 +3,6 @@ package com.justlift.mihai.lift.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.Required;
 
 /**
  * Created by mihai on 16-08-27.
@@ -12,12 +11,11 @@ public class RealmExercise extends RealmObject {
 
     @PrimaryKey
     public int id;
-    @Required
     public String name;
     public String rating;
     public String type;
     public String muscle;
-    public String otherMuscles;
+    public String other_muscles;
     public String equipment;
     public String mechanics;
     public String level;
@@ -29,4 +27,7 @@ public class RealmExercise extends RealmObject {
     public String sport;
     public String url;
 
+    public void setId(int id){
+        this.id = id;
+    }
 }

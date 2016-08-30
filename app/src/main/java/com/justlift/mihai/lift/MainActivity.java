@@ -35,9 +35,12 @@ import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 
+import com.facebook.stetho.Stetho;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.gson.Gson;
 import com.justlift.mihai.lift.Realm.RealmExercise;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -114,8 +117,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Gson gson = new Gson();
+
+        RealmConfiguration realmConfiguration = new RealmConfiguration
+                                                        .Builder(this)
+                                                        .deleteRealmIfMigrationNeeded()
+                                                        .build();
         realm = Realm.getInstance(realmConfiguration);
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+                        .build());
 
         myDbHelper = DatabaseHelper.getInstance(this);
         List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
@@ -338,53 +352,48 @@ public class MainActivity extends AppCompatActivity {
     private void loadJsonFromStream() throws IOException {
         try {
             JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONArray m_jArry = obj.getJSONArray("exercises"); // exercises array (1066 total)
+            JSONArray exercises = obj.getJSONArray("exercises"); // exercises array (1066 total)
             ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> m_li;
 
-            for (int i=0; i < m_jArry.length(); i++){
-                JSONObject jo_inside = m_jArry.getJSONObject(i); // gets a single exercise
+            Log.wtf("wtf","# of exercises: "+ exercises.length());
+            for (int i=0; i < exercises.length(); i++)
+            {
                 RealmExercise realmExercise = new RealmExercise();
-                realmExercise.name = jo_inside.getString("name");
-                realmExercise.rating = jo_inside.getString("rating");
-                realmExercise.type = jo_inside.getString("type");
-                realmExercise.muscle = jo_inside.getString("muscle");
-                realmExercise.otherMuscles = jo_inside.getString("otherMuscles");
-                realmExercise.equipment = jo_inside.getString("equipment");
-                realmExercise.mechanics = jo_inside.getString("mechanics");
-                realmExercise.level = jo_inside.getString("level");
-                realmExercise.force = jo_inside.getString("force");
+                JSONObject exercise = new JSONObject();
+                try {
+                    exercise = exercises.getJSONObject(i); // gets a single exercise
 
-//                JSONArray m_kArry = obj.getJSONArray("guideimgurls");
-//
-//                for (int j=0; j < m_kArry.length(); j++){
-//                    String test2 = m_kArry.get(j).toString();
-//                    Log.d("tag", test2);
-//                }
+                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
+                    realmExercise.id = i+1;
+                    realmExercise.name = exercise.getString("name");
+                    realmExercise.rating = exercise.getString("rating");
+                    realmExercise.type = exercise.getString("type");
 
-//                JSONArray m_kArry = obj.getJSONArray("guide_imgurls");
-//                realmExercise.guide_imgurls = jo_inside.getString("guide_imgurls");
-//                public RealmList<RealmString> guide_items;
-//                public String note_title;
-//                public RealmList<RealmString> notes;
-//                public String sport;
-//                public String url;
+                    if (exercise.has("muscle"))
+                        realmExercise.muscle = exercise.getString("muscle");
+
+                    if (exercise.has("other_muscles"))
+                        realmExercise.other_muscles = exercise.getString("other_muscles");
+
+                    if (exercise.has("equipment"))
+                        realmExercise.equipment = exercise.getString("equipment");
+
+                    realmExercise.mechanics = exercise.getString("mechanics");
+                    realmExercise.level = exercise.getString("level");
+                    realmExercise.force = exercise.getString("force");
+                } catch (Exception e) {
+                    Log.e("realm error", "error" + e);
+                } finally {
+                    realm.beginTransaction();
+                    realm.copyToRealm(realmExercise);
+                    realm.commitTransaction();
+                }
             }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-//        realm.beginTransaction();
-//        try {
-//            realm.createObjectFromJson(RealmExercise.class, stream);
-//            realm.commitTransaction();
-//        } catch (IOException e) {
-//            realm.cancelTransaction();
-//        } finally {
-//            if (stream != null) {
-//                stream.close();
-//            }
-//        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
