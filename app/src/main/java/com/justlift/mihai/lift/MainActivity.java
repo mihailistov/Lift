@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -84,10 +85,21 @@ public class MainActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     public static CoordinatorLayout coordinatorLayout;
     public static Snackbar snackbarRemove, sbEditMode, sbUpdated;
+    SharedPreferences prefs = null;
 
     @Override
     protected void onResume(){
         super.onResume();
+
+        if(prefs.getBoolean("firstrun", true)) {
+            // FIRST RUN STUFF
+            try {
+                getRealmExercises();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }
 
         if (EditExerciseActivity.noSets){
             myDbHelper.addSet(EditExerciseActivity.fragmentNum, EditExerciseActivity.exerciseNum,
@@ -121,6 +133,8 @@ public class MainActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
 
+        prefs = getSharedPreferences("com.justlift.mihai.lift", MODE_PRIVATE);
+
         RealmConfiguration realmConfiguration = new RealmConfiguration
                                                         .Builder(this)
                                                         .deleteRealmIfMigrationNeeded()
@@ -136,15 +150,6 @@ public class MainActivity extends AppCompatActivity {
                         .build());
 
         myDbHelper = DatabaseHelper.getInstance(this);
-        List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
-
-        try {
-            realmExerciseList = getRealmExercises();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Log.e("MainActivity","All exercises: " + realmExerciseList);
 
         try {
 
@@ -360,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
             HashMap<String, String> m_li;
 
-            Log.wtf("wtf","# of exercises: "+ exercises.length());
+//            Log.wtf("wtf","# of exercises: "+ exercises.length());
             for (int i=0; i < exercises.length(); i++)
             {
                 RealmExercise realmExercise = new RealmExercise();
@@ -368,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     exercise = exercises.getJSONObject(i); // gets a single exercise
 
-                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
+//                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
                     realmExercise.id = i+1;
 
                     // if the exercise has no name, there's no point in importing it into the db
