@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -358,14 +359,12 @@ public class MainActivity extends AppCompatActivity {
         return json;
     }
 
-    private void loadJsonFromStream() throws IOException {
-        try {
-            JSONObject obj = new JSONObject(loadJSONFromAsset());
-            JSONArray exercises = obj.getJSONArray("exercises"); // exercises array (1066 total)
-            ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
-            HashMap<String, String> m_li;
+    private class ParseJSON extends AsyncTask<JSONArray, Void, List<RealmExercise>> {
+        @Override
+        protected List<RealmExercise> doInBackground(JSONArray... params) {
+            JSONArray exercises = params[0];
+            List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
 
-//            Log.wtf("wtf","# of exercises: "+ exercises.length());
             for (int i=0; i < exercises.length(); i++)
             {
                 RealmExercise realmExercise = new RealmExercise();
@@ -501,11 +500,180 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Log.e("realm error", "error" + e);
                 } finally {
-                    realm.beginTransaction();
-                    realm.copyToRealm(realmExercise);
-                    realm.commitTransaction();
+                    realmExerciseList.add(realmExercise);
                 }
             }
+
+            return realmExerciseList;
+        }
+
+        @Override
+        protected  void onPostExecute(List<RealmExercise> realmExerciseList) {
+            super.onPostExecute(realmExerciseList);
+
+            realm.beginTransaction();
+
+
+            for (int i=0;i<realmExerciseList.size();i++){
+                RealmExercise realmExercise = realmExerciseList.get(i);
+
+                realm.copyToRealm(realmExercise);
+            }
+            realm.commitTransaction();
+        }
+    }
+
+
+    private void loadJsonFromStream() throws IOException {
+        try {
+            JSONObject obj = new JSONObject(loadJSONFromAsset());
+            JSONArray exercises = obj.getJSONArray("exercises"); // exercises array (1066 total)
+            ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
+            HashMap<String, String> m_li;
+
+            new ParseJSON().execute(exercises);
+
+//            Log.wtf("wtf","# of exercises: "+ exercises.length());
+//            for (int i=0; i < exercises.length(); i++)
+//            {
+//                RealmExercise realmExercise = new RealmExercise();
+//                JSONObject exercise = new JSONObject();
+//                try {
+//                    exercise = exercises.getJSONObject(i); // gets a single exercise
+//
+////                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
+//                    realmExercise.id = i+1;
+//
+//                    // if the exercise has no name, there's no point in importing it into the db
+//                    if (exercise.has("name") && !exercise.getString("name").isEmpty() &&
+//                            exercise.getString("name") != null) {
+//                        realmExercise.name = exercise.getString("name");
+//
+//                        if (exercise.has("rating") && !exercise.getString("rating").isEmpty() &&
+//                                exercise.getString("muscle") != null) {
+//                            realmExercise.rating = exercise.getString("rating");
+//                        }
+//
+//                        if (exercise.has("type") && !exercise.getString("type").isEmpty() &&
+//                                exercise.getString("type") != null) {
+//                            realmExercise.type = exercise.getString("type");
+//                        }
+//
+//                        if (exercise.has("muscle") && !exercise.getString("muscle").isEmpty() &&
+//                                exercise.getString("muscle") != null) {
+//                            realmExercise.muscle = exercise.getString("muscle");
+//                        }
+//
+//                        if (exercise.has("other_muscles") && !exercise.getString("other_muscles").isEmpty() &&
+//                                exercise.getString("other_muscles") != null) {
+//                            realmExercise.other_muscles = exercise.getString("other_muscles");
+//                        }
+//
+//                        if (exercise.has("equipment") && !exercise.getString("equipment").isEmpty() &&
+//                                exercise.getString("equipment") != null) {
+//                            realmExercise.equipment = exercise.getString("equipment");
+//                        }
+//
+//                        if (exercise.has("mechanics") && !exercise.getString("mechanics").isEmpty() &&
+//                                exercise.getString("mechanics") != null) {
+//                            realmExercise.mechanics = exercise.getString("mechanics");
+//                        }
+//
+//                        if (exercise.has("level") && !exercise.getString("level").isEmpty() &&
+//                                exercise.getString("muscle") != null) {
+//                            realmExercise.level = exercise.getString("level");
+//                        }
+//
+//                        if (exercise.has("force") && !exercise.getString("force").isEmpty() &&
+//                                exercise.getString("muscle") != null) {
+//                            realmExercise.force = exercise.getString("force");
+//                        }
+//
+//                        if (exercise.has("guide_imgurls") && !exercise.getString("guide_imgurls").isEmpty() &&
+//                                exercise.getString("guide_imgurls") != null) {
+//                            realmExercise.guide_imgurls = exercise.getJSONArray("guide_imgurls").getString(0);
+//                        }
+//
+//                        if (exercise.has("note_title") && !exercise.getString("note_title").isEmpty() &&
+//                                exercise.getString("note_title") != null) {
+//                            realmExercise.note_title = exercise.getString("note_title");
+//                        }
+//
+//                        realmExercise.sport = exercise.getString("sport");
+//                        realmExercise.url = exercise.getString("url");
+//
+//                        RealmList<RealmString> realmGuideItems = new RealmList<RealmString>(); // loop thorugh string arrays for
+//                        // guide_items, imgurls,
+//
+//                        JSONArray guide_items = new JSONArray();
+//                        try {
+//                            guide_items = exercise.getJSONArray("guide_items");
+//
+//                            for (int j = 0; j < guide_items.length(); j++) {
+//                                RealmString guide_item = new RealmString();
+//
+//                                if (!guide_items.getString(j).isEmpty() && guide_items.getString(j) != null) {
+//                                    guide_item.val = guide_items.getString(j);
+//                                    realmGuideItems.add(guide_item);
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            Log.e("json error", "error" + e);
+//                        } finally {
+//                            realmExercise.guide_items = realmGuideItems;
+//                        }
+//
+//                        RealmList<RealmString> realmImgurls = new RealmList<RealmString>(); // loop thorugh string arrays for
+//                        // guide_items, imgurls,
+//
+//                        JSONArray imgurls = new JSONArray();
+//                        try {
+//                            imgurls = exercise.getJSONArray("imgurls");
+//
+//                            for (int j = 0; j < imgurls.length(); j++) {
+//                                RealmString imgurl = new RealmString();
+//
+//                                if (!imgurls.getString(j).isEmpty() && imgurls.getString(j) != null) {
+//                                    imgurl.val = imgurls.getString(j);
+//                                    realmImgurls.add(imgurl);
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            Log.e("json error", "error" + e);
+//                        } finally {
+//                            realmExercise.imgurls = realmImgurls;
+//                        }
+//
+//                        RealmList<RealmString> realmNotes = new RealmList<RealmString>(); // loop thorugh string arrays for
+//                        // guide_items, imgurls,
+//
+//                        JSONArray notes = new JSONArray();
+//                        try {
+//                            notes = exercise.getJSONArray("notes");
+//
+//                            for (int j = 0; j < notes.length(); j++) {
+//                                RealmString note = new RealmString();
+//
+//                                if (!notes.getString(j).isEmpty() && notes.getString(j) != null) {
+//                                    note.val = notes.getString(j);
+//                                    realmNotes.add(note);
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            Log.e("json error", "error" + e);
+//                        } finally {
+//                            realmExercise.notes = realmNotes;
+//                        }
+//                    }
+//
+//                } catch (Exception e) {
+//                    Log.e("realm error", "error" + e);
+//                } finally {
+//                    realm.beginTransaction();
+//                    realm.copyToRealm(realmExercise);
+//                    realm.commitTransaction();
+//                }
+//            }
 
         } catch (JSONException e) {
             e.printStackTrace();
