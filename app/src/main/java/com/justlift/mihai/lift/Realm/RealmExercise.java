@@ -20,8 +20,9 @@ public class RealmExercise extends RealmObject {
     public String mechanics;
     public String level;
     public String force;
-    public RealmList<RealmString> guide_imgurls;
+    public RealmList<RealmString> imgurls;
     public RealmList<RealmString> guide_items;
+    public String guide_imgurls;
     public String note_title;
     public RealmList<RealmString> notes;
     public String sport;
