@@ -10,7 +10,7 @@ import io.realm.annotations.PrimaryKey;
 public class RealmSet extends RealmObject {
     @PrimaryKey
     public int id;
-    public int exerciseName;
+    public RealmExercise exercise;
 
     // match weights to reps e.g. 135 lbs = weight(i), and 8 reps = reps(i)
     public RealmList<RealmInteger> weight;

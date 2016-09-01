@@ -372,62 +372,57 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     exercise = exercises.getJSONObject(i); // gets a single exercise
 
-//                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
+                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
                     realmExercise.id = i+1;
 
                     // if the exercise has no name, there's no point in importing it into the db
                     if (exercise.has("name") && !exercise.getString("name").isEmpty() &&
-                            exercise.getString("name") != null) {
+                            exercise.get("name") != null) {
                         realmExercise.name = exercise.getString("name");
 
                         if (exercise.has("rating") && !exercise.getString("rating").isEmpty() &&
-                                exercise.getString("muscle") != null) {
+                                exercise.get("rating") != null) {
                             realmExercise.rating = exercise.getString("rating");
                         }
 
                         if (exercise.has("type") && !exercise.getString("type").isEmpty() &&
-                                exercise.getString("type") != null) {
+                                exercise.get("type") != null) {
                             realmExercise.type = exercise.getString("type");
                         }
 
                         if (exercise.has("muscle") && !exercise.getString("muscle").isEmpty() &&
-                                exercise.getString("muscle") != null) {
+                                exercise.get("muscle") != null) {
                             realmExercise.muscle = exercise.getString("muscle");
                         }
 
                         if (exercise.has("other_muscles") && !exercise.getString("other_muscles").isEmpty() &&
-                                exercise.getString("other_muscles") != null) {
+                                exercise.get("other_muscles") != null) {
                             realmExercise.other_muscles = exercise.getString("other_muscles");
                         }
 
                         if (exercise.has("equipment") && !exercise.getString("equipment").isEmpty() &&
-                                exercise.getString("equipment") != null) {
+                                exercise.get("equipment") != null) {
                             realmExercise.equipment = exercise.getString("equipment");
                         }
 
                         if (exercise.has("mechanics") && !exercise.getString("mechanics").isEmpty() &&
-                                exercise.getString("mechanics") != null) {
+                                exercise.get("mechanics") != null) {
                             realmExercise.mechanics = exercise.getString("mechanics");
                         }
 
                         if (exercise.has("level") && !exercise.getString("level").isEmpty() &&
-                                exercise.getString("muscle") != null) {
+                                exercise.get("muscle") != null) {
                             realmExercise.level = exercise.getString("level");
                         }
 
                         if (exercise.has("force") && !exercise.getString("force").isEmpty() &&
-                                exercise.getString("muscle") != null) {
+                                exercise.get("muscle") != null) {
                             realmExercise.force = exercise.getString("force");
                         }
 
                         if (exercise.has("guide_imgurls") && !exercise.getString("guide_imgurls").isEmpty() &&
-                                exercise.getString("guide_imgurls") != null) {
+                                exercise.get("guide_imgurls") != null) {
                             realmExercise.guide_imgurls = exercise.getJSONArray("guide_imgurls").getString(0);
-                        }
-
-                        if (exercise.has("note_title") && !exercise.getString("note_title").isEmpty() &&
-                                exercise.getString("note_title") != null) {
-                            realmExercise.note_title = exercise.getString("note_title");
                         }
 
                         realmExercise.sport = exercise.getString("sport");
@@ -443,7 +438,7 @@ public class MainActivity extends AppCompatActivity {
                             for (int j = 0; j < guide_items.length(); j++) {
                                 RealmString guide_item = new RealmString();
 
-                                if (!guide_items.getString(j).isEmpty() && guide_items.getString(j) != null) {
+                                if (!guide_items.getString(j).isEmpty() && guide_items.get(j) != null) {
                                     guide_item.val = guide_items.getString(j);
                                     realmGuideItems.add(guide_item);
                                 }
@@ -464,7 +459,7 @@ public class MainActivity extends AppCompatActivity {
                             for (int j = 0; j < imgurls.length(); j++) {
                                 RealmString imgurl = new RealmString();
 
-                                if (!imgurls.getString(j).isEmpty() && imgurls.getString(j) != null) {
+                                if (!imgurls.getString(j).isEmpty() && imgurls.get(j) != null) {
                                     imgurl.val = imgurls.getString(j);
                                     realmImgurls.add(imgurl);
                                 }
@@ -485,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
                             for (int j = 0; j < notes.length(); j++) {
                                 RealmString note = new RealmString();
 
-                                if (!notes.getString(j).isEmpty() && notes.getString(j) != null) {
+                                if (!notes.getString(j).isEmpty() && notes.get(j) != null) {
                                     note.val = notes.getString(j);
                                     realmNotes.add(note);
                                 }
@@ -512,13 +507,7 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(realmExerciseList);
 
             realm.beginTransaction();
-
-
-            for (int i=0;i<realmExerciseList.size();i++){
-                RealmExercise realmExercise = realmExerciseList.get(i);
-
-                realm.copyToRealm(realmExercise);
-            }
+            realm.copyToRealm(realmExerciseList);
             realm.commitTransaction();
         }
     }
