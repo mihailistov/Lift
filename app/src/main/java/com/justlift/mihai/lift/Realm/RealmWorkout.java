@@ -10,7 +10,8 @@ import io.realm.annotations.PrimaryKey;
 public class RealmWorkout extends RealmObject {
 
     @PrimaryKey
-    private int id;
-    private int userId;
-    private RealmList<RealmSet> sets;
+    public int id;
+    public int userId;
+    public RealmList<RealmSet> sets;
+    public String date;
 }
