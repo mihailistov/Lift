@@ -36,10 +36,8 @@ import android.view.Window;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 
-import com.facebook.stetho.Stetho;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -106,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
-                                .withLimit(1100)
-                                .build())
-                        .build());
+//        Stetho.initialize(
+//                Stetho.newInitializerBuilder(this)
+//                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+//                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
+//                                .withLimit(1100)
+//                                .build())
+//                        .build());
 
         myDbHelper = DatabaseHelper.getInstance(this);
 

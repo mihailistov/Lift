@@ -17,7 +17,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
@@ -28,18 +27,15 @@ import io.realm.RealmList;
  * Created by mihai on 16-03-25.
  */
 public class SplashActivity extends AppCompatActivity {
-    private Realm realm;
     private JSONObject jsonObjFromFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        RealmConfiguration realmConfiguration = new RealmConfiguration
-                .Builder(this)
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        realm = Realm.getInstance(realmConfiguration);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        Realm.deleteRealm(realmConfiguration); // Clean slate
+        Realm.setDefaultConfiguration(realmConfiguration); // Make this Realm the default
 
         SharedPreferences prefs = null;
         prefs = getSharedPreferences("com.justlift.mihai.lift", MODE_PRIVATE);
@@ -71,6 +67,8 @@ public class SplashActivity extends AppCompatActivity {
                 return null;
             }
 
+
+            Log.e("SplashActivity", "Done reading inputstream");
             return json;
         }
 
@@ -87,8 +85,6 @@ public class SplashActivity extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            ArrayList<HashMap<String, String>> formList = new ArrayList<HashMap<String, String>>();
-            HashMap<String, String> m_li;
 
             new ParseJSON().execute(exercises);
         }
@@ -97,8 +93,10 @@ public class SplashActivity extends AppCompatActivity {
     private class ParseJSON extends AsyncTask<JSONArray, Void, List<RealmExercise>> {
         @Override
         protected List<RealmExercise> doInBackground(JSONArray... params) {
+            Realm realm = Realm.getDefaultInstance();
+
             JSONArray exercises = params[0];
-            List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
+            final List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
 
             for (int i=0; i < exercises.length(); i++)
             {
@@ -180,7 +178,7 @@ public class SplashActivity extends AppCompatActivity {
                                 }
                             }
                         } catch (Exception e) {
-                            Log.e("json error", "error" + e);
+//                            Log.e("json error", "error" + e);
                         } finally {
                             realmExercise.guide_items = realmGuideItems;
                         }
@@ -202,7 +200,7 @@ public class SplashActivity extends AppCompatActivity {
                                 }
                             }
                         } catch (Exception e) {
-                            Log.e("json error", "error" + e);
+//                            Log.e("json error", "error" + e);
                         } finally {
                             realmExercise.imgurls = realmImgurls;
                         }
@@ -224,7 +222,7 @@ public class SplashActivity extends AppCompatActivity {
                                 }
                             }
                         } catch (Exception e) {
-                            Log.e("json error", "error" + e);
+//                            Log.e("json error", "error" + e);
                         } finally {
                             realmExercise.notes = realmNotes;
                         }
@@ -237,17 +235,25 @@ public class SplashActivity extends AppCompatActivity {
                 }
             }
 
+            realm.executeTransaction(new Realm.Transaction() {
+
+                @Override
+                public void execute(Realm realm) {
+                    realm.copyToRealm(realmExerciseList);
+                }
+            });
+
             return realmExerciseList;
         }
 
-        @Override
-        protected  void onPostExecute(List<RealmExercise> realmExerciseList) {
-            super.onPostExecute(realmExerciseList);
-
-            realm.beginTransaction();
-            realm.copyToRealm(realmExerciseList);
-            realm.commitTransaction();
-        }
+//        @Override
+//        protected  void onPostExecute(List<RealmExercise> realmExerciseList) {
+//            super.onPostExecute(realmExerciseList);
+//
+//            realm.beginTransaction();
+//            realm.copyToRealm(realmExerciseList);
+//            realm.commitTransaction();
+//        }
     }
 
 
