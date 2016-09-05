@@ -7,10 +7,6 @@
     android:id="@+id/lift_fragment_page"
     android:background="@android:color/white">
 
-    <include
-        android:id="@+id/exercise_item_section"
-        layout="@android:layout/exercise_heading" />
-
     <GridLayout
         android:id="@+id/gridLayout1"
         android:layout_width="fill_parent"
