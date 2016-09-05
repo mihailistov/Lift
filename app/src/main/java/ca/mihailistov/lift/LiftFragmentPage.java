@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
 /**
@@ -40,6 +41,9 @@ public class LiftFragmentPage extends Fragment {
     public void onViewCreated (View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+        GridLayout gridLayout = (GridLayout) view.findViewById(R.id.gridLayout1);
+        gridLayout.setVisibility(View.GONE);
         TextView textView = (TextView) view.findViewById(R.id.textView1);
         textView.setText("Current frag # " + mNum);
     }

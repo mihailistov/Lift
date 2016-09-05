@@ -30,5 +30,6 @@ public class LiftFragment extends Fragment {
         viewPager.setAdapter(new LiftPagerAdapter(getChildFragmentManager()));
         tabLayout = (CustomTabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.getTabAt(10).select();
     }
 }
