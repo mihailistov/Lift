@@ -21,6 +21,7 @@ import io.realm.RealmConfiguration;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Menu menu;
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
@@ -73,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
-
-
+        selectDrawerItem(nvDrawer.getMenu().getItem(0));
 
     }
 
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
         return true;
     }
 

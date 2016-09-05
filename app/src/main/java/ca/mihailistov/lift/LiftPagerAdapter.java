@@ -1,7 +1,9 @@
 package ca.mihailistov.lift;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 /**
  * Created by mihai on 16-09-05.
@@ -21,7 +23,17 @@ public class LiftPagerAdapter extends SmartFragmentStatePagerAdapter {
 
     // Returns the fragment to display for that page
     @Override
-    public Fragment getItem(int position) {
+    public LiftFragmentPage getItem(int position) {
         return LiftFragmentPage.newInstance(position);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat dfEEE = new SimpleDateFormat("EEE");
+        SimpleDateFormat dfd = new SimpleDateFormat("d");
+        c.add(Calendar.DAY_OF_WEEK, position-7);
+
+        return dfEEE.format(c.getTime()).toUpperCase() + "\n" + dfd.format(c.getTime());
     }
 }

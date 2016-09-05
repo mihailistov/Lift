@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 public class LiftFragment extends Fragment {
     public static ViewPager viewPager;
     public static LiftPagerAdapter adapter = null;
+    private CustomTabLayout tabLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -27,5 +28,7 @@ public class LiftFragment extends Fragment {
 
         viewPager = (ViewPager) view.findViewById(R.id.viewpager);
         viewPager.setAdapter(new LiftPagerAdapter(getChildFragmentManager()));
+        tabLayout = (CustomTabLayout) view.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
     }
 }
