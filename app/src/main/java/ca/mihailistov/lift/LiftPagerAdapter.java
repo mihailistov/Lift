@@ -9,7 +9,7 @@ import java.util.Calendar;
  * Created by mihai on 16-09-05.
  */
 public class LiftPagerAdapter extends SmartFragmentStatePagerAdapter {
-    private static int NUM_ITEMS = 14;
+    private static int NUM_ITEMS = 30;
 
     public LiftPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -32,7 +32,7 @@ public class LiftPagerAdapter extends SmartFragmentStatePagerAdapter {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dfEEE = new SimpleDateFormat("EEE");
         SimpleDateFormat dfd = new SimpleDateFormat("d");
-        c.add(Calendar.DAY_OF_WEEK, position-11);
+        c.add(Calendar.DAY_OF_WEEK, position-10);
 
         return dfEEE.format(c.getTime()).toUpperCase() + "\n" + dfd.format(c.getTime());
     }

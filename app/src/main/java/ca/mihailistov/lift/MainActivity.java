@@ -15,7 +15,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import ca.mihailistov.lift.Realm.RealmManager;
+import ca.mihailistov.lift.Realm.RealmWorkout;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -75,6 +79,15 @@ public class MainActivity extends AppCompatActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
         selectDrawerItem(nvDrawer.getMenu().getItem(0));
+
+        RealmWorkout realmWorkout = new RealmWorkout();
+//        List<RealmSet>
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        realmWorkout.date = df.format(c.getTime());
+        realmWorkout.id = 1;
+//        realmWorkout.
 
     }
 

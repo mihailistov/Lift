@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by mihai on 16-09-04.
  */
@@ -36,13 +41,33 @@ public class LiftFragmentPage extends Fragment {
         View rootView = inflater.inflate(R.layout.lift_fragment_page, container, false);
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
         rv.setHasFixedSize(true);
-        MyAdapter adapter = new MyAdapter(new String[]{"test one" + mNum, "test two", "test three", "test four", "test five" , "test six" , "test seven"});
-        rv.setAdapter(adapter);
+
+        ExerciseExpandableAdapter mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getActivity(), generateExercises());
+        mExerciseExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
+        mExerciseExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
+        mExerciseExpandableAdapter.setParentAndIconExpandOnClick(true);
+        rv.setAdapter(mExerciseExpandableAdapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         rv.setLayoutManager(llm);
 
         return rootView;
+    }
+
+    private ArrayList<ParentObject> generateExercises() {
+        ArrayList<ParentObject> parentObjects = new ArrayList<>();
+        List<Exercise> exercises = new ArrayList<Exercise>();
+
+        for(int i=0;i<4;i++){
+            exercises.add(new Exercise());
+        }
+        for (Exercise exercise : exercises) {
+            ArrayList<Object> childList = new ArrayList<>();
+            childList.add(new ExerciseChild("Sep 5, 2016", true));
+            exercise.setChildObjectList(childList);
+            parentObjects.add(exercise);
+        }
+        return parentObjects;
     }
 
     @Override
