@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+
+    <!--color scheme-->
+    <color name="colorPrimary">#34B0BF</color>
+    <color name="colorPrimaryDark">#26818C</color>
+    <color name="parentColor">#7F9699</color>
+    <color name="colorAccent">#6EC2CC</color>
+    <color name="titleAccent">#95d5dd</color>
+
+    <color name="redDelete">#FA3D3D</color>
+    <color name="greenUpdate">#23A96E</color>
+    <color name="blueClear">#009DD7</color>
+
+    <color name="gray">#444440</color>
+    <color name="light_gray">#bfbfbf</color>
+    <color name="lighter_gray">#858583</color>
+    <color name="gray_divider">#ededed</color>
+    <color name="white">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
 </resources>

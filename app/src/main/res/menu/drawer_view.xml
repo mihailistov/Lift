@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_lift_fragment"
+            android:title="Lift" />
+        <item
+            android:id="@+id/nav_history_fragment"
+            android:title="History" />
+        <item
+            android:id="@+id/nav_stats_fragment"
+            android:title="Stats" />
+        <item
+            android:id="@+id/nav_plan_fragment"
+            android:title="Workout Plans" />
+        <item
+            android:id="@+id/nav_settings_fragment"
+            android:title="Settings" />
+    </group>
+</menu>
