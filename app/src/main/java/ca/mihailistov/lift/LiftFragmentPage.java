@@ -2,11 +2,11 @@ package ca.mihailistov.lift;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
-import android.widget.TextView;
 
 /**
  * Created by mihai on 16-09-04.
@@ -33,8 +33,16 @@ public class LiftFragmentPage extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.lift_fragment_page, container, false);
+        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
+        rv.setHasFixedSize(true);
+        MyAdapter adapter = new MyAdapter(new String[]{"test one" + mNum, "test two", "test three", "test four", "test five" , "test six" , "test seven"});
+        rv.setAdapter(adapter);
 
-        return inflater.inflate(R.layout.lift_fragment_page, container, false);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        rv.setLayoutManager(llm);
+
+        return rootView;
     }
 
     @Override
@@ -42,9 +50,9 @@ public class LiftFragmentPage extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        GridLayout gridLayout = (GridLayout) view.findViewById(R.id.gridLayout1);
-        gridLayout.setVisibility(View.GONE);
-        TextView textView = (TextView) view.findViewById(R.id.textView1);
-        textView.setText("Current frag # " + mNum);
+//        GridLayout gridLayout = (GridLayout) view.findViewById(R.id.gridLayout1);
+//        gridLayout.setVisibility(View.GONE);
+//        TextView textView = (TextView) view.findViewById(R.id.textView1);
+//        textView.setText("Current frag # " + mNum);
     }
 }
