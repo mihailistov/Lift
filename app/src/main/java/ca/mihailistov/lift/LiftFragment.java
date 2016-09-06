@@ -6,6 +6,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 /**
  * Created by mihai on 16-09-04.
@@ -31,5 +34,17 @@ public class LiftFragment extends Fragment {
         tabLayout = (CustomTabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(10).select();
+
+        Calendar c = Calendar.getInstance();
+        TextView calText = (TextView) getActivity().findViewById(R.id.calendar_text);
+        calText.setVisibility(View.VISIBLE);
+        calText.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));
+
+        calText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tabLayout.getTabAt(10).select();
+            }
+        });
     }
 }

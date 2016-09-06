@@ -89,12 +89,6 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Calendar c = Calendar.getInstance();
-
-        TextView calText = (TextView) findViewById(R.id.calendar_text);
-        calText.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));
-
-
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
         mDrawer.addDrawerListener(drawerToggle);
@@ -102,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
         selectDrawerItem(nvDrawer.getMenu().getItem(0));
-
 
     }
 
