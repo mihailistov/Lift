@@ -9,4 +9,59 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </android.support.v7.widget.RecyclerView>
+
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/textView1"
+            android:text="find an exercise by muscle"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="16dip"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="0.5"
+            android:layout_rowWeight="0.5"
+            android:padding="10dp"
+            android:background="@color/parentColor"/>
+        <TextView
+            android:text="select a workout split"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="16dip"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="0.5"
+            android:layout_rowWeight="0.5"
+            android:padding="10dp"
+            android:background="@color/parentColor"/>
+        <TextView
+            android:text="search exercises"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="16dip"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="0.5"
+            android:layout_rowWeight="0.5"
+            android:padding="10dp"
+            android:background="@color/parentColor"/>
+        <TextView
+            android:text="create a new workout plan"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="16dip"
+            android:layout_margin="5dp"
+            android:layout_width="0dp"
+            android:layout_columnWeight="0.5"
+            android:layout_rowWeight="0.5"
+            android:padding="10dp"
+            android:background="@color/parentColor"/>
+    </GridLayout>
 </RelativeLayout>

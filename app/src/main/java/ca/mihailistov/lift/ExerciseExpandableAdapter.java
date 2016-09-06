@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.List;
 
@@ -17,8 +17,8 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerAdapter<Exercis
 
     LayoutInflater mInflater = null;
 
-    public ExerciseExpandableAdapter(Context context, List<ParentObject> parentItemList) {
-        super(context, parentItemList);
+    public ExerciseExpandableAdapter(Context context, List<ParentListItem> parentItemList) {
+        super(parentItemList);
 
         mInflater = LayoutInflater.from(context);
     }
@@ -38,10 +38,9 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerAdapter<Exercis
     }
 
     @Override
-    public void onBindParentViewHolder(ExerciseParentViewHolder exerciseParentViewHolder, int i, Object parentObject) {
-        Exercise exercise = (Exercise) parentObject;
-        exerciseParentViewHolder.mExerciseTitleTextView.setText(exercise.getTitle());
-
+    public void onBindParentViewHolder(ExerciseParentViewHolder parentViewHolder, int position, ParentListItem parentListItem) {
+        Exercise exercise = (Exercise) parentListItem;
+        parentViewHolder.mExerciseTitleTextView.setText(exercise.getTitle());
     }
 
     @Override

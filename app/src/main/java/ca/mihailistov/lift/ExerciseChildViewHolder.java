@@ -20,6 +20,5 @@ public class ExerciseChildViewHolder extends ChildViewHolder {
         mExerciseRepsText = (TextView) itemView.findViewById(R.id.childSetReps);
         mExerciseWeightText = (TextView) itemView.findViewById(R.id.childSetWeight);
 
-
     }
 }

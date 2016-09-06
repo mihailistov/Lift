@@ -8,8 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,23 +49,35 @@ public class LiftFragmentPage extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.lift_fragment_page, container, false);
+
+        ArrayList<ParentListItem> parentListItems = new ArrayList<>();
+        parentListItems = generateExercises();
+
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
-        rv.setHasFixedSize(true);
 
-        ExerciseExpandableAdapter mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getActivity(), generateExercises());
-        mExerciseExpandableAdapter.setCustomParentAnimationViewId(R.id.parent_list_item_expand_arrow);
-        mExerciseExpandableAdapter.setParentClickableViewAnimationDefaultDuration();
-        mExerciseExpandableAdapter.setParentAndIconExpandOnClick(true);
-        rv.setAdapter(mExerciseExpandableAdapter);
+        if (parentListItems.size() != 0) {
+            Log.e("LiftFragmentPage","Found parentObjects to be length" + parentListItems.size());
+            rv.setHasFixedSize(true);
 
-        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-        rv.setLayoutManager(llm);
+            ExerciseExpandableAdapter mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
+
+            rv.setAdapter(mExerciseExpandableAdapter);
+
+            mExerciseExpandableAdapter.expandAllParents();
+
+            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+            rv.setLayoutManager(llm);
+        } else {
+            rv.setVisibility(View.GONE);
+            GridLayout gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
+            gridLayout.setVisibility(View.VISIBLE);
+        }
 
         return rootView;
     }
 
-    private ArrayList<ParentObject> generateExercises() {
-        ArrayList<ParentObject> parentObjects = new ArrayList<>();
+    private ArrayList<ParentListItem> generateExercises() {
+        ArrayList<ParentListItem> parentObjects = new ArrayList<>();
 
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_WEEK, mNum-10);

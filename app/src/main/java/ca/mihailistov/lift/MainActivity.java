@@ -14,9 +14,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import ca.mihailistov.lift.Realm.RealmExercise;
 import ca.mihailistov.lift.Realm.RealmExerciseData;
@@ -84,6 +88,12 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Calendar c = Calendar.getInstance();
+
+        TextView calText = (TextView) findViewById(R.id.calendar_text);
+        calText.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));
+
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerToggle = setupDrawerToggle();
