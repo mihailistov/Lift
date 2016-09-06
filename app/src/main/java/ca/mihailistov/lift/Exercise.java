@@ -9,6 +9,11 @@ import java.util.List;
  */
 public class Exercise implements ParentObject {
     private List<Object> mSetList;
+    private String name;
+
+    public Exercise(String name){
+        this.name = name;
+    }
 
     @Override
     public List<Object> getChildObjectList() {
@@ -18,5 +23,9 @@ public class Exercise implements ParentObject {
     @Override
     public void setChildObjectList(List<Object> list) {
         mSetList = list;
+    }
+
+    public String getTitle(){
+        return name;
     }
 }

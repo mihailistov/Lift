@@ -1,21 +1,55 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#cbcbcb">
+    android:orientation="horizontal"
+    android:background="@android:color/white"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <Space
+        android:layout_width="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:layout_height="1dp"/>
+    <TextView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:textSize="18dp"
+        android:textColor="#ffffff"
+        android:id="@+id/childSetNum"
+        android:background="@drawable/bg_set_circle"
+        android:gravity="center_vertical|center_horizontal"
+        />
 
     <TextView
-        android:id="@+id/child_list_item_exercise_text_view"
+        android:textColor="@android:color/black"
+        android:paddingLeft="15dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Exercise Details" />
+        android:textSize="18dp"
+        android:id="@+id/childSetWeight" />
 
-    <CheckBox
-        android:id="@+id/child_list_item_exercise_completed_check_box"
+    <TextView
+        android:id="@+id/lbsTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="8dp"
-        android:text="Completed" />
+        android:textSize="18dp"
+        android:textColor="@color/lighter_gray"
+        android:text=" lbs"/>
 
-</RelativeLayout>
+    <TextView
+        android:textColor="@android:color/black"
+        android:paddingLeft="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:id="@+id/childSetReps" />
+
+    <TextView
+        android:id="@+id/repsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18dp"
+        android:textColor="@color/lighter_gray"
+        android:text=" reps"/>
+
+
+</LinearLayout>

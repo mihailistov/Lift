@@ -15,13 +15,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
+import ca.mihailistov.lift.Realm.RealmExercise;
+import ca.mihailistov.lift.Realm.RealmExerciseData;
 import ca.mihailistov.lift.Realm.RealmManager;
+import ca.mihailistov.lift.Realm.RealmSet;
 import ca.mihailistov.lift.Realm.RealmWorkout;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,6 +74,14 @@ public class MainActivity extends AppCompatActivity {
         Realm.setDefaultConfiguration(realmConfiguration);
         Realm realm = Realm.getDefaultInstance();
 
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
+                                .withLimit(1100)
+                                .build())
+                        .build());
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,14 +93,6 @@ public class MainActivity extends AppCompatActivity {
         setupDrawerContent(nvDrawer);
         selectDrawerItem(nvDrawer.getMenu().getItem(0));
 
-        RealmWorkout realmWorkout = new RealmWorkout();
-//        List<RealmSet>
-
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        realmWorkout.date = df.format(c.getTime());
-        realmWorkout.id = 1;
-//        realmWorkout.
 
     }
 
@@ -152,6 +157,40 @@ public class MainActivity extends AppCompatActivity {
                 mDrawer.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_settings:
+                return true;
+            case R.id.create_data:
+                Realm realm = Realm.getDefaultInstance();
+                final RealmWorkout realmWorkout = new RealmWorkout();
+
+                RealmResults<RealmExerciseData> realmExerciseDataList = realm.where(RealmExerciseData.class)
+                        .findAll();
+
+                RealmList<RealmExercise> realmExerciseList = new RealmList<>();
+
+                for (int i=0;i<3;i++){
+                    RealmExercise realmExercise = new RealmExercise();
+                    RealmExerciseData realmExerciseData = realmExerciseDataList.get(i);
+                    realmExercise.realmExerciseData = realmExerciseData;
+
+                    RealmList<RealmSet> realmSetList = new RealmList<>();
+                    for (int j=0;j<4;j++){
+                        RealmSet realmSet = new RealmSet();
+                        realmSet.reps = 5;
+                        realmSet.weight = 135;
+                        realmSetList.add(realmSet);
+                    }
+
+                    realmExercise.realmSets =  realmSetList;
+                    realmExerciseList.add(realmExercise);
+                }
+                realmWorkout.exercises = realmExerciseList;
+
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.copyToRealm(realmWorkout);
+                    }
+                });
                 return true;
         }
 

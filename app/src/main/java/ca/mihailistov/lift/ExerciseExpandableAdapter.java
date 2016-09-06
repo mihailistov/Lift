@@ -40,13 +40,16 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerAdapter<Exercis
     @Override
     public void onBindParentViewHolder(ExerciseParentViewHolder exerciseParentViewHolder, int i, Object parentObject) {
         Exercise exercise = (Exercise) parentObject;
-        exerciseParentViewHolder.mExerciseTitleTextView.setText("Exercise Title # " + i);
+        exerciseParentViewHolder.mExerciseTitleTextView.setText(exercise.getTitle());
 
     }
 
     @Override
     public void onBindChildViewHolder(ExerciseChildViewHolder exerciseChildViewHolder, int i, Object childObject) {
         ExerciseChild exerciseChild = (ExerciseChild) childObject;
-        exerciseChildViewHolder.mExerciseCompletedText.setText("Exercise child set # " + i);
+
+        exerciseChildViewHolder.mExerciseSetNumText.setText(String.format("%d",exerciseChild.getSetNum()));
+        exerciseChildViewHolder.mExerciseWeightText.setText(String.format("%d",exerciseChild.getWeight()));
+        exerciseChildViewHolder.mExerciseRepsText.setText(String.format("%d",exerciseChild.getReps()));
     }
 }

@@ -4,14 +4,23 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+
+import ca.mihailistov.lift.Realm.RealmExercise;
+import ca.mihailistov.lift.Realm.RealmExerciseData;
+import ca.mihailistov.lift.Realm.RealmSet;
+import ca.mihailistov.lift.Realm.RealmWorkout;
+import io.realm.Realm;
 
 /**
  * Created by mihai on 16-09-04.
@@ -56,19 +65,53 @@ public class LiftFragmentPage extends Fragment {
 
     private ArrayList<ParentObject> generateExercises() {
         ArrayList<ParentObject> parentObjects = new ArrayList<>();
-        List<Exercise> exercises = new ArrayList<Exercise>();
 
-        for(int i=0;i<4;i++){
-            exercises.add(new Exercise());
-        }
-        for (Exercise exercise : exercises) {
-            ArrayList<Object> childList = new ArrayList<>();
-            childList.add(new ExerciseChild("Sep 5, 2016", true));
-            exercise.setChildObjectList(childList);
-            parentObjects.add(exercise);
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DAY_OF_WEEK, mNum-10);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        Realm realm = Realm.getDefaultInstance();
+
+        RealmWorkout realmWorkout = new RealmWorkout();
+        try {
+            realmWorkout = realm.where(RealmWorkout.class)
+                    .equalTo("date", df.format(c.getTime())).findFirst();
+            List<RealmExercise> realmExerciseList = realmWorkout.exercises;
+            List<Exercise> exercises = new ArrayList<Exercise>();
+            List<RealmSet> realmSetList = new ArrayList<>();
+
+            for (int i = 0; i < realmExerciseList.size(); i++) {
+                RealmExerciseData realmExerciseData = realmExerciseList.get(i).realmExerciseData;
+                realmSetList = realmExerciseList.get(i).realmSets;
+
+                ArrayList<Object> childList = new ArrayList<>();
+                for (int j = 0; j < realmSetList.size(); j++) {
+                    childList.add(new ExerciseChild(j + 1, realmSetList.get(j).weight, realmSetList.get(j).reps));
+                }
+                Exercise exercise = new Exercise(realmExerciseData.name);
+                exercise.setChildObjectList(childList);
+                parentObjects.add(exercise);
+            }
+        } catch (Exception e) {
+            Log.e("json error", "error" + e);
         }
         return parentObjects;
     }
+
+//    private ArrayList<ParentObject> generateExercises() {
+//        ArrayList<ParentObject> parentObjects = new ArrayList<>();
+//        List<Exercise> exercises = new ArrayList<Exercise>();
+//
+//        for(int i=0;i<4;i++){
+//            exercises.add(new Exercise());
+//        }
+//        for (Exercise exercise : exercises) {
+//            ArrayList<Object> childList = new ArrayList<>();
+//            childList.add(new ExerciseChild("Sep 5, 2016", true));
+//            exercise.setChildObjectList(childList);
+//            parentObjects.add(exercise);
+//        }
+//        return parentObjects;
+//    }
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {

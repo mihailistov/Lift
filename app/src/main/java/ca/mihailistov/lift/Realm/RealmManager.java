@@ -29,18 +29,18 @@ public class RealmManager extends IntentService {
     protected  void onHandleIntent (Intent intent) {
         if (intent.getExtras() != null) {
             Realm realm = Realm.getDefaultInstance();
-            List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
+            List<RealmExerciseData> realmExerciseDataList = new ArrayList<RealmExerciseData>();
             try {
-                realmExerciseList = loadJsonFromStream();
+                realmExerciseDataList = loadJsonFromStream();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
 
-                final List<RealmExercise> finalRealmExerciseList = realmExerciseList;
+                final List<RealmExerciseData> finalRealmExerciseDataList = realmExerciseDataList;
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        realm.copyToRealm(finalRealmExerciseList);
+                        realm.copyToRealm(finalRealmExerciseDataList);
                     }
                 });
                 new Handler(getMainLooper()).post(new Runnable() {
@@ -71,8 +71,8 @@ public class RealmManager extends IntentService {
         return json;
     }
 
-    private List<RealmExercise> loadJsonFromStream() throws IOException {
-        List<RealmExercise> realmExerciseList = new ArrayList<RealmExercise>();
+    private List<RealmExerciseData> loadJsonFromStream() throws IOException {
+        List<RealmExerciseData> realmExerciseDataList = new ArrayList<RealmExerciseData>();
 
         try {
             JSONObject obj = new JSONObject(loadJSONFromAsset());
@@ -81,66 +81,66 @@ public class RealmManager extends IntentService {
 //            Log.wtf("wtf","# of exercises: "+ exercises.length());
             for (int i=0; i < exercises.length(); i++)
             {
-                RealmExercise realmExercise = new RealmExercise();
+                RealmExerciseData realmExerciseData = new RealmExerciseData();
                 JSONObject exercise = new JSONObject();
                 try {
                     exercise = exercises.getJSONObject(i); // gets a single exercise
 
 //                    Log.wtf("wtf",String.format("\"id\": %d", i+1));
-                    realmExercise.id = i+1;
+                    realmExerciseData.id = i+1;
 
                     // if the exercise has no name, there's no point in importing it into the db
                     if (exercise.has("name") && !exercise.getString("name").isEmpty() &&
                             exercise.getString("name") != null) {
-                        realmExercise.name = exercise.getString("name");
+                        realmExerciseData.name = exercise.getString("name");
 
                         if (exercise.has("rating") && !exercise.getString("rating").isEmpty() &&
                                 exercise.getString("muscle") != null) {
-                            realmExercise.rating = exercise.getString("rating");
+                            realmExerciseData.rating = exercise.getString("rating");
                         }
 
                         if (exercise.has("type") && !exercise.getString("type").isEmpty() &&
                                 exercise.getString("type") != null) {
-                            realmExercise.type = exercise.getString("type");
+                            realmExerciseData.type = exercise.getString("type");
                         }
 
                         if (exercise.has("muscle") && !exercise.getString("muscle").isEmpty() &&
                                 exercise.getString("muscle") != null) {
-                            realmExercise.muscle = exercise.getString("muscle");
+                            realmExerciseData.muscle = exercise.getString("muscle");
                         }
 
                         if (exercise.has("other_muscles") && !exercise.getString("other_muscles").isEmpty() &&
                                 exercise.getString("other_muscles") != null) {
-                            realmExercise.other_muscles = exercise.getString("other_muscles");
+                            realmExerciseData.other_muscles = exercise.getString("other_muscles");
                         }
 
                         if (exercise.has("equipment") && !exercise.getString("equipment").isEmpty() &&
                                 exercise.getString("equipment") != null) {
-                            realmExercise.equipment = exercise.getString("equipment");
+                            realmExerciseData.equipment = exercise.getString("equipment");
                         }
 
                         if (exercise.has("mechanics") && !exercise.getString("mechanics").isEmpty() &&
                                 exercise.getString("mechanics") != null) {
-                            realmExercise.mechanics = exercise.getString("mechanics");
+                            realmExerciseData.mechanics = exercise.getString("mechanics");
                         }
 
                         if (exercise.has("level") && !exercise.getString("level").isEmpty() &&
                                 exercise.getString("muscle") != null) {
-                            realmExercise.level = exercise.getString("level");
+                            realmExerciseData.level = exercise.getString("level");
                         }
 
                         if (exercise.has("force") && !exercise.getString("force").isEmpty() &&
                                 exercise.getString("muscle") != null) {
-                            realmExercise.force = exercise.getString("force");
+                            realmExerciseData.force = exercise.getString("force");
                         }
 
                         if (exercise.has("guide_imgurls") && !exercise.getString("guide_imgurls").isEmpty() &&
                                 exercise.get("guide_imgurls") != null) {
-                            realmExercise.guide_imgurls = exercise.getJSONArray("guide_imgurls").getString(0);
+                            realmExerciseData.guide_imgurls = exercise.getJSONArray("guide_imgurls").getString(0);
                         }
 
-                        realmExercise.sport = exercise.getString("sport");
-                        realmExercise.url = exercise.getString("url");
+                        realmExerciseData.sport = exercise.getString("sport");
+                        realmExerciseData.url = exercise.getString("url");
 
                         RealmList<RealmString> realmGuideItems = new RealmList<RealmString>(); // loop thorugh string arrays for
                         // guide_items, imgurls,
@@ -161,7 +161,7 @@ public class RealmManager extends IntentService {
                         } catch (Exception e) {
 //                            Log.e("json error", "error" + e);
                         } finally {
-                            realmExercise.guide_items = realmGuideItems;
+                            realmExerciseData.guide_items = realmGuideItems;
                         }
 
                         RealmList<RealmString> realmImgurls = new RealmList<RealmString>(); // loop thorugh string arrays for
@@ -183,7 +183,7 @@ public class RealmManager extends IntentService {
                         } catch (Exception e) {
 //                            Log.e("json error", "error" + e);
                         } finally {
-                            realmExercise.imgurls = realmImgurls;
+                            realmExerciseData.imgurls = realmImgurls;
                         }
 
                         RealmList<RealmString> realmNotes = new RealmList<RealmString>(); // loop thorugh string arrays for
@@ -205,11 +205,11 @@ public class RealmManager extends IntentService {
                         } catch (Exception e) {
 //                            Log.e("json error", "error" + e);
                         } finally {
-                            realmExercise.notes = realmNotes;
+                            realmExerciseData.notes = realmNotes;
                         }
 
 
-                        realmExerciseList.add(realmExercise);
+                        realmExerciseDataList.add(realmExerciseData);
                     }
 
 
@@ -221,7 +221,7 @@ public class RealmManager extends IntentService {
         } catch (JSONException e) {
             e.printStackTrace();
         } finally {
-            return realmExerciseList;
+            return realmExerciseDataList;
         }
     }
 }
