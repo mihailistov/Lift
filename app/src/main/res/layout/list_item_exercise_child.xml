@@ -1,55 +1,85 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/childSwipe"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:background="@android:color/white"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:background="@android:color/white">
 
-    <Space
-        android:layout_width="?android:attr/expandableListPreferredChildPaddingLeft"
-        android:layout_height="1dp"/>
-    <TextView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:textSize="18dp"
-        android:textColor="#ffffff"
-        android:id="@+id/childSetNum"
-        android:background="@drawable/bg_set_circle"
-        android:gravity="center_vertical|center_horizontal"
-        />
+    <!-- Delete button to the right-->
+    <LinearLayout
+        android:tag="childBottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:background="@color/greenUpdate"
+            android:scaleType="center"
+            android:src="@drawable/ic_edit"/>
+        <ImageView
+            android:layout_centerInParent="true"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
+            android:layout_height="match_parent"
+            android:background="@color/redDelete"
+            android:scaleType="center"
+            android:src="@drawable/ic_delete"/>
+    </LinearLayout>
 
-    <TextView
-        android:textColor="@android:color/black"
-        android:paddingLeft="15dp"
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:id="@+id/childSetWeight" />
+        android:orientation="horizontal"
+        android:background="@android:color/white"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
 
-    <TextView
-        android:id="@+id/lbsTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:textColor="@color/lighter_gray"
-        android:text=" lbs"/>
+        <Space
+            android:layout_width="?android:attr/expandableListPreferredChildPaddingLeft"
+            android:layout_height="1dp"/>
+        <TextView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:textSize="18dp"
+            android:textColor="#ffffff"
+            android:id="@+id/childSetNum"
+            android:background="@drawable/bg_set_circle"
+            android:gravity="center_vertical|center_horizontal"
+            />
 
-    <TextView
-        android:textColor="@android:color/black"
-        android:paddingLeft="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:id="@+id/childSetReps" />
+        <TextView
+            android:textColor="@android:color/black"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:id="@+id/childSetWeight" />
 
-    <TextView
-        android:id="@+id/repsTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:textColor="@color/lighter_gray"
-        android:text=" reps"/>
+        <TextView
+            android:id="@+id/lbsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="@color/lighter_gray"
+            android:text=" lbs"/>
+
+        <TextView
+            android:textColor="@android:color/black"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:id="@+id/childSetReps" />
+
+        <TextView
+            android:id="@+id/repsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:textColor="@color/lighter_gray"
+            android:text=" reps"/>
 
 
-</LinearLayout>
+    </LinearLayout>
+</com.daimajia.swipe.SwipeLayout>

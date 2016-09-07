@@ -4,11 +4,11 @@ import android.annotation.SuppressLint;
 import android.os.Build;
 import android.view.View;
 import android.view.animation.RotateAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
+import com.daimajia.swipe.SwipeLayout;
 
 /**
  * Created by mihai on 16-09-05.
@@ -37,6 +37,10 @@ public class ExerciseParentViewHolder extends ParentViewHolder {
                 }
             }
         });
+
+        SwipeLayout parentSwipe = (SwipeLayout) itemView.findViewById(R.id.parentSwipe);
+        parentSwipe.setShowMode(SwipeLayout.ShowMode.LayDown);
+        parentSwipe.addDrag(SwipeLayout.DragEdge.Right, parentSwipe.findViewWithTag("parentBottom"));
     }
 
     @SuppressLint("NewApi")

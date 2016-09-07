@@ -2,7 +2,6 @@ package ca.mihailistov.lift;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import java.util.Calendar;
  * Created by mihai on 16-09-04.
  */
 public class LiftFragment extends Fragment {
-    public static ViewPager viewPager;
+    public static NonSwipeableViewPager viewPager;
     public static LiftPagerAdapter adapter = null;
     private CustomTabLayout tabLayout;
 
@@ -29,11 +28,11 @@ public class LiftFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewPager = (ViewPager) view.findViewById(R.id.viewpager);
+        viewPager = (NonSwipeableViewPager) view.findViewById(R.id.viewpager);
         viewPager.setAdapter(new LiftPagerAdapter(getChildFragmentManager()));
         tabLayout = (CustomTabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(10).select();
+        tabLayout.getTabAt(15).select();
 
         Calendar c = Calendar.getInstance();
         TextView calText = (TextView) getActivity().findViewById(R.id.calendar_text);
@@ -43,7 +42,7 @@ public class LiftFragment extends Fragment {
         calText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tabLayout.getTabAt(10).select();
+                tabLayout.getTabAt(15).select();
             }
         });
     }

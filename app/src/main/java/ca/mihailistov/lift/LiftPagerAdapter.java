@@ -32,7 +32,7 @@ public class LiftPagerAdapter extends SmartFragmentStatePagerAdapter {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat dfEEE = new SimpleDateFormat("EEE");
         SimpleDateFormat dfd = new SimpleDateFormat("d");
-        c.add(Calendar.DAY_OF_WEEK, position-10);
+        c.add(Calendar.DAY_OF_WEEK, position-15);
 
         return dfEEE.format(c.getTime()).toUpperCase() + "\n" + dfd.format(c.getTime());
     }

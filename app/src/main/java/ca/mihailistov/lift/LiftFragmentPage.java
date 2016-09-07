@@ -80,7 +80,7 @@ public class LiftFragmentPage extends Fragment {
         ArrayList<ParentListItem> parentObjects = new ArrayList<>();
 
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DAY_OF_WEEK, mNum-10);
+        c.add(Calendar.DAY_OF_WEEK, mNum-15);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         Realm realm = Realm.getDefaultInstance();
 
