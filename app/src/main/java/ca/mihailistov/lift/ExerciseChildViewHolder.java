@@ -24,6 +24,5 @@ public class ExerciseChildViewHolder extends ChildViewHolder {
         SwipeLayout childSwipe = (SwipeLayout) itemView.findViewById(R.id.childSwipe);
         childSwipe.setShowMode(SwipeLayout.ShowMode.LayDown);
         childSwipe.addDrag(SwipeLayout.DragEdge.Right, childSwipe.findViewWithTag("childBottom"));
-
     }
 }

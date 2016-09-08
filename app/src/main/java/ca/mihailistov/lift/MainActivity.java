@@ -14,13 +14,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.facebook.stetho.Stetho;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import ca.mihailistov.lift.Realm.RealmExercise;
 import ca.mihailistov.lift.Realm.RealmExerciseData;

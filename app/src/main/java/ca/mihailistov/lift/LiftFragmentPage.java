@@ -1,5 +1,9 @@
 package ca.mihailistov.lift;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,14 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.GridLayout;
+import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import ca.mihailistov.lift.Realm.RealmExercise;
 import ca.mihailistov.lift.Realm.RealmExerciseData;
@@ -50,12 +59,60 @@ public class LiftFragmentPage extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.lift_fragment_page, container, false);
 
-        ArrayList<ParentListItem> parentListItems = new ArrayList<>();
+        ArrayList<ParentListItem> parentListItems;
         parentListItems = generateExercises();
 
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
+        GridLayout gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
+
+        final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
+        FloatingActionButton addButton = (FloatingActionButton) rootView.findViewById(R.id.add_button);
+        FloatingActionButton editButton = (FloatingActionButton) rootView.findViewById(R.id.edit_button);
+        createCustomAnimation(rootView);
+        menuMultipleActions.setClosedOnTouchOutside(true);
+
+        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (dy >0) {
+                    // Scroll Down
+                    if (menuMultipleActions.isShown()) {
+                        menuMultipleActions.hideMenu(true);
+                    }
+                }
+                else if (dy <0) {
+                    // Scroll Up
+                    if (!menuMultipleActions.isShown()) {
+                        menuMultipleActions.showMenu(true);
+                    }
+                }
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "this is my Toast message!!! =)",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "this is my Toast message!!! =)",
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
 
         if (parentListItems.size() != 0) {
+            rv.setVisibility(View.VISIBLE);
+            gridLayout.setVisibility(View.GONE);
+            menuMultipleActions.showMenu(true);
+
             Log.e("LiftFragmentPage","Found parentObjects to be length" + parentListItems.size());
             rv.setHasFixedSize(true);
 
@@ -68,8 +125,8 @@ public class LiftFragmentPage extends Fragment {
             LinearLayoutManager llm = new LinearLayoutManager(getActivity());
             rv.setLayoutManager(llm);
         } else {
+            menuMultipleActions.hideMenu(true);
             rv.setVisibility(View.GONE);
-            GridLayout gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
             gridLayout.setVisibility(View.VISIBLE);
         }
 
@@ -81,16 +138,15 @@ public class LiftFragmentPage extends Fragment {
 
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_WEEK, mNum-15);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
         Realm realm = Realm.getDefaultInstance();
 
-        RealmWorkout realmWorkout = new RealmWorkout();
+        RealmWorkout realmWorkout;
         try {
             realmWorkout = realm.where(RealmWorkout.class)
                     .equalTo("date", df.format(c.getTime())).findFirst();
             List<RealmExercise> realmExerciseList = realmWorkout.exercises;
-            List<Exercise> exercises = new ArrayList<Exercise>();
-            List<RealmSet> realmSetList = new ArrayList<>();
+            List<RealmSet> realmSetList;
 
             for (int i = 0; i < realmExerciseList.size(); i++) {
                 RealmExerciseData realmExerciseData = realmExerciseList.get(i).realmExerciseData;
@@ -135,5 +191,38 @@ public class LiftFragmentPage extends Fragment {
 //        gridLayout.setVisibility(View.GONE);
 //        TextView textView = (TextView) view.findViewById(R.id.textView1);
 //        textView.setText("Current frag # " + mNum);
+    }
+
+    private void createCustomAnimation(View rootView) {
+        final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
+//        final FloatingActionMenu cancelAction = (FloatingActionMenu) findViewById(R.id.cancel_action);
+
+        AnimatorSet set = new AnimatorSet();
+
+        ObjectAnimator scaleOutX = ObjectAnimator.ofFloat(menuMultipleActions.getMenuIconView(), "scaleX", 1.0f, 0.2f);
+        ObjectAnimator scaleOutY = ObjectAnimator.ofFloat(menuMultipleActions.getMenuIconView(), "scaleY", 1.0f, 0.2f);
+
+        ObjectAnimator scaleInX = ObjectAnimator.ofFloat(menuMultipleActions.getMenuIconView(), "scaleX", 0.2f, 1.0f);
+        ObjectAnimator scaleInY = ObjectAnimator.ofFloat(menuMultipleActions.getMenuIconView(), "scaleY", 0.2f, 1.0f);
+
+        scaleOutX.setDuration(50);
+        scaleOutY.setDuration(50);
+
+        scaleInX.setDuration(150);
+        scaleInY.setDuration(150);
+
+        scaleInX.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                menuMultipleActions.getMenuIconView().setImageResource(menuMultipleActions.isOpened()
+                        ? R.drawable.ic_close : R.drawable.ic_list);
+            }
+        });
+
+        set.play(scaleOutX).with(scaleOutY);
+        set.play(scaleInX).with(scaleInY).after(scaleOutX);
+        set.setInterpolator(new OvershootInterpolator(2));
+
+        menuMultipleActions.setIconToggleAnimatorSet(set);
     }
 }

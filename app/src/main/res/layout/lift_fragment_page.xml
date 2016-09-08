@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_recycler_view"
@@ -68,4 +69,44 @@
             android:padding="10dp"
             android:background="@color/parentColor"/>
     </GridLayout>
-</RelativeLayout>
+
+    <com.github.clans.fab.FloatingActionMenu
+        app:layout_behavior="ca.mihailistov.lift.FloatingActionMenuBehavior"
+        android:id="@+id/fabmenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="visible"
+        fab:menu_colorNormal="@color/colorPrimary"
+        fab:menu_colorPressed="@color/colorPrimaryDark"
+        fab:menu_fab_size="normal"
+        fab:menu_animationDelayPerItem="0"
+        fab:menu_fab_show_animation="@anim/fab_slide_in_from_right"
+        fab:menu_fab_hide_animation="@anim/fab_slide_out_to_right"
+        fab:menu_icon="@drawable/ic_list"
+        fab:menu_labels_style="@style/menu_labels_style"
+        fab:menu_labels_ellipsize="end">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            android:src="@drawable/ic_add"
+            fab:fab_label="Add exercises"
+            fab:fab_size="mini"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            android:src="@drawable/ic_edit"
+            fab:fab_label="Edit workout"
+            fab:fab_size="mini"/>
+
+    </com.github.clans.fab.FloatingActionMenu>
+</android.support.design.widget.CoordinatorLayout>
