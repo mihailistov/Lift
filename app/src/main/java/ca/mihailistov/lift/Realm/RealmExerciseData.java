@@ -2,6 +2,7 @@ package ca.mihailistov.lift.Realm;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
+import io.realm.annotations.Index;
 import io.realm.annotations.PrimaryKey;
 
 /**
@@ -12,8 +13,10 @@ public class RealmExerciseData extends RealmObject {
     @PrimaryKey
     public int id;
     public String name;
+    public String category;
     public String rating;
     public String type;
+    @Index
     public String muscle;
     public String other_muscles;
     public String equipment;

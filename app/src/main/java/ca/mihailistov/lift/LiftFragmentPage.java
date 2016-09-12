@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.GridLayout;
-import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.github.clans.fab.FloatingActionButton;
@@ -62,12 +62,11 @@ public class LiftFragmentPage extends Fragment {
         ArrayList<ParentListItem> parentListItems;
         parentListItems = generateExercises();
 
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
+        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.lift_recycler_view);
         GridLayout gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
 
         final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
         FloatingActionButton addButton = (FloatingActionButton) rootView.findViewById(R.id.add_button);
-        FloatingActionButton editButton = (FloatingActionButton) rootView.findViewById(R.id.edit_button);
         createCustomAnimation(rootView);
         menuMultipleActions.setClosedOnTouchOutside(true);
 
@@ -91,20 +90,12 @@ public class LiftFragmentPage extends Fragment {
             }
         });
 
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "this is my Toast message!!! =)",
-                        Toast.LENGTH_LONG).show();
-            }
-        });
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "this is my Toast message!!! =)",
-                        Toast.LENGTH_LONG).show();
-
+                menuMultipleActions.close(true);
+                Intent intent = new Intent(getActivity(), AddActionActivity.class);
+                startActivity(intent);
             }
         });
 

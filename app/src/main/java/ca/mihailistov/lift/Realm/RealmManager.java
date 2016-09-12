@@ -107,6 +107,19 @@ public class RealmManager extends IntentService {
                         if (exercise.has("muscle") && !exercise.getString("muscle").isEmpty() &&
                                 exercise.getString("muscle") != null) {
                             realmExerciseData.muscle = exercise.getString("muscle");
+
+                            String muscle = exercise.getString("muscle");
+
+                            if (muscle.contains("Back") || muscle.contains("Lats"))
+                                realmExerciseData.category = "Back";
+                            else if (muscle.contains("Abductors") || muscle.contains("Adductors") ||
+                                    muscle.contains("Calves") || muscle.contains("Glutes") ||
+                                    muscle.contains("Hamstrings") || muscle.contains("Quadriceps"))
+                                realmExerciseData.category = "Legs";
+                            else if (muscle.contains("Traps") || muscle.contains("Neck"))
+                                realmExerciseData.category = "Shoulders";
+                            else
+                                realmExerciseData.category = muscle;
                         }
 
                         if (exercise.has("other_muscles") && !exercise.getString("other_muscles").isEmpty() &&

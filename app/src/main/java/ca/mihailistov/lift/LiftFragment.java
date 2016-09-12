@@ -35,6 +35,7 @@ public class LiftFragment extends Fragment {
         tabLayout.getTabAt(15).select();
 
         Calendar c = Calendar.getInstance();
+
         TextView calText = (TextView) getActivity().findViewById(R.id.calendar_text);
         calText.setVisibility(View.VISIBLE);
         calText.setText(String.valueOf(c.get(Calendar.DAY_OF_MONTH)));

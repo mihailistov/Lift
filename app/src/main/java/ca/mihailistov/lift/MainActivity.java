@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         nvDrawer = (NavigationView) findViewById(R.id.nvView);
         setupDrawerContent(nvDrawer);
         selectDrawerItem(nvDrawer.getMenu().getItem(0));
-
     }
 
     private ActionBarDrawerToggle setupDrawerToggle() {

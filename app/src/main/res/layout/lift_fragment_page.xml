@@ -6,69 +6,12 @@
     xmlns:app="http://schemas.android.com/tools">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_recycler_view"
+        android:id="@+id/lift_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </android.support.v7.widget.RecyclerView>
 
-    <GridLayout
-        android:id="@+id/gridLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:rowCount="2"
-        android:columnCount="2"
-        android:visibility="gone">
-        <TextView
-            android:id="@+id/textView1"
-            android:text="search by muscle"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="16dip"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:layout_width="0dp"
-            android:layout_columnWeight="0.5"
-            android:layout_rowWeight="0.5"
-            android:padding="10dp"
-            android:background="@color/parentColor"/>
-        <TextView
-            android:text="select a workout split"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="16dip"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:layout_width="0dp"
-            android:layout_columnWeight="0.5"
-            android:layout_rowWeight="0.5"
-            android:padding="10dp"
-            android:background="@color/parentColor"/>
-        <TextView
-            android:text="search exercises"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="16dip"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:layout_width="0dp"
-            android:layout_columnWeight="0.5"
-            android:layout_rowWeight="0.5"
-            android:padding="10dp"
-            android:background="@color/parentColor"/>
-        <TextView
-            android:text="create a new workout plan"
-            android:textAllCaps="true"
-            android:textColor="@android:color/white"
-            android:textSize="16dip"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:layout_width="0dp"
-            android:layout_columnWeight="0.5"
-            android:layout_rowWeight="0.5"
-            android:padding="10dp"
-            android:background="@color/parentColor"/>
-    </GridLayout>
+    <include layout="@layout/action_grid_layout"/>
 
     <com.github.clans.fab.FloatingActionMenu
         app:layout_behavior="ca.mihailistov.lift.FloatingActionMenuBehavior"
@@ -99,14 +42,16 @@
             fab:fab_size="mini"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/edit_button"
+            android:id="@+id/timer_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
-            android:src="@drawable/ic_edit"
-            fab:fab_label="Edit workout"
+            android:src="@drawable/ic_timer_white_24dp"
+            fab:fab_label="Start timer"
             fab:fab_size="mini"/>
 
     </com.github.clans.fab.FloatingActionMenu>
+
+
 </android.support.design.widget.CoordinatorLayout>
