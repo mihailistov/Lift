@@ -1,5 +1,6 @@
 package ca.mihailistov.lift;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -25,7 +26,9 @@ public class AddActionActivity extends AppCompatActivity {
         searchAll.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(AddActionActivity.this, AddExerciseActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

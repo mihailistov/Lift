@@ -70,7 +70,10 @@ public class MainActivity extends AppCompatActivity {
         prefs = getSharedPreferences("ca.mihailistov.lift", MODE_PRIVATE);
 
         // realm stuff
-        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder(this).build();
+        RealmConfiguration realmConfiguration = new RealmConfiguration
+                .Builder(this)
+                .deleteRealmIfMigrationNeeded()
+                .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         Realm realm = Realm.getDefaultInstance();
 

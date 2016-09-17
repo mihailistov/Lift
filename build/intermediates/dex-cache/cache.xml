@@ -19,7 +19,7 @@
         jar="/Users/mihai/Android/Lift/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="24.0.2"
-        sha1="598b7b271483bf9281957eee4c208e5561caf647">
+        sha1="b7972347afe982124b4469678d01f412905b3a4e">
         <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_3879a57c582d2b4f873bbe84afead33e64c4db11/classes.dex" />
     </item>
     <item
@@ -131,7 +131,7 @@
         jar="/Users/mihai/Android/Lift/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.2"
-        sha1="3f32caaa0f11270ff3c972bea42f46ab36d10183">
+        sha1="c4572f72d4481de35b4f541a6d2723aea968e6f4">
         <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b6121dabce9b0341ced88ffdd10426575139487f/classes.dex" />
     </item>
     <item
