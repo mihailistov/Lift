@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.realm.Realm;
@@ -27,17 +28,37 @@ public class RealmManager extends IntentService {
 
     @Override
     protected  void onHandleIntent (Intent intent) {
-        if (intent.getExtras() != null) {
-            Realm realm = Realm.getDefaultInstance();
-            List<RealmExerciseData> realmExerciseDataList = new ArrayList<RealmExerciseData>();
-            try {
-                realmExerciseDataList = loadJsonFromStream();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
+        Realm realm = Realm.getDefaultInstance();
 
-                final List<RealmExerciseData> finalRealmExerciseDataList = realmExerciseDataList;
+        if (intent.getExtras() != null) {
+            List<RealmExerciseData> realmExerciseDataList = new ArrayList<RealmExerciseData>();
+            List<RealmCategory> defaultRealmCategoryList = new ArrayList<RealmCategory>();
+            try {
+                List<String> newCategoryList = new ArrayList<String>(
+                        Arrays.asList("Abs", "Arms", "Back", "Biceps",
+                                "Chest","Legs","Shoulders","Triceps"));
+
+
+                Log.e("RealmManager",newCategoryList.toString());
+
+                for (int i=0;i<newCategoryList.size(); i++){
+                    RealmCategory newRealmCategory = new RealmCategory();
+                    newRealmCategory.id = i+1;
+                    newRealmCategory.name = newCategoryList.get(i);
+                    defaultRealmCategoryList.add(newRealmCategory);
+                }
+                final List<RealmCategory> finalDefaultRealmCategoryList = defaultRealmCategoryList;
+
                 realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        realm.copyToRealm(finalDefaultRealmCategoryList);
+                    }
+                });
+
+                realmExerciseDataList = loadJsonFromStream();
+                final List<RealmExerciseData> finalRealmExerciseDataList = realmExerciseDataList;
+                realm.executeTransaction(new Realm.Transaction(){
                     @Override
                     public void execute(Realm realm) {
                         realm.copyToRealm(finalRealmExerciseDataList);
@@ -50,7 +71,8 @@ public class RealmManager extends IntentService {
 
                     }
                 });
-                realm.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

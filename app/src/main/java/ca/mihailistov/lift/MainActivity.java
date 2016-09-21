@@ -1,7 +1,6 @@
 package ca.mihailistov.lift;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -30,12 +29,12 @@ import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
 
+    private Realm realm;
     private Menu menu;
     private DrawerLayout mDrawer;
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-    private SharedPreferences prefs = null;
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -54,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (prefs.getBoolean("firstrun", true)) {
+
+        RealmResults<RealmExerciseData> dataQuery = realm.where(RealmExerciseData.class).findAll();
+
+        if (dataQuery.size() == 0) {
             Intent intent = new Intent(this, RealmManager.class);
             intent.putExtra("SOME_KEY", "NOT NULL");
             this.startService(intent);
-            prefs.edit().putBoolean("firstrun", false).commit();
         }
+
     }
 
     @Override
@@ -67,15 +69,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        prefs = getSharedPreferences("ca.mihailistov.lift", MODE_PRIVATE);
-
         // realm stuff
         RealmConfiguration realmConfiguration = new RealmConfiguration
                 .Builder(this)
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
 
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
