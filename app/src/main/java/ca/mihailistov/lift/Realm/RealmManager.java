@@ -27,7 +27,7 @@ public class RealmManager extends IntentService {
     public RealmManager() { super ("RealmManager"); }
 
     @Override
-    protected  void onHandleIntent (Intent intent) {
+    protected void onHandleIntent (Intent intent) {
         Realm realm = Realm.getDefaultInstance();
 
         if (intent.getExtras() != null) {
