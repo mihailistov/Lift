@@ -51,20 +51,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-
-        RealmResults<RealmExerciseData> dataQuery = realm.where(RealmExerciseData.class).findAll();
-
-        if (dataQuery.size() == 0) {
-            Intent intent = new Intent(this, RealmManager.class);
-            intent.putExtra("SOME_KEY", "NOT NULL");
-            this.startService(intent);
-        }
-
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -84,6 +70,14 @@ public class MainActivity extends AppCompatActivity {
                                 .withLimit(1100)
                                 .build())
                         .build());
+
+        RealmResults<RealmExerciseData> dataQuery = realm.where(RealmExerciseData.class).findAll();
+
+        if (dataQuery.size() == 0) {
+            Intent intent = new Intent(this, RealmManager.class);
+            intent.putExtra("SOME_KEY", "NOT NULL");
+            this.startService(intent);
+        }
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
