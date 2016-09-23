@@ -39,7 +39,7 @@ public class AddActionActivity extends AppCompatActivity {
             List<RealmCategory> defaultRealmCategoryList = new ArrayList<RealmCategory>();
 
             List<String> newCategoryList = new ArrayList<String>(
-                    Arrays.asList("Abs", "Arms", "Back", "Biceps",
+                    Arrays.asList("Abs", "Back", "Biceps",
                             "Chest", "Legs", "Shoulders", "Triceps"));
 
 

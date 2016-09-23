@@ -2,6 +2,7 @@
 <resources>
 
     <!--color scheme-->
+    <color name="transparent_eighty_percent">#E6FFFFFF</color>
     <color name="colorPrimary">#34B0BF</color>
     <color name="colorPrimaryDark">#26818C</color>
     <color name="parentColor">#7F9699</color>
