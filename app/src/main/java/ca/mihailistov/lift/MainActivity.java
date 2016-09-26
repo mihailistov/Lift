@@ -14,16 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.facebook.stetho.Stetho;
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-
 import ca.mihailistov.lift.Realm.RealmExercise;
 import ca.mihailistov.lift.Realm.RealmExerciseData;
 import ca.mihailistov.lift.Realm.RealmManager;
 import ca.mihailistov.lift.Realm.RealmSet;
 import ca.mihailistov.lift.Realm.RealmWorkout;
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
@@ -54,22 +50,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // realm stuff
-        RealmConfiguration realmConfiguration = new RealmConfiguration
-                .Builder(this)
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(realmConfiguration);
-        realm = Realm.getDefaultInstance();
-
-        Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
-                                .withLimit(1100)
-                                .build())
-                        .build());
 
         RealmResults<RealmExerciseData> dataQuery = realm.where(RealmExerciseData.class).findAll();
 
