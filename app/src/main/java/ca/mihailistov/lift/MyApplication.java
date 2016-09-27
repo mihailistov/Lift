@@ -24,6 +24,7 @@ public class MyApplication extends Application {
 
         RealmConfiguration config = new RealmConfiguration.Builder(this).build();
         Realm.setDefaultConfiguration(config);
+        Realm.getInstance(config);
 
         Stetho.initialize(
                 Stetho.newInitializerBuilder(this)

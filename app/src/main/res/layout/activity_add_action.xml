@@ -36,7 +36,6 @@
                 android:id="@+id/add_close_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_below="@+id/btnBookK"
                 android:background="@null"
                 android:src="@drawable/ic_close" />
 
