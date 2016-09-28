@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.GridLayout;
+import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.github.clans.fab.FloatingActionButton;
@@ -31,6 +32,8 @@ import ca.mihailistov.lift.Realm.RealmExerciseData;
 import ca.mihailistov.lift.Realm.RealmSet;
 import ca.mihailistov.lift.Realm.RealmWorkout;
 import io.realm.Realm;
+
+import static ca.mihailistov.lift.R.id.search_all;
 
 /**
  * Created by mihai on 16-09-04.
@@ -120,6 +123,15 @@ public class LiftFragmentPage extends Fragment {
             rv.setVisibility(View.GONE);
             gridLayout.setVisibility(View.VISIBLE);
         }
+
+        TextView searchAll = (TextView) rootView.findViewById(search_all);
+        searchAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddExerciseActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }
