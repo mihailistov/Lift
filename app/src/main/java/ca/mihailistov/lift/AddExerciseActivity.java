@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +45,12 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        int screenWidth = (int) (metrics.widthPixels * 0.80);
+
         setContentView(R.layout.activity_add_exercise);
+
+        getWindow().setLayout(screenWidth, RecyclerView.LayoutParams.WRAP_CONTENT); //set below the setContentview
 
         toolbar = (Toolbar) findViewById(R.id.dialog_toolbar);
         setSupportActionBar(toolbar);
@@ -79,10 +85,12 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         TextView textView = (TextView) v.findViewById(R.id.category_text);
         if (DEPTH == 0) {
             String category = textView.getText().toString();
+            exercisesInCat = realm.where(RealmExerciseData.class).equalTo("category",category).findAllSorted("name");
 
             toolbarText.setText(category);
+            exerciseAdapter.notifyDataSetChanged();
 
-
+            DEPTH = 1;
         }
     }
 
