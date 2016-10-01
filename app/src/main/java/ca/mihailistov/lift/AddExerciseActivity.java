@@ -220,13 +220,22 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText.equals("")){
-                        getSupportActionBar().setDisplayShowHomeEnabled(false);
-                        DEPTH = 0;
-                        exerciseAdapter.notifyDataSetChanged();
+//                        getSupportActionBar().setDisplayShowHomeEnabled(false);
+//                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+//                        DEPTH = 0;
+//                        exerciseAdapter.notifyDataSetChanged();
                     } else {
                         exercisesQueried = realm.where(RealmExerciseData.class)
                                 .beginGroup()
-                                .contains("name",newText, Case.INSENSITIVE)
+                                    .contains("name",newText, Case.INSENSITIVE)
+                                    .or()
+                                    .contains("muscle",newText, Case.INSENSITIVE)
+                                    .or()
+                                    .contains("other_muscles",newText, Case.INSENSITIVE)
+                                    .or()
+                                    .contains("equipment",newText, Case.INSENSITIVE)
+                                    .or()
+                                    .contains("force",newText, Case.INSENSITIVE)
                                 .endGroup()
                                 .findAll();
                         DEPTH = -1;

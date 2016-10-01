@@ -17,7 +17,6 @@ public class RealmWorkout extends RealmObject {
     public RealmWorkout() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        date = df.format(c.getTime());
+        this.date = df.format(c.getTime());
     }
-
 }
