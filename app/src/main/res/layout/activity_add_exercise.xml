@@ -1,44 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="508dp"
+    android:orientation="vertical"
     tools:context="ca.mihailistov.lift.AddExerciseActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/dialog_toolbar"
+    <include layout="@layout/toolbar_add_exercise"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <RelativeLayout
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/add_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_alignParentLeft="true"
-                android:id="@+id/add_exercise_title"
-                style="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:layout_alignParentRight="true"
-                android:id="@+id/add_exercise_icon"
-                android:tint="@android:color/white"
-                android:layout_marginRight="16dp"
-                android:src="@drawable/ic_search_black_24px"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
+            android:layout_height="wrap_content" >
+        </android.support.v7.widget.RecyclerView>
+    </ScrollView>
 
-    <android.support.v7.widget.RecyclerView
-        android:layout_below="@id/dialog_toolbar"
-        android:id="@+id/add_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-    </android.support.v7.widget.RecyclerView>
-
-</RelativeLayout>
+</LinearLayout>

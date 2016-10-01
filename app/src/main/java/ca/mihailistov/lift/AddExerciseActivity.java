@@ -1,36 +1,42 @@
 package ca.mihailistov.lift;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ca.mihailistov.lift.Realm.RealmCategory;
 import ca.mihailistov.lift.Realm.RealmExerciseData;
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class AddExerciseActivity extends AppCompatActivity implements  RecyclerViewClickListener {
     private static final String TAG = "AddExerciseActivity";
     private Toolbar toolbar;
-    private TextView toolbarText;
-    private ImageView toolbarIcon;
+    private ImageView toolbarNavArrow;
     private RecyclerView mRecyclerView;
     private ExerciseAdapter exerciseAdapter;
     private Realm realm;
     private RealmResults<RealmCategory> allRealmCategories;
     private RealmResults<RealmExerciseData> exercisesInCat;
+    private RealmResults<RealmExerciseData> exercisesQueried;
 
     /*
     * if DEPTH = 0: displaying CATEGORIES
@@ -45,20 +51,12 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int screenWidth = (int) (metrics.widthPixels * 0.80);
-
         setContentView(R.layout.activity_add_exercise);
-
-        getWindow().setLayout(screenWidth, RecyclerView.LayoutParams.WRAP_CONTENT); //set below the setContentview
 
         toolbar = (Toolbar) findViewById(R.id.dialog_toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        toolbarText = (TextView) findViewById(R.id.add_exercise_title);
-        toolbarText.setText("Choose category");
-        toolbarIcon = (ImageView) findViewById(R.id.add_exercise_icon);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Choose category");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.add_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -78,6 +76,18 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         mRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
         mRecyclerView.setAdapter(exerciseAdapter);
 
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DEPTH = 0;
+                getSupportActionBar().setTitle("Choose category");
+                getSupportActionBar().setDisplayShowHomeEnabled(false);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                exerciseAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
     @Override
@@ -87,10 +97,16 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
             String category = textView.getText().toString();
             exercisesInCat = realm.where(RealmExerciseData.class).equalTo("category",category).findAllSorted("name");
 
-            toolbarText.setText(category);
+            getSupportActionBar().setTitle(category);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             exerciseAdapter.notifyDataSetChanged();
 
             DEPTH = 1;
+        } else if (DEPTH == 1) {
+            String exercise = textView.getText().toString();
+            Toast.makeText(this, "Added exercise: " + exercise, Toast.LENGTH_LONG).show();
+            finish();
         }
     }
 
@@ -115,6 +131,7 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         public void onBindViewHolder(ExerciseHolder holder, int position) {
             String category = null;
             String exercise = null;
+            String exerciseResult = null;
             if (DEPTH == 0) {
                 category = allRealmCategories.get(position).name.toString();
                 holder.bindCategoryList(category);
@@ -122,6 +139,9 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
             else if (DEPTH == 1) {
                 exercise = exercisesInCat.get(position).name.toString();
                 holder.bindCategoryList(exercise);
+            } else if (DEPTH == -1) {
+                exerciseResult = exercisesQueried.get(position).name.toString();
+                holder.bindCategoryList(exerciseResult);
             }
 //            final String finalCategory = category;
 //            final String finalExercise = exercise;
@@ -150,8 +170,10 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         public int getItemCount() {
             if (DEPTH == 0)
                 return allRealmCategories.size();
-            else
+            else if (DEPTH == 1)
                 return exercisesInCat.size();
+            else
+                return exercisesQueried.size();
         }
 
         public class ExerciseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -172,5 +194,49 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
                 itemListener.recyclerViewListClicked(v, this.getLayoutPosition());
             }
         }
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.search_bar, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager) AddExerciseActivity.this.getSystemService(Context.SEARCH_SERVICE);
+
+        SearchView searchView = null;
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+        if (searchView != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(AddExerciseActivity.this.getComponentName()));
+
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    if (newText.equals("")){
+                        getSupportActionBar().setDisplayShowHomeEnabled(false);
+                        DEPTH = 0;
+                        exerciseAdapter.notifyDataSetChanged();
+                    } else {
+                        exercisesQueried = realm.where(RealmExerciseData.class)
+                                .beginGroup()
+                                .contains("name",newText, Case.INSENSITIVE)
+                                .endGroup()
+                                .findAll();
+                        DEPTH = -1;
+                        exerciseAdapter.notifyDataSetChanged();
+                    }
+                    return false;
+                }
+            });
+        }
+
+        return super.onCreateOptionsMenu(menu);
     }
 }
