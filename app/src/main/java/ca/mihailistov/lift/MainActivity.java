@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 if (exercise.has("rating") && !exercise.getString("rating").isEmpty() &&
                                         exercise.getString("muscle") != null) {
-                                    realmExerciseData.rating = exercise.getString("rating");
+                                    realmExerciseData.rating = Double.parseDouble(exercise.getString("rating"));
                                 }
 
                                 if (exercise.has("type") && !exercise.getString("type").isEmpty() &&

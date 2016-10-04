@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,10 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.turingtechnologies.materialscrollbar.AlphabetIndicator;
+import com.turingtechnologies.materialscrollbar.INameableAdapter;
+import com.turingtechnologies.materialscrollbar.TouchScrollBar;
 
 import java.util.ArrayList;
 
@@ -95,12 +100,19 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         TextView textView = (TextView) v.findViewById(R.id.category_text);
         if (DEPTH == 0) {
             String category = textView.getText().toString();
-            exercisesInCat = realm.where(RealmExerciseData.class).equalTo("category",category).findAllSorted("name");
+            exercisesInCat = realm.where(RealmExerciseData.class)
+                    .equalTo("category",category)
+                    .greaterThan("rating",8.0)
+                    .findAllSorted("name");
 
             getSupportActionBar().setTitle(category);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             exerciseAdapter.notifyDataSetChanged();
+
+            TouchScrollBar materialScrollBar = new TouchScrollBar(this, mRecyclerView, true)
+                    .setHandleColourRes(R.color.colorPrimary)
+                    .setIndicator(new AlphabetIndicator(this), false);
 
             DEPTH = 1;
         } else if (DEPTH == 1) {
@@ -110,7 +122,7 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         }
     }
 
-    public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseHolder> {
+    public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseHolder> implements INameableAdapter {
         private Context context;
         private RecyclerViewClickListener itemListener;
 
@@ -176,6 +188,13 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
                 return exercisesQueried.size();
         }
 
+        @Override
+        public Character getCharacterForElement(int element) {
+            Log.e(TAG, "getCharForElement: int element = " + element);
+            Character c = exercisesInCat.get(element).name.charAt(0);
+            return c;
+        }
+
         public class ExerciseHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
             private final TextView textView;
 
@@ -220,12 +239,13 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText.equals("")){
-//                        getSupportActionBar().setDisplayShowHomeEnabled(false);
-//                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//                        DEPTH = 0;
-//                        exerciseAdapter.notifyDataSetChanged();
+                        getSupportActionBar().setDisplayShowHomeEnabled(false);
+                        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                        DEPTH = 0;
+                        exerciseAdapter.notifyDataSetChanged();
                     } else {
                         exercisesQueried = realm.where(RealmExerciseData.class)
+                                .greaterThan("rating",8.0)
                                 .beginGroup()
                                     .contains("name",newText, Case.INSENSITIVE)
                                     .or()

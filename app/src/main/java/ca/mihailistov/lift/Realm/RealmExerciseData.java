@@ -13,7 +13,7 @@ public class RealmExerciseData extends RealmObject {
     public int id;
     public String name;
     public String category;
-    public String rating;
+    public double rating;
     public String type;
     public String muscle;
     public String other_muscles;

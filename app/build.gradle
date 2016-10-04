@@ -39,4 +39,5 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.dmitrymalkovich.android:progress-fab:1.6'
     compile 'com.android.volley:volley:1.0.0'
+    compile 'com.turingtechnologies.materialscrollbar:lib:10.+'
 }

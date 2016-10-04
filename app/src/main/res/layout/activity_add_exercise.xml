@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="508dp"
-    android:orientation="vertical"
     tools:context="ca.mihailistov.lift.AddExerciseActivity">
 
     <include layout="@layout/toolbar_add_exercise"/>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/add_recycler_view"
+            android:layout_below="@+id/dialog_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
         </android.support.v7.widget.RecyclerView>
-    </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>
