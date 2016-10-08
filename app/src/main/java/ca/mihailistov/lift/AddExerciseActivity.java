@@ -2,6 +2,7 @@ package ca.mihailistov.lift;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,10 +25,15 @@ import com.turingtechnologies.materialscrollbar.AlphabetIndicator;
 import com.turingtechnologies.materialscrollbar.INameableAdapter;
 import com.turingtechnologies.materialscrollbar.TouchScrollBar;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 import ca.mihailistov.lift.Realm.RealmCategory;
+import ca.mihailistov.lift.Realm.RealmExercise;
 import ca.mihailistov.lift.Realm.RealmExerciseData;
+import ca.mihailistov.lift.Realm.RealmWorkout;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -49,6 +55,7 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
     * else if DEPTH = -1: displaying SEARCH
     * */
     private int DEPTH = 0;
+    private int mNum;
 
     private ArrayList<String> categoryList;
     @Override
@@ -57,6 +64,9 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_add_exercise);
+
+        Intent intent = getIntent();
+        mNum = intent.getIntExtra("mNum",0);
 
         toolbar = (Toolbar) findViewById(R.id.dialog_toolbar);
         setSupportActionBar(toolbar);
@@ -116,7 +126,47 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
 
             DEPTH = 1;
         } else if (DEPTH == 1) {
-            String exercise = textView.getText().toString();
+            final String exercise = textView.getText().toString();
+
+            RealmWorkout realmWorkout = null;
+
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.DAY_OF_WEEK, mNum-15);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+
+            final String currentDate = df.format(c.getTime());
+
+            try {
+                realmWorkout = realm.where(RealmWorkout.class).equalTo("date", currentDate).findFirst();
+            } catch (Exception e) {
+                Log.e(TAG, "realm error: " + e);
+            }
+
+            if (realmWorkout != null){
+                // add to existing workout
+
+                final RealmExercise newRealmExercise = new RealmExercise();
+
+                RealmExerciseData realmExerciseData = realm.where(RealmExerciseData.class)
+                        .equalTo("name",exercise)
+                        .findFirst();
+
+                newRealmExercise.realmExerciseData = realmExerciseData;
+
+                final RealmWorkout updatedRealmWorkout = realm.where(RealmWorkout.class).equalTo("date", currentDate).findFirst();
+
+                realm.executeTransaction(new Realm.Transaction(){
+                    @Override
+                    public void execute(Realm realm) {
+
+                        RealmExercise realmExercise = realm.copyToRealm(newRealmExercise);
+                        updatedRealmWorkout.exercises.add(realmExercise);
+                    }
+                });
+            } else {
+                // create new workout
+            }
+
             Toast.makeText(this, "Added exercise: " + exercise, Toast.LENGTH_LONG).show();
             finish();
         }

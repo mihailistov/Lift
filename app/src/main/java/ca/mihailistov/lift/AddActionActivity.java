@@ -18,6 +18,9 @@ public class AddActionActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
         setContentView(R.layout.activity_add_action);
 
+        Intent intent = getIntent();
+        final int mNum = intent.getIntExtra("mNum", 0);
+
 //        Realm realm = Realm.getDefaultInstance();
 //
 //        RealmResults<RealmCategory> dataQuery = realm.where(RealmCategory.class).findAll();
@@ -61,6 +64,9 @@ public class AddActionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddActionActivity.this, AddExerciseActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("mNum",mNum);
+                intent.putExtras(b);
                 startActivity(intent);
                 finish();
             }

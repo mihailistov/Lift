@@ -14,8 +14,14 @@ public class ExerciseChildViewHolder extends ChildViewHolder {
     public TextView mExerciseRepsText;
     public TextView mExerciseSetNumText;
 
+    public TextView lbsTv;
+    public TextView repsTv;
+
     public ExerciseChildViewHolder(View itemView) {
         super(itemView);
+
+        lbsTv = (TextView) itemView.findViewById(R.id.lbsTv);
+        repsTv = (TextView) itemView.findViewById(R.id.repsTv);
 
         mExerciseSetNumText = (TextView) itemView.findViewById(R.id.childSetNum);
         mExerciseRepsText = (TextView) itemView.findViewById(R.id.childSetReps);

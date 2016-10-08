@@ -47,8 +47,20 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerAdapter<Exercis
     public void onBindChildViewHolder(ExerciseChildViewHolder exerciseChildViewHolder, int i, Object childObject) {
         ExerciseChild exerciseChild = (ExerciseChild) childObject;
 
-        exerciseChildViewHolder.mExerciseSetNumText.setText(String.format("%d",exerciseChild.getSetNum()));
-        exerciseChildViewHolder.mExerciseWeightText.setText(String.format("%d",exerciseChild.getWeight()));
-        exerciseChildViewHolder.mExerciseRepsText.setText(String.format("%d",exerciseChild.getReps()));
+        int setNum = exerciseChild.getSetNum();
+        int weight = exerciseChild.getWeight();
+        int reps = exerciseChild.getReps();
+
+        if (setNum == 1 && weight == 0 && reps == 0){
+            exerciseChildViewHolder.lbsTv.setText("");
+            exerciseChildViewHolder.repsTv.setText("");
+            exerciseChildViewHolder.mExerciseRepsText.setText("");
+            exerciseChildViewHolder.mExerciseSetNumText.setText("+");
+            exerciseChildViewHolder.mExerciseWeightText.setText("Click to add set.");
+        } else {
+            exerciseChildViewHolder.mExerciseSetNumText.setText(String.format("%d", exerciseChild.getSetNum()));
+            exerciseChildViewHolder.mExerciseWeightText.setText(String.format("%d", exerciseChild.getWeight()));
+            exerciseChildViewHolder.mExerciseRepsText.setText(String.format("%d", exerciseChild.getReps()));
+        }
     }
 }

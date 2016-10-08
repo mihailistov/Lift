@@ -98,6 +98,9 @@ public class LiftFragmentPage extends Fragment {
             public void onClick(View v) {
                 menuMultipleActions.close(true);
                 Intent intent = new Intent(getActivity(), AddActionActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("mNum",mNum);
+                intent.putExtras(b);
                 startActivity(intent);
             }
         });
@@ -156,8 +159,12 @@ public class LiftFragmentPage extends Fragment {
                 realmSetList = realmExerciseList.get(i).realmSets;
 
                 ArrayList<Object> childList = new ArrayList<>();
-                for (int j = 0; j < realmSetList.size(); j++) {
-                    childList.add(new ExerciseChild(j + 1, realmSetList.get(j).weight, realmSetList.get(j).reps));
+                if (realmSetList.size() == 0){
+                    childList.add(new ExerciseChild(1, 0, 0));
+                } else {
+                    for (int j = 0; j < realmSetList.size(); j++) {
+                        childList.add(new ExerciseChild(j + 1, realmSetList.get(j).weight, realmSetList.get(j).reps));
+                    }
                 }
                 Exercise exercise = new Exercise(realmExerciseData.name);
                 exercise.setChildObjectList(childList);
