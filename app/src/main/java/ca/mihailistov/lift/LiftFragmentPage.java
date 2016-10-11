@@ -40,6 +40,7 @@ import static ca.mihailistov.lift.R.id.search_all;
  */
 public class LiftFragmentPage extends Fragment {
     int mNum;
+    private static final String TAG = "LiftFragmentPage";
 
     static LiftFragmentPage newInstance(int num) {
         LiftFragmentPage f = new LiftFragmentPage();
@@ -55,6 +56,7 @@ public class LiftFragmentPage extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNum = getArguments() != null ? getArguments().getInt("num") : 1;
+        Log.e(TAG, "mNum = " + mNum);
     }
 
     @Override
@@ -132,6 +134,9 @@ public class LiftFragmentPage extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AddExerciseActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("mNum",mNum);
+                intent.putExtras(b);
                 startActivity(intent);
             }
         });

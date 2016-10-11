@@ -159,8 +159,14 @@ public class MainActivity extends AppCompatActivity {
                 RealmList<RealmExercise> realmExerciseList = new RealmList<>();
 
                 for (int i=0;i<3;i++){
+                    RealmExerciseData realmExerciseData = null;
+                    try {
+                        realmExerciseData = realmExerciseDataList.get(i);
+                    } catch (Exception e) {
+                        Log.e(TAG, "realm error: " + e);
+                    }
+
                     RealmExercise realmExercise = new RealmExercise();
-                    RealmExerciseData realmExerciseData = realmExerciseDataList.get(i);
                     realmExercise.realmExerciseData = realmExerciseData;
 
                     RealmList<RealmSet> realmSetList = new RealmList<>();

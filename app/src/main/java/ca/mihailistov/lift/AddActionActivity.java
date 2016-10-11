@@ -3,6 +3,7 @@ package ca.mihailistov.lift;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 public class AddActionActivity extends AppCompatActivity {
 
+    private static final String TAG = "AddActionActivity";
+    private int mNum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +22,8 @@ public class AddActionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_action);
 
         Intent intent = getIntent();
-        final int mNum = intent.getIntExtra("mNum", 0);
+        mNum = intent.getIntExtra("mNum", -2);
+        Log.e(TAG, "mNum = " + mNum);
 
 //        Realm realm = Realm.getDefaultInstance();
 //

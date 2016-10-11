@@ -58,6 +58,8 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerAdapter<Exercis
             exerciseChildViewHolder.mExerciseSetNumText.setText("+");
             exerciseChildViewHolder.mExerciseWeightText.setText("Click to add set.");
         } else {
+            exerciseChildViewHolder.lbsTv.setText(" lbs");
+            exerciseChildViewHolder.repsTv.setText(" reps");
             exerciseChildViewHolder.mExerciseSetNumText.setText(String.format("%d", exerciseChild.getSetNum()));
             exerciseChildViewHolder.mExerciseWeightText.setText(String.format("%d", exerciseChild.getWeight()));
             exerciseChildViewHolder.mExerciseRepsText.setText(String.format("%d", exerciseChild.getReps()));

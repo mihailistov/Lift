@@ -36,6 +36,7 @@ import ca.mihailistov.lift.Realm.RealmExerciseData;
 import ca.mihailistov.lift.Realm.RealmWorkout;
 import io.realm.Case;
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 public class AddExerciseActivity extends AppCompatActivity implements  RecyclerViewClickListener {
@@ -66,7 +67,7 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
         setContentView(R.layout.activity_add_exercise);
 
         Intent intent = getIntent();
-        mNum = intent.getIntExtra("mNum",0);
+        mNum = intent.getIntExtra("mNum",-1);
 
         toolbar = (Toolbar) findViewById(R.id.dialog_toolbar);
         setSupportActionBar(toolbar);
@@ -127,10 +128,16 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
             DEPTH = 1;
         } else if (DEPTH == 1) {
             final String exercise = textView.getText().toString();
+            final RealmExercise newRealmExercise = new RealmExercise();
+            RealmExerciseData realmExerciseData = realm.where(RealmExerciseData.class)
+                    .equalTo("name",exercise)
+                    .findFirst();
+            newRealmExercise.realmExerciseData = realmExerciseData;
 
             RealmWorkout realmWorkout = null;
 
             Calendar c = Calendar.getInstance();
+            Log.e(TAG, "mNum = " + mNum);
             c.add(Calendar.DAY_OF_WEEK, mNum-15);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
 
@@ -144,16 +151,7 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
 
             if (realmWorkout != null){
                 // add to existing workout
-
-                final RealmExercise newRealmExercise = new RealmExercise();
-
-                RealmExerciseData realmExerciseData = realm.where(RealmExerciseData.class)
-                        .equalTo("name",exercise)
-                        .findFirst();
-
-                newRealmExercise.realmExerciseData = realmExerciseData;
-
-                final RealmWorkout updatedRealmWorkout = realm.where(RealmWorkout.class).equalTo("date", currentDate).findFirst();
+                final RealmWorkout updatedRealmWorkout = realmWorkout;
 
                 realm.executeTransaction(new Realm.Transaction(){
                     @Override
@@ -165,6 +163,20 @@ public class AddExerciseActivity extends AppCompatActivity implements  RecyclerV
                 });
             } else {
                 // create new workout
+
+                final RealmWorkout newRealmWorkout = new RealmWorkout();
+
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+
+                        RealmExercise realmExercise = realm.copyToRealm(newRealmExercise);
+                        newRealmWorkout.date = currentDate;
+                        newRealmWorkout.exercises = new RealmList<>();
+                        newRealmWorkout.exercises.add(realmExercise);
+                        realm.copyToRealm(newRealmWorkout);
+                    }
+                });
             }
 
             Toast.makeText(this, "Added exercise: " + exercise, Toast.LENGTH_LONG).show();
