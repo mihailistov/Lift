@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.sync;
 
 import android.graphics.Bitmap;
 import android.util.LruCache;
@@ -6,6 +6,8 @@ import android.util.LruCache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+
+import ca.mihailistov.lift.MyApplication;
 
 /**
  * Created by mihai on 2016-09-25.

@@ -8,12 +8,12 @@
     android:id="@+id/lift_fragment"
     android:background="@android:color/white">
 
-    <ca.mihailistov.lift.NonSwipeableViewPager
+    <ca.mihailistov.lift.helpers.NonSwipeableViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
-        <ca.mihailistov.lift.CustomTabLayout
+        <ca.mihailistov.lift.helpers.CustomTabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,6 +26,6 @@
             app:tabPaddingEnd="0dp"
             app:tabGravity="center"
             android:background="@color/colorPrimary"/>
-    </ca.mihailistov.lift.NonSwipeableViewPager>
+    </ca.mihailistov.lift.helpers.NonSwipeableViewPager>
 
 </RelativeLayout>

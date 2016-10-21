@@ -1,4 +1,4 @@
-package ca.mihailistov.lift.Realm;
+package ca.mihailistov.lift.realm;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Required;

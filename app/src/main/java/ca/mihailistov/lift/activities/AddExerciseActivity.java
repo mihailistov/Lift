@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.activities;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -30,16 +30,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import ca.mihailistov.lift.Realm.RealmCategory;
-import ca.mihailistov.lift.Realm.RealmExercise;
-import ca.mihailistov.lift.Realm.RealmExerciseData;
-import ca.mihailistov.lift.Realm.RealmWorkout;
+import ca.mihailistov.lift.R;
+import ca.mihailistov.lift.interfaces.RecyclerViewClickListener;
+import ca.mihailistov.lift.helpers.SimpleDividerItemDecoration;
+import ca.mihailistov.lift.realm.RealmCategory;
+import ca.mihailistov.lift.realm.RealmExercise;
+import ca.mihailistov.lift.realm.RealmExerciseData;
+import ca.mihailistov.lift.realm.RealmWorkout;
 import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
-public class AddExerciseActivity extends AppCompatActivity implements  RecyclerViewClickListener {
+public class AddExerciseActivity extends AppCompatActivity implements RecyclerViewClickListener {
     private static final String TAG = "AddExerciseActivity";
     private Toolbar toolbar;
     private ImageView toolbarNavArrow;

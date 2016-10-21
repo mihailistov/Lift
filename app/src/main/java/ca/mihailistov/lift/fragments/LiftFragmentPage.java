@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -27,10 +27,15 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import ca.mihailistov.lift.Realm.RealmExercise;
-import ca.mihailistov.lift.Realm.RealmExerciseData;
-import ca.mihailistov.lift.Realm.RealmSet;
-import ca.mihailistov.lift.Realm.RealmWorkout;
+import ca.mihailistov.lift.models.Exercise;
+import ca.mihailistov.lift.models.ExerciseChild;
+import ca.mihailistov.lift.R;
+import ca.mihailistov.lift.activities.AddActionActivity;
+import ca.mihailistov.lift.activities.AddExerciseActivity;
+import ca.mihailistov.lift.realm.RealmExercise;
+import ca.mihailistov.lift.realm.RealmExerciseData;
+import ca.mihailistov.lift.realm.RealmSet;
+import ca.mihailistov.lift.realm.RealmWorkout;
 import io.realm.Realm;
 
 import static ca.mihailistov.lift.R.id.search_all;
@@ -42,7 +47,7 @@ public class LiftFragmentPage extends Fragment {
     int mNum;
     private static final String TAG = "LiftFragmentPage";
 
-    static LiftFragmentPage newInstance(int num) {
+    public static LiftFragmentPage newInstance(int num) {
         LiftFragmentPage f = new LiftFragmentPage();
 
         Bundle args = new Bundle();

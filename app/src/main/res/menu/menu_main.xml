@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="ca.mihailistov.lift.MainActivity">
+    tools:context="ca.mihailistov.lift.activities.MainActivity">
     <item
         android:id="@+id/create_data"
         android:orderInCategory="100"

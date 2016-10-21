@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.helpers;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import ca.mihailistov.lift.R;
 
 /**
  * Created by mihai on 2016-09-22.

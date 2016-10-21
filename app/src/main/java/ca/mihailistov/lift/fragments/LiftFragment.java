@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.Calendar;
+
+import ca.mihailistov.lift.helpers.CustomTabLayout;
+import ca.mihailistov.lift.helpers.NonSwipeableViewPager;
+import ca.mihailistov.lift.R;
+import ca.mihailistov.lift.adapters.LiftPagerAdapter;
 
 /**
  * Created by mihai on 16-09-04.

@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.models;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 

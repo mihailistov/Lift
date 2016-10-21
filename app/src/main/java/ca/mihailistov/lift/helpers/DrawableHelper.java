@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.helpers;
 
 import android.content.Context;
 import android.graphics.PorterDuff;

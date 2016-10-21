@@ -14,7 +14,7 @@
     <include layout="@layout/action_grid_layout"/>
 
     <com.github.clans.fab.FloatingActionMenu
-        app:layout_behavior="ca.mihailistov.lift.FloatingActionMenuBehavior"
+        app:layout_behavior="ca.mihailistov.lift.helpers.FloatingActionMenuBehavior"
         android:id="@+id/fabmenu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -26,12 +26,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mihailistov.lift.Realm.RealmCategory;
-import ca.mihailistov.lift.Realm.RealmExercise;
-import ca.mihailistov.lift.Realm.RealmExerciseData;
-import ca.mihailistov.lift.Realm.RealmSet;
-import ca.mihailistov.lift.Realm.RealmString;
-import ca.mihailistov.lift.Realm.RealmWorkout;
+import ca.mihailistov.lift.fragments.LiftFragment;
+import ca.mihailistov.lift.R;
+import ca.mihailistov.lift.sync.VolleySingleton;
+import ca.mihailistov.lift.realm.RealmCategory;
+import ca.mihailistov.lift.realm.RealmExercise;
+import ca.mihailistov.lift.realm.RealmExerciseData;
+import ca.mihailistov.lift.realm.RealmSet;
+import ca.mihailistov.lift.realm.RealmString;
+import ca.mihailistov.lift.realm.RealmWorkout;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;

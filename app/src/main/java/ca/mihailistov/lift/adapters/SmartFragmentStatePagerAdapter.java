@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

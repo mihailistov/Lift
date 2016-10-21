@@ -1,4 +1,4 @@
-package ca.mihailistov.lift.Realm;
+package ca.mihailistov.lift.realm;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

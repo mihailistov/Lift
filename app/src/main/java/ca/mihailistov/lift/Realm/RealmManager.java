@@ -1,4 +1,4 @@
-package ca.mihailistov.lift.Realm;
+package ca.mihailistov.lift.realm;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import ca.mihailistov.lift.VolleySingleton;
+import ca.mihailistov.lift.sync.VolleySingleton;
 import io.realm.Realm;
 import io.realm.RealmList;
 

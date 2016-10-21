@@ -1,9 +1,11 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.adapters;
 
 import android.support.v4.app.FragmentManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import ca.mihailistov.lift.fragments.LiftFragmentPage;
 
 /**
  * Created by mihai on 16-09-05.

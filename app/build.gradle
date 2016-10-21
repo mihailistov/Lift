@@ -40,4 +40,7 @@ dependencies {
     compile 'com.dmitrymalkovich.android:progress-fab:1.6'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.turingtechnologies.materialscrollbar:lib:10.+'
+    compile ('com.h6ah4i.android.widget.advrecyclerview:advrecyclerview:0.9.3@aar'){
+        transitive=true
+    }
 }

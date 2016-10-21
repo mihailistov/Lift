@@ -1,4 +1,4 @@
-package ca.mihailistov.lift;
+package ca.mihailistov.lift.models;
 
 /**
  * Created by mihai on 16-09-05.
