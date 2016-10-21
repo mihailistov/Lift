@@ -27,11 +27,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import ca.mihailistov.lift.models.Exercise;
-import ca.mihailistov.lift.models.ExerciseChild;
 import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.activities.AddActionActivity;
 import ca.mihailistov.lift.activities.AddExerciseActivity;
+import ca.mihailistov.lift.adapters.ExerciseExpandableAdapter;
+import ca.mihailistov.lift.models.Exercise;
+import ca.mihailistov.lift.models.ExerciseChild;
 import ca.mihailistov.lift.realm.RealmExercise;
 import ca.mihailistov.lift.realm.RealmExerciseData;
 import ca.mihailistov.lift.realm.RealmSet;
