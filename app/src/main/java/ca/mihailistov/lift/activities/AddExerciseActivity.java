@@ -1,5 +1,6 @@
 package ca.mihailistov.lift.activities;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -183,6 +184,10 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
             }
 
             Toast.makeText(this, "Added exercise: " + exercise, Toast.LENGTH_LONG).show();
+
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("exerciseAdded",true);
+            setResult(Activity.RESULT_OK, resultIntent);
             finish();
         }
     }

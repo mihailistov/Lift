@@ -1,5 +1,7 @@
 package ca.mihailistov.lift.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -26,15 +28,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.mihailistov.lift.fragments.LiftFragment;
 import ca.mihailistov.lift.R;
-import ca.mihailistov.lift.sync.VolleySingleton;
+import ca.mihailistov.lift.fragments.LiftFragment;
 import ca.mihailistov.lift.realm.RealmCategory;
 import ca.mihailistov.lift.realm.RealmExercise;
 import ca.mihailistov.lift.realm.RealmExerciseData;
 import ca.mihailistov.lift.realm.RealmSet;
 import ca.mihailistov.lift.realm.RealmString;
 import ca.mihailistov.lift.realm.RealmWorkout;
+import ca.mihailistov.lift.sync.VolleySingleton;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -58,12 +60,8 @@ public class MainActivity extends AppCompatActivity {
         realm = Realm.getDefaultInstance();
         RealmResults<RealmExerciseData> dataQuery = realm.where(RealmExerciseData.class).findAll();
 
-        if (dataQuery.size() == 0) {
+        if (dataQuery.size() == 0)
             loadJSONFromWeb();
-//            Intent intent = new Intent(this, RealmManager.class);
-//            intent.putExtra("SOME_KEY", "NOT NULL");
-//            this.startService(intent);
-        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,8 @@ import static ca.mihailistov.lift.R.id.search_all;
 public class LiftFragmentPage extends Fragment {
     int mNum;
     private static final String TAG = "LiftFragmentPage";
+    private RecyclerView rv;
+    private ExerciseExpandableAdapter mExerciseExpandableAdapter;
 
     public static LiftFragmentPage newInstance(int num) {
         LiftFragmentPage f = new LiftFragmentPage();
@@ -56,6 +59,13 @@ public class LiftFragmentPage extends Fragment {
         f.setArguments(args);
 
         return f;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 1001) && (resultCode == Activity.RESULT_OK)) {
+            mExerciseExpandableAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -73,7 +83,7 @@ public class LiftFragmentPage extends Fragment {
         ArrayList<ParentListItem> parentListItems;
         parentListItems = generateExercises();
 
-        RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.lift_recycler_view);
+        rv = (RecyclerView) rootView.findViewById(R.id.lift_recycler_view);
         GridLayout gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
 
         final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
@@ -109,7 +119,7 @@ public class LiftFragmentPage extends Fragment {
                 Bundle b = new Bundle();
                 b.putInt("mNum",mNum);
                 intent.putExtras(b);
-                startActivity(intent);
+                startActivityForResult(intent, 1001);
             }
         });
 
@@ -121,7 +131,7 @@ public class LiftFragmentPage extends Fragment {
             Log.e("LiftFragmentPage","Found parentObjects to be length" + parentListItems.size());
             rv.setHasFixedSize(true);
 
-            ExerciseExpandableAdapter mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
+            mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
 
             rv.setAdapter(mExerciseExpandableAdapter);
 

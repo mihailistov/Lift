@@ -16,8 +16,6 @@ import ca.mihailistov.lift.helpers.ExerciseParentViewHolder;
 import ca.mihailistov.lift.models.Exercise;
 import ca.mihailistov.lift.models.ExerciseChild;
 
-import static ca.mihailistov.lift.R.id.lbsTv;
-
 /**
  * Created by mihai on 16-09-05.
  */
@@ -60,7 +58,7 @@ public class ExerciseExpandableAdapter extends ExpandableRecyclerAdapter<Exercis
         int reps = exerciseChild.getReps();
 
         if (setNum == 1 && weight == 0 && reps == 0){
-            exercise ChildViewHolder.lbsTv.setText("");
+            exerciseChildViewHolder.lbsTv.setText("");
             exerciseChildViewHolder.repsTv.setText("");
             exerciseChildViewHolder.mExerciseRepsText.setText("");
             exerciseChildViewHolder.mExerciseSetNumText.setText("+");

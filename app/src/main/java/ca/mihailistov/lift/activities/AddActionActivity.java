@@ -1,5 +1,6 @@
 package ca.mihailistov.lift.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,17 @@ public class AddActionActivity extends AppCompatActivity {
 
     private static final String TAG = "AddActionActivity";
     private int mNum;
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if ((requestCode == 1001) && (resultCode == Activity.RESULT_OK)) {
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("exerciseAdded", true);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +85,7 @@ public class AddActionActivity extends AppCompatActivity {
                 Bundle b = new Bundle();
                 b.putInt("mNum",mNum);
                 intent.putExtras(b);
-                startActivity(intent);
-                finish();
+                startActivityForResult(intent, 1001);
             }
         });
 
