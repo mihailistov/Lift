@@ -73,7 +73,7 @@ public class RealmManager extends IntentService {
     }
 
     public void loadJSONFromWebBeta() {
-        final String URL = "http://192.168.1.50:3000/exercises";
+        final String URL = "http://192.168.0.136:3000/exercises";
         JsonArrayRequest req = new JsonArrayRequest(URL, new Response.Listener<JSONArray> () {
             @Override
             public void onResponse(JSONArray response) {

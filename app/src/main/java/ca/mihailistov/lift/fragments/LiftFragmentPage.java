@@ -50,6 +50,7 @@ public class LiftFragmentPage extends Fragment {
     private static final String TAG = "LiftFragmentPage";
     private RecyclerView rv;
     private ExerciseExpandableAdapter mExerciseExpandableAdapter;
+    private ArrayList<ParentListItem> parentListItems;
 
     public static LiftFragmentPage newInstance(int num) {
         LiftFragmentPage f = new LiftFragmentPage();
@@ -63,8 +64,24 @@ public class LiftFragmentPage extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == 1001) && (resultCode == Activity.RESULT_OK)) {
-            mExerciseExpandableAdapter.notifyDataSetChanged();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.e(TAG, "LiftFragmentPage mNum = " + mNum + " received onActivityResult");
+                parentListItems.clear();
+                ArrayList<ParentListItem> newParentListItems = generateExercises();
+                parentListItems.addAll(newParentListItems);
+
+                mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
+                rv.setAdapter(mExerciseExpandableAdapter);
+
+                mExerciseExpandableAdapter.expandAllParents();
+
+                LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+                rv.setLayoutManager(llm);
+
+                mExerciseExpandableAdapter.notifyDataSetChanged();
+            }
         }
     }
 
@@ -80,7 +97,6 @@ public class LiftFragmentPage extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.lift_fragment_page, container, false);
 
-        ArrayList<ParentListItem> parentListItems;
         parentListItems = generateExercises();
 
         rv = (RecyclerView) rootView.findViewById(R.id.lift_recycler_view);
@@ -153,7 +169,7 @@ public class LiftFragmentPage extends Fragment {
                 Bundle b = new Bundle();
                 b.putInt("mNum",mNum);
                 intent.putExtras(b);
-                startActivity(intent);
+                startActivityForResult(intent, 1001);
             }
         });
 

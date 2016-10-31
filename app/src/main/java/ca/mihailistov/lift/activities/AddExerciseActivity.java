@@ -185,6 +185,7 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
 
             Toast.makeText(this, "Added exercise: " + exercise, Toast.LENGTH_LONG).show();
 
+            Log.e(TAG, "Finishing AddExerciseActivity with result");
             Intent resultIntent = new Intent();
             resultIntent.putExtra("exerciseAdded",true);
             setResult(Activity.RESULT_OK, resultIntent);

@@ -20,11 +20,14 @@ public class AddActionActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if ((requestCode == 1001) && (resultCode == Activity.RESULT_OK)) {
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("exerciseAdded", true);
-            setResult(Activity.RESULT_OK, resultIntent);
-            finish();
+        if (requestCode == 1001) {
+            if (resultCode == Activity.RESULT_OK) {
+                Log.e(TAG, "Finishing AddActionActivity with result");
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("exerciseAdded", true);
+                setResult(Activity.RESULT_OK, resultIntent);
+                finish();
+            }
         }
     }
 
