@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadJSONFromWeb() {
-        final String categoriesUrl = "http://192.168.0.136:3000/categories";
+        final String categoriesUrl = "http://192.168.1.50:3000/categories";
         JsonArrayRequest categoriesReq = new JsonArrayRequest(categoriesUrl, new Response.Listener<JSONArray> () {
             @Override
             public void onResponse(JSONArray response) {
@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         VolleySingleton.getInstance().getRequestQueue().add(categoriesReq);
 
-        final String exercisesUrl = "http://192.168.0.136:3000/exercises";
+        final String exercisesUrl = "http://192.168.1.50:3000/exercises";
         JsonArrayRequest exercisesReq = new JsonArrayRequest(exercisesUrl, new Response.Listener<JSONArray> () {
             @Override
             public void onResponse(JSONArray response) {

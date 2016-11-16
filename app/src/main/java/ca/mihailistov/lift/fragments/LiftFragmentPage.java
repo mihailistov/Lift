@@ -49,8 +49,10 @@ public class LiftFragmentPage extends Fragment {
     int mNum;
     private static final String TAG = "LiftFragmentPage";
     private RecyclerView rv;
+    private GridLayout gridLayout;
     private ExerciseExpandableAdapter mExerciseExpandableAdapter;
     private ArrayList<ParentListItem> parentListItems;
+    private FloatingActionMenu menuMultipleActions;
 
     public static LiftFragmentPage newInstance(int num) {
         LiftFragmentPage f = new LiftFragmentPage();
@@ -74,6 +76,10 @@ public class LiftFragmentPage extends Fragment {
 
                 mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
                 rv.setAdapter(mExerciseExpandableAdapter);
+
+                gridLayout.setVisibility(View.GONE);
+                menuMultipleActions.showMenu(true);
+                rv.setVisibility(View.VISIBLE);
 
                 mExerciseExpandableAdapter.expandAllParents();
 
@@ -100,9 +106,9 @@ public class LiftFragmentPage extends Fragment {
         parentListItems = generateExercises();
 
         rv = (RecyclerView) rootView.findViewById(R.id.lift_recycler_view);
-        GridLayout gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
+        gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
 
-        final FloatingActionMenu menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
+        menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
         FloatingActionButton addButton = (FloatingActionButton) rootView.findViewById(R.id.add_button);
         createCustomAnimation(rootView);
         menuMultipleActions.setClosedOnTouchOutside(true);
