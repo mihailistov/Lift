@@ -21,7 +21,7 @@
             app:tabIndicatorColor="@android:color/white"
             app:tabTextColor="@color/titleAccent"
             app:tabSelectedTextColor="@android:color/white"
-            app:tabIndicatorHeight="5dip"
+            app:tabIndicatorHeight="2dip"
             app:tabPaddingStart="0dp"
             app:tabPaddingEnd="0dp"
             app:tabGravity="center"

@@ -25,8 +25,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.fragments.LiftFragment;
@@ -152,17 +155,30 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.create_data:
                 Realm realm = Realm.getDefaultInstance();
-                final RealmWorkout realmWorkout = new RealmWorkout();
+
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
+                final String currentDate = df.format(c.getTime());
+
+                RealmWorkout realmWorkout = null;
+                try {
+                    realmWorkout = realm.where(RealmWorkout.class).equalTo("date", currentDate).findFirst();
+                } catch (Exception e) {
+                    Log.e(TAG, "realm error: " + e);
+                }
+
+                if (realmWorkout == null){
+                    // create new workout
+                    realmWorkout = new RealmWorkout();
+                }
 
                 RealmResults<RealmExerciseData> realmExerciseDataList = realm.where(RealmExerciseData.class)
                         .findAll();
 
-                RealmList<RealmExercise> realmExerciseList = new RealmList<>();
-
                 for (int i=0;i<3;i++){
                     RealmExerciseData realmExerciseData = null;
                     try {
-                        realmExerciseData = realmExerciseDataList.get(i);
+                        realmExerciseData = realmExerciseDataList.get(i+30);
                     } catch (Exception e) {
                         Log.e(TAG, "realm error: " + e);
                     }
@@ -179,14 +195,18 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     realmExercise.realmSets =  realmSetList;
-                    realmExerciseList.add(realmExercise);
-                }
-                realmWorkout.exercises = realmExerciseList;
 
+                    if (realmWorkout.exercises == null)
+                        realmWorkout.exercises = new RealmList<RealmExercise>();
+
+                    realmWorkout.exercises.add(realmExercise);
+                }
+
+                final RealmWorkout finalRealmWorkout = realmWorkout;
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
-                        realm.copyToRealm(realmWorkout);
+                        realm.copyToRealm(finalRealmWorkout);
                     }
                 });
                 return true;
