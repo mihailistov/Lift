@@ -32,6 +32,7 @@ import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.activities.AddActionActivity;
 import ca.mihailistov.lift.activities.AddExerciseActivity;
 import ca.mihailistov.lift.adapters.ExerciseExpandableAdapter;
+import ca.mihailistov.lift.interfaces.RecyclerViewClickListener;
 import ca.mihailistov.lift.models.Exercise;
 import ca.mihailistov.lift.models.ExerciseChild;
 import ca.mihailistov.lift.realm.RealmExercise;
@@ -218,22 +219,6 @@ public class LiftFragmentPage extends Fragment {
         }
         return parentObjects;
     }
-
-//    private ArrayList<ParentObject> generateExercises() {
-//        ArrayList<ParentObject> parentObjects = new ArrayList<>();
-//        List<Exercise> exercises = new ArrayList<Exercise>();
-//
-//        for(int i=0;i<4;i++){
-//            exercises.add(new Exercise());
-//        }
-//        for (Exercise exercise : exercises) {
-//            ArrayList<Object> childList = new ArrayList<>();
-//            childList.add(new ExerciseChild("Sep 5, 2016", true));
-//            exercise.setChildObjectList(childList);
-//            parentObjects.add(exercise);
-//        }
-//        return parentObjects;
-//    }
 
     @Override
     public void onViewCreated (View view, Bundle savedInstanceState) {
