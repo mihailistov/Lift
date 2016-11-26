@@ -48,6 +48,7 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
     private static final String TAG = "AddExerciseActivity";
     private Toolbar toolbar;
     private ImageView toolbarNavArrow;
+    private float scale;
     private RelativeLayout relativeLayout;
     private RecyclerView mRecyclerView;
     private ExerciseAdapter exerciseAdapter;
@@ -84,6 +85,8 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
         mRecyclerView = (RecyclerView) findViewById(R.id.add_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        scale = getResources().getDisplayMetrics().density;
+
         realm = Realm.getDefaultInstance();
 
         allRealmCategories = realm.where(RealmCategory.class).findAll();
@@ -104,7 +107,6 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
             public void onClick(View v) {
 
                 DEPTH = 0;
-                final float scale = getResources().getDisplayMetrics().density;
                 int pixels = (int) (376 * scale + 0.5f);
                 relativeLayout.getLayoutParams().height = pixels;
                 getSupportActionBar().setTitle("Choose category");
@@ -131,7 +133,6 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             exerciseAdapter.notifyDataSetChanged();
 
-            final float scale = getResources().getDisplayMetrics().density;
             int pixels = (int) (496 * scale + 0.5f);
             relativeLayout.getLayoutParams().height = pixels;
 
@@ -320,11 +321,15 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     if (newText.equals("")){
+                        int pixels = (int) (376 * scale + 0.5f);
+                        relativeLayout.getLayoutParams().height = pixels;
                         getSupportActionBar().setDisplayShowHomeEnabled(false);
                         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                         DEPTH = 0;
                         exerciseAdapter.notifyDataSetChanged();
                     } else {
+                        int pixels = (int) (496 * scale + 0.5f);
+                        relativeLayout.getLayoutParams().height = pixels;
                         exercisesQueried = realm.where(RealmExerciseData.class)
                                 .greaterThan("rating",8.0)
                                 .beginGroup()

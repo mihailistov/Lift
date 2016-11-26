@@ -15,6 +15,7 @@
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:fontFamily="sans-serif"
+        android:textColor="@android:color/black"
         android:textSize="13sp"
         android:text="Category title" />
     <ImageView

@@ -16,7 +16,7 @@
         <ca.mihailistov.lift.helpers.CustomTabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             app:tabMode="scrollable"
             app:tabIndicatorColor="@android:color/white"
             app:tabTextColor="@color/titleAccent"

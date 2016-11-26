@@ -277,7 +277,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="14357cdebc0632ca6c160c1946d54614a59ed81f">
+        sha1="3521571d862299b74563fb167ba71a32b01ce16a">
         <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_3879a57c582d2b4f873bbe84afead33e64c4db11/classes.dex" />
     </item>
     <item
@@ -304,7 +304,7 @@
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="30c6b239f1e170bc2a6c476255e3cca0433ecb5d">
+        sha1="65686ba624b1a7576f1d5ce00a864b4c4d984c92">
         <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b6121dabce9b0341ced88ffdd10426575139487f/classes.dex" />
     </item>
     <item
