@@ -2,8 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_exercise_relative_layout"
     android:layout_width="match_parent"
-    android:layout_height="508dp"
+    android:layout_height="376dp"
     tools:context="ca.mihailistov.lift.activities.AddExerciseActivity">
 
     <include layout="@layout/toolbar_add_exercise"/>

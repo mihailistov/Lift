@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
     private static final String TAG = "AddExerciseActivity";
     private Toolbar toolbar;
     private ImageView toolbarNavArrow;
+    private RelativeLayout relativeLayout;
     private RecyclerView mRecyclerView;
     private ExerciseAdapter exerciseAdapter;
     private Realm realm;
@@ -78,6 +80,7 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Choose category");
 
+        relativeLayout = (RelativeLayout) findViewById(R.id.add_exercise_relative_layout);
         mRecyclerView = (RecyclerView) findViewById(R.id.add_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -101,6 +104,9 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
             public void onClick(View v) {
 
                 DEPTH = 0;
+                final float scale = getResources().getDisplayMetrics().density;
+                int pixels = (int) (376 * scale + 0.5f);
+                relativeLayout.getLayoutParams().height = pixels;
                 getSupportActionBar().setTitle("Choose category");
                 getSupportActionBar().setDisplayShowHomeEnabled(false);
                 getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -124,6 +130,10 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             exerciseAdapter.notifyDataSetChanged();
+
+            final float scale = getResources().getDisplayMetrics().density;
+            int pixels = (int) (496 * scale + 0.5f);
+            relativeLayout.getLayoutParams().height = pixels;
 
             TouchScrollBar materialScrollBar = new TouchScrollBar(this, mRecyclerView, true)
                     .setHandleColourRes(R.color.colorPrimary)
