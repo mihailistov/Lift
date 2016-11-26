@@ -5,11 +5,15 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/tools">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lift_recycler_view"
+    <ExpandableListView
+        android:id="@+id/lift_expandable_list"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+        android:divider="@null"
+        android:background="@color/white"
+        android:groupIndicator="@drawable/ic_expand_more"
+        android:fastScrollEnabled="false"
+        android:transcriptMode="disabled" />
 
     <include layout="@layout/action_grid_layout"/>
 

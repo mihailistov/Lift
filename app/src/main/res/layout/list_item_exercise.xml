@@ -1,0 +1,24 @@
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/exercise_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="16sp"
+        android:text="Exercise Title"
+        android:textColor="@color/white"
+        android:textAllCaps="true"
+        />
+
+    <ImageView
+        android:id="@+id/exercise_expand_arrow"
+        android:layout_alignRight="@+id/exercise_title"
+        android:layout_width="28.28dp"
+        android:layout_height="28.28dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_expand_more"
+        android:layout_gravity="center"/>
+</RelativeLayout>

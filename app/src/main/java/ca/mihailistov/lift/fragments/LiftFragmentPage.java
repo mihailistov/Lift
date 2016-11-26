@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.ExpandableListView;
 import android.widget.GridLayout;
 import android.widget.TextView;
 
@@ -31,10 +32,8 @@ import java.util.Locale;
 import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.activities.AddActionActivity;
 import ca.mihailistov.lift.activities.AddExerciseActivity;
-import ca.mihailistov.lift.adapters.ExerciseExpandableAdapter;
-import ca.mihailistov.lift.interfaces.RecyclerViewClickListener;
-import ca.mihailistov.lift.models.Exercise;
-import ca.mihailistov.lift.models.ExerciseChild;
+import ca.mihailistov.lift.adapters.LiftExpandableAdapter;
+import ca.mihailistov.lift.adapters.LiftExpandableListAdapter;
 import ca.mihailistov.lift.realm.RealmExercise;
 import ca.mihailistov.lift.realm.RealmExerciseData;
 import ca.mihailistov.lift.realm.RealmSet;
@@ -49,9 +48,9 @@ import static ca.mihailistov.lift.R.id.search_all;
 public class LiftFragmentPage extends Fragment {
     int mNum;
     private static final String TAG = "LiftFragmentPage";
-    private RecyclerView rv;
+    private ExpandableListView elv;
     private GridLayout gridLayout;
-    private ExerciseExpandableAdapter mExerciseExpandableAdapter;
+    private LiftExpandableAdapter liftExpandableAdapter;
     private ArrayList<ParentListItem> parentListItems;
     private FloatingActionMenu menuMultipleActions;
 
@@ -75,7 +74,7 @@ public class LiftFragmentPage extends Fragment {
                 ArrayList<ParentListItem> newParentListItems = generateExercises();
                 parentListItems.addAll(newParentListItems);
 
-                mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
+                liftExpandableAdapter = new LiftExpandableAdapter(getContext(), parentListItems);
                 rv.setAdapter(mExerciseExpandableAdapter);
 
                 gridLayout.setVisibility(View.GONE);
@@ -106,7 +105,7 @@ public class LiftFragmentPage extends Fragment {
 
         parentListItems = generateExercises();
 
-        rv = (RecyclerView) rootView.findViewById(R.id.lift_recycler_view);
+        elv = (ExpandableListView) rootView.findViewById(R.id.lift_expandable_list);
         gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
 
         menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
@@ -183,9 +182,7 @@ public class LiftFragmentPage extends Fragment {
         return rootView;
     }
 
-    private ArrayList<ParentListItem> generateExercises() {
-        ArrayList<ParentListItem> parentObjects = new ArrayList<>();
-
+    private List<RealmExercise> generateExerciseList() {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DAY_OF_WEEK, mNum-15);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.CANADA);
