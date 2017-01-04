@@ -3,363 +3,363 @@
 
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.uphyca/stetho_realm/0.9.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="133ffeebad2a2a0d72cef7683ebc426bd59ede7f">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.uphyca-stetho_realm-0.9.0_b8aa78ce2600f241840a1dc6d99964dbebe6d0c0/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-media-compat-24.2.1_eabd9f6f2be01cfde51123e38d6eb0bad2b2b625/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.volley/volley/1.0.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.volley-volley-1.0.0_61d4f88efdf3920d7ffc714d8fa0fffb06faaf75/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/io.realm/realm-android-library/1.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="15a3e65c92d3cde64c725dba8d590a1123d2d213">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/io.realm-realm-android-library-1.2.0_7e26b24b1dc79c144c37b13056bab271e1ede195/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-compat-24.2.1_0863a86aff0c700a3f8ea225331ea3500b036d66/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/2.0.1/516c03b21d50a644d538de0f0369c620989cd8f0/jsr305-2.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="516c03b21d50a644d538de0f0369c620989cd8f0">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/jsr305-2.0.1_99e967d88fb717f7b1905385413023aeb38da772/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_296c118e3f4126e14f5141c50517602e47a89dc6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="98476622f10715998eacf9240d6b479f12c66143">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/okio-1.6.0_a88d8fc89387c2fc8483f1eaf6a1534323ecfc35/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-24.2.1_b4f66bc27e2121a69776d7a78abff5964d8e7e24/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.dmitrymalkovich.android/progress-fab/1.6/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="908c062ca17506c860d6e327ddb534009afa0f30">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.dmitrymalkovich.android-progress-fab-1.6_f14e5fbcfa579fccc37d49a5099b045e1c2b0281/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.daimajia.swipelayout/library/1.2.0/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="e84b30031d4bab89a2b5c45af4eb9213828524dd">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.daimajia.swipelayout-library-1.2.0_cae6c81b9f0320a7cffd62d2237ea9ed45b75e39/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/io.realm/realm-annotations/1.2.0/5e4042f9e0d39e0d01d4a8661d01e24995b2cbef/realm-annotations-1.2.0.jar"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\io.realm\realm-annotations\1.2.0\5e4042f9e0d39e0d01d4a8661d01e24995b2cbef\realm-annotations-1.2.0.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
         sha1="5e4042f9e0d39e0d01d4a8661d01e24995b2cbef">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/realm-annotations-1.2.0_fd16d70c9d8770e575eebfc87074e2b458b6e657/classes.dex" />
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\realm-annotations-1.2.0_60977a40ca7f3dcd6e4530a9b8684cbd5e77d76e\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/24.2.1/support-annotations-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-24.2.1_123b3332a9d12faf51ba091a07e280169c9ab065/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_aa4ad3085e6785ff38b7ac328b71ce406453681e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_3097b98640661f8f30b4b501657c8631f88f969d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.getkeepsafe.relinker/relinker/1.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="264f0bc4c0680cfe7a60fea1f12a43f1ab48e7c8">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.getkeepsafe.relinker-relinker-1.2.1_224b5eb72921b8b0409d4cc10885765ada06acc0/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-animated-vector-drawable-24.2.1_2fefcb3f4c5801059e66cace95b0fefb7a09aa1d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/design/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-design-24.2.1_46e1b62055a792b836bee7de570f968e1acb47bf/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.nshmura/recyclertablayout/1.0.2/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="6a9d93942d44166050cea96e0e32a30a8a29bc8c">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.nshmura-recyclertablayout-1.0.2_ff151f6d865b085b10b493f2606fc0d6da83e791/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.bignerdranch.android/expandablerecyclerview/2.1.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="60430e47e1fb0be5502390f96a0a4c7f0b4fcb3e">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.bignerdranch.android-expandablerecyclerview-2.1.1_34a3f71b269dc1b541448a98b69e0dd9dfa4ebf6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-compat/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_e96083dd5eb6298048a3547715d57c117daa559e/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.2.1/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
         sha1="43b2dba6b5a0b14527961b75329d0b90025f15ea">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-appcompat-v7-24.2.1_583dbe695f85658fcdea4c7be3fbd855a11fda41/classes.dex" />
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-24.2.1_97be76eaa9298133a8261dcc434285e5f16c245b\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-fragment/24.2.1/jars/classes.jar"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\2.0.1\516c03b21d50a644d538de0f0369c620989cd8f0\jsr305-2.0.1.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-fragment-24.2.1_2f442f8be6fb20176007ad7bdb14c26f18a8e3c0/classes.dex" />
+        sha1="516c03b21d50a644d538de0f0369c620989cd8f0">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\jsr305-2.0.1_18d21f37bbaac3f4e601c1f9ee60f09d45021787\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.turingtechnologies.materialscrollbar/lib/10.1.4/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\io.realm\realm-android-library\1.2.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="217f7bb1d8656234f84d4d1c3d5a9220d6ab4ce0">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.turingtechnologies.materialscrollbar-lib-10.1.4_72509697d14af791b76fe4c5fb5beee9b11a40b0/classes.dex" />
+        sha1="15a3e65c92d3cde64c725dba8d590a1123d2d213">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\io.realm-realm-android-library-1.2.0_4b6bbefadbf9e64cb8218041502276c0d721a1ad\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.2/2bf96b7aa8b611c177d329452af1dc933e14501c/commons-cli-1.2.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="2bf96b7aa8b611c177d329452af1dc933e14501c">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/commons-cli-1.2_78fa93d92010e60ea778622336d1eb50df11b2f6/classes.dex" />
+        sha1="532c3ab70a52888c98732633b0feb6d02fec0ea1">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_557b3134eb7e89986961fa381ad3908e62cc3a75\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.0.1/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.volley\volley\1.0.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="39ae02ce40c3ac828abbf780ce0ff5d7a28b7d6a">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-cardview-v7-23.0.1_fb85abbec8f3c2060086aa059181b600d96e73dd/classes.dex" />
+        sha1="2cd4b982617e544728de0782d718a58ce1b06e3f">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.volley-volley-1.0.0_521cdcea86de8771cbfcf71a8220ecf757ae5855\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.wang.avi/library/2.1.3/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="e699699fae0092703de1d02b217f43803d0f7e0a">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.wang.avi-library-2.1.3_66ef2de932c107b425c57bb40317d02296cf4bed/classes.dex" />
+        sha1="7e4389bd133359a2ff88623ff1e4ff93d6e6f780">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_bbaf4996069beabcdf157ac7fcdb5db6de60d5fd\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.3.1/ecb6e1f8e4b0e84c4b886c2f14a1500caf309757/gson-2.3.1.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/gson-2.3.1_0ad386acbc12628c3afabc942fa7affe4e147ebc/classes.dex" />
+        sha1="3abb05958d1960e391c7428307b72d12ab8a09e7">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_e3e31fc20d95c5bc0ab7abf1a650b587ca7075fc\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.2.1/jars/classes.jar"
+        jar="C:\Users\mihai\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.2.1\support-annotations-24.2.1.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-v4-24.2.1_86282c74fdb6870579584ce5be85a151fb2a8153/classes.dex" />
+        sha1="8de3aafecbdf98a61db6427f008f2d515bcd2544">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.2.1_ad3a5cb65095277c373e5dc39c6de9adc10acd02\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.h6ah4i.android.widget.advrecyclerview/advrecyclerview/0.9.3/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.daimajia.swipelayout\library\1.2.0\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="05986b15a4754a243ade3c5d075db8a0f539b888">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.h6ah4i.android.widget.advrecyclerview-advrecyclerview-0.9.3_d5d4d33ac78fcbe1b8fd504e36ddbc72c64199ac/classes.dex" />
+        sha1="e84b30031d4bab89a2b5c45af4eb9213828524dd">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.daimajia.swipelayout-library-1.2.0_f347aa52d1bd5f0819fe03721be56e128210b353\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\design\24.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="3521571d862299b74563fb167ba71a32b01ce16a">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_3879a57c582d2b4f873bbe84afead33e64c4db11/classes.dex" />
+        sha1="e03f47f3d1017a093bb3239d4ec47c3447f40744">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-design-24.2.1_2928912ecbcc34f1ebf3a81011c054c960b4d90e\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.github.clans/fab/1.6.4/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.nshmura\recyclertablayout\1.0.2\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
-        sha1="1c3b9743fe8bb166a90a7e98b9b9f1f8021d80cd">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.github.clans-fab-1.6.4_9fed3ea7e89b61de91a2ea8fbede22a8b03e55cb/classes.dex" />
+        sha1="6a9d93942d44166050cea96e0e32a30a8a29bc8c">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.nshmura-recyclertablayout-1.0.2_4e0a782a9f592833caf3e9f8662f0319b42d3ec9\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho/1.3.1/2c4076b466a0eb4d6ddf5721edd35cd1adc1f317/stetho-1.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="2c4076b466a0eb4d6ddf5721edd35cd1adc1f317">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/stetho-1.3.1_5331547b94eadca8b1291f65bd6353458945c85d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="65686ba624b1a7576f1d5ce00a864b4c4d984c92">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_b6121dabce9b0341ced88ffdd10426575139487f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.1/jars/libs/internal_impl-24.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="867dad63c33388ff8c7644b236579355036d075f">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-24.2.1_67f15730075846597508eca0f672cd145f46b089/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-utils-24.2.1_14289f1c2dac8f96ae52acd1f9b29f9f8f56fb0b/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/com.facebook.stetho/stetho-okhttp3/1.3.1/c596b3b33b5a92107bb70544bb5ee35f597bc6d8/stetho-okhttp3-1.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="c596b3b33b5a92107bb70544bb5ee35f597bc6d8">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/stetho-okhttp3-1.3.1_22fd8781280cae3fea85b5bf6d7c2aa8be41bb89/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/24.2.1/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="24.0.2"
-        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-core-ui-24.2.1_d84bb073d5bd9e1eadd3ab5309b5d5b62a1975bd/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/mihai/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.0.1/b34c1f2d993044656e87f88970b6818e99e886ba/okhttp-3.0.1.jar"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.0.1\b34c1f2d993044656e87f88970b6818e99e886ba\okhttp-3.0.1.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
         sha1="b34c1f2d993044656e87f88970b6818e99e886ba">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/okhttp-3.0.1_6b8d9062e186c27386aeec7aa953f0eff5874399/classes.dex" />
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\okhttp-3.0.1_db881309367fd3b6ea428b6cb6887596f0def551\classes.dex" />
     </item>
     <item
         is-multidex="true"
-        jar="/Users/mihai/Android/Lift/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.2.1/jars/classes.jar"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.uphyca\stetho_realm\0.9.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="133ffeebad2a2a0d72cef7683ebc426bd59ede7f">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.uphyca-stetho_realm-0.9.0_521b88ea6f83c122ec8b4076b3b26417e7b098ca\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\com.facebook.stetho\stetho\1.3.1\2c4076b466a0eb4d6ddf5721edd35cd1adc1f317\stetho-1.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="2c4076b466a0eb4d6ddf5721edd35cd1adc1f317">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\stetho-1.3.1_e8ba6da3e2aac50b10ac62765c514ae9c5545610\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\commons-cli\commons-cli\1.2\2bf96b7aa8b611c177d329452af1dc933e14501c\commons-cli-1.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="2bf96b7aa8b611c177d329452af1dc933e14501c">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\commons-cli-1.2_5c0fe8dbef6075ff9872dd26169f07daa946516a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.getkeepsafe.relinker\relinker\1.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="264f0bc4c0680cfe7a60fea1f12a43f1ab48e7c8">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.getkeepsafe.relinker-relinker-1.2.1_5e65be291d9f53fec431e9071f36735375f37020\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.dmitrymalkovich.android\progress-fab\1.6\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="908c062ca17506c860d6e327ddb534009afa0f30">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.dmitrymalkovich.android-progress-fab-1.6_941ddd831becd38a20757995c89c0bafd94a0b77\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\com.google.code.gson\gson\2.3.1\ecb6e1f8e4b0e84c4b886c2f14a1500caf309757\gson-2.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="ecb6e1f8e4b0e84c4b886c2f14a1500caf309757">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\gson-2.3.1_0462661fb9315980bf1cd3dc48111066940895ed\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="fbf8da429efd5ad21e02e3e5ecaa1efc4167878d">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_e499afa525281cfc03ea18254cfc0c8c7675126a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="867dad63c33388ff8c7644b236579355036d075f">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_80b5005193efd9d2a10e660cd91f8420af300f91\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="935a969265b2a166b2d20415423f5f6e90fe16e0">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_b3dcbc583ee3b41c625ef72387be1fa01e73aa35\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="e7f3132168957eefc46229fc32c3bd464642b71e">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-ui-24.2.1_e6639023f9e7c276812dc80eb13f58ed4ce51534\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.turingtechnologies.materialscrollbar\lib\10.1.4\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="217f7bb1d8656234f84d4d1c3d5a9220d6ab4ce0">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.turingtechnologies.materialscrollbar-lib-10.1.4_6e82e8a02e01c27d081dd5bc9771544f26694b5e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-v4\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.2.1_58246dd994b8cbd019fb3aed2d9f1dab13ba273e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="b9a1ac78ad7ef3abedc4a4b30cd92bcacb939d1f">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-fragment-24.2.1_cc2ce5ff127f1f31cd9f1d25ee780bcffed749f0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.github.clans\fab\1.6.4\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="1c3b9743fe8bb166a90a7e98b9b9f1f8021d80cd">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.github.clans-fab-1.6.4_52193be146f4eaf850a6c37c3e6fa5dfcdbc432d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="94bc1dfb84dcc8b6f6f8f7cc726d7b2dd39c1574">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-24.2.1_5fdaec78afb9fad5af48a3a35ee94b4b50c8f15e\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="09b462bbcb77650284bd6614f1a32f360ef369f8">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-media-compat-24.2.1_68f05cadeae14fb28c9434cc3efe5d84593e1dd2\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="7521486d9bfd2cd9e756e0cf75ed7d97f2ce2d3b">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-24.2.1_aa369a7c316e91bac231db6d0c87b6dde56a757c\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.2.1\jars\classes.jar"
         jumboMode="true"
         optimize="true"
         revision="24.0.2"
         sha1="d5c731fc64c03dfe04d51134955b483551c35849">
-        <dex dex="/Users/mihai/Android/Lift/app/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-support-vector-drawable-24.2.1_0af6383a095ea52a61a372a690c52c97893e0a29/classes.dex" />
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-24.2.1_6acca77728ede17d06b5efae36b465efbb4edd5a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\23.0.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="39ae02ce40c3ac828abbf780ce0ff5d7a28b7d6a">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-cardview-v7-23.0.1_a71bf3160a9deb034ec746af5c3d7c94cc1d5c93\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.h6ah4i.android.widget.advrecyclerview\advrecyclerview\0.9.3\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="05986b15a4754a243ade3c5d075db8a0f539b888">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.h6ah4i.android.widget.advrecyclerview-advrecyclerview-0.9.3_86794a86001b61237b1c9f5d55b672c9b201034a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="9c4c3bc902450c39ed54de170db4fb12aea20a35">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-core-utils-24.2.1_b28ba0d52f4075bf78605b379efb26c9c4d48135\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-fragment\24.2.1\jars\libs\internal_impl-24.2.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="5f64d657e838e8375135c0f6057a7ff8fab6a50e">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.2.1_0d297c35ab0650498c286fd6ef479b7517e232bb\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.bignerdranch.android\expandablerecyclerview\2.1.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="60430e47e1fb0be5502390f96a0a4c7f0b4fcb3e">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.bignerdranch.android-expandablerecyclerview-2.1.1_6be45c872b246ee091b3e3a18f6675f73a8e2662\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\com.facebook.stetho\stetho-okhttp3\1.3.1\c596b3b33b5a92107bb70544bb5ee35f597bc6d8\stetho-okhttp3-1.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="c596b3b33b5a92107bb70544bb5ee35f597bc6d8">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\stetho-okhttp3-1.3.1_8fd396cb0e69623414e35d55d24094aad2d1d1a0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.wang.avi\library\2.1.3\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="e699699fae0092703de1d02b217f43803d0f7e0a">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.wang.avi-library-2.1.3_98ebb4c98da841f95f67e89146aa24a4509cc900\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\Android\Lift\app\build\intermediates\exploded-aar\com.android.support\support-compat\24.2.1\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="0ecb4b595fa0f0f8018a149ace3ea6525624f94e">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-compat-24.2.1_eff743e11772daece01c3ea8fe9a28420896b251\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\mihai\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.6.0\98476622f10715998eacf9240d6b479f12c66143\okio-1.6.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="24.0.2"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="C:\Users\mihai\Android\Lift\app\build\intermediates\transforms\dex\debug\folders\1000\10\okio-1.6.0_db46d38fbe3ad0275f4cf024fa92d0926d9d046c\classes.dex" />
     </item>
 
 </items>

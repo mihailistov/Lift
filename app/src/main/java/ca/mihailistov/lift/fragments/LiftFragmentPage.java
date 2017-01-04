@@ -5,18 +5,22 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ExpandableListView;
 import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
@@ -33,7 +37,6 @@ import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.activities.AddActionActivity;
 import ca.mihailistov.lift.activities.AddExerciseActivity;
 import ca.mihailistov.lift.adapters.LiftExpandableAdapter;
-import ca.mihailistov.lift.adapters.LiftExpandableListAdapter;
 import ca.mihailistov.lift.realm.RealmExercise;
 import ca.mihailistov.lift.realm.RealmExerciseData;
 import ca.mihailistov.lift.realm.RealmSet;
@@ -50,9 +53,9 @@ public class LiftFragmentPage extends Fragment {
     private static final String TAG = "LiftFragmentPage";
     private ExpandableListView elv;
     private GridLayout gridLayout;
-    private LiftExpandableAdapter liftExpandableAdapter;
-    private ArrayList<ParentListItem> parentListItems;
+    private List<RealmExercise> realmExerciseList;
     private FloatingActionMenu menuMultipleActions;
+    private LiftExpandableAdapter liftExpandableAdapter;
 
     public static LiftFragmentPage newInstance(int num) {
         LiftFragmentPage f = new LiftFragmentPage();
@@ -70,23 +73,19 @@ public class LiftFragmentPage extends Fragment {
         if (requestCode == 1001) {
             if (resultCode == Activity.RESULT_OK) {
                 Log.e(TAG, "LiftFragmentPage mNum = " + mNum + " received onActivityResult");
-                parentListItems.clear();
-                ArrayList<ParentListItem> newParentListItems = generateExercises();
-                parentListItems.addAll(newParentListItems);
 
-                liftExpandableAdapter = new LiftExpandableAdapter(getContext(), parentListItems);
-                rv.setAdapter(mExerciseExpandableAdapter);
+                realmExerciseList = generateExerciseList();
 
                 gridLayout.setVisibility(View.GONE);
                 menuMultipleActions.showMenu(true);
-                rv.setVisibility(View.VISIBLE);
+                elv.setVisibility(View.VISIBLE);
 
-                mExerciseExpandableAdapter.expandAllParents();
-
-                LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-                rv.setLayoutManager(llm);
-
-                mExerciseExpandableAdapter.notifyDataSetChanged();
+                if (liftExpandableAdapter != null)
+                    liftExpandableAdapter.notifyDataSetChanged();
+                else {
+                    liftExpandableAdapter = new LiftExpandableAdapter(getContext(), realmExerciseList);
+                    elv.setAdapter(liftExpandableAdapter);
+                }
             }
         }
     }
@@ -103,35 +102,16 @@ public class LiftFragmentPage extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.lift_fragment_page, container, false);
 
-        parentListItems = generateExercises();
+        realmExerciseList = generateExerciseList();
 
         elv = (ExpandableListView) rootView.findViewById(R.id.lift_expandable_list);
+
         gridLayout = (GridLayout) rootView.findViewById(R.id.gridLayout);
 
         menuMultipleActions = (FloatingActionMenu) rootView.findViewById(R.id.fabmenu);
         FloatingActionButton addButton = (FloatingActionButton) rootView.findViewById(R.id.add_button);
         createCustomAnimation(rootView);
         menuMultipleActions.setClosedOnTouchOutside(true);
-
-        rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx,int dy){
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (dy >0) {
-                    // Scroll Down
-                    if (menuMultipleActions.isShown()) {
-                        menuMultipleActions.hideMenu(true);
-                    }
-                }
-                else if (dy <0) {
-                    // Scroll Up
-                    if (!menuMultipleActions.isShown()) {
-                        menuMultipleActions.showMenu(true);
-                    }
-                }
-            }
-        });
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,25 +125,17 @@ public class LiftFragmentPage extends Fragment {
             }
         });
 
-        if (parentListItems.size() != 0) {
-            rv.setVisibility(View.VISIBLE);
+        if (realmExerciseList != null && realmExerciseList.size() != 0) {
+            elv.setVisibility(View.VISIBLE);
             gridLayout.setVisibility(View.GONE);
             menuMultipleActions.showMenu(true);
 
-            Log.e("LiftFragmentPage","Found parentObjects to be length" + parentListItems.size());
-            rv.setHasFixedSize(true);
+            liftExpandableAdapter = new LiftExpandableAdapter(getContext(), realmExerciseList);
+            elv.setAdapter(liftExpandableAdapter);
 
-            mExerciseExpandableAdapter = new ExerciseExpandableAdapter(getContext(), parentListItems);
-
-            rv.setAdapter(mExerciseExpandableAdapter);
-
-            mExerciseExpandableAdapter.expandAllParents();
-
-            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
-            rv.setLayoutManager(llm);
         } else {
             menuMultipleActions.hideMenu(true);
-            rv.setVisibility(View.GONE);
+            elv.setVisibility(View.GONE);
             gridLayout.setVisibility(View.VISIBLE);
         }
 
@@ -189,32 +161,15 @@ public class LiftFragmentPage extends Fragment {
         Realm realm = Realm.getDefaultInstance();
 
         RealmWorkout realmWorkout;
+        List<RealmExercise> realmExerciseList = null;
         try {
             realmWorkout = realm.where(RealmWorkout.class)
                     .equalTo("date", df.format(c.getTime())).findFirst();
-            List<RealmExercise> realmExerciseList = realmWorkout.exercises;
-            List<RealmSet> realmSetList;
-
-            for (int i = 0; i < realmExerciseList.size(); i++) {
-                RealmExerciseData realmExerciseData = realmExerciseList.get(i).realmExerciseData;
-                realmSetList = realmExerciseList.get(i).realmSets;
-
-                ArrayList<Object> childList = new ArrayList<>();
-                if (realmSetList.size() == 0){
-                    childList.add(new ExerciseChild(1, 0, 0));
-                } else {
-                    for (int j = 0; j < realmSetList.size(); j++) {
-                        childList.add(new ExerciseChild(j + 1, realmSetList.get(j).weight, realmSetList.get(j).reps));
-                    }
-                }
-                Exercise exercise = new Exercise(realmExerciseData.name);
-                exercise.setChildObjectList(childList);
-                parentObjects.add(exercise);
-            }
+            realmExerciseList = realmWorkout.exercises;
         } catch (Exception e) {
             Log.e("json error", "error" + e);
         }
-        return parentObjects;
+        return realmExerciseList;
     }
 
     @Override
@@ -226,6 +181,13 @@ public class LiftFragmentPage extends Fragment {
 //        gridLayout.setVisibility(View.GONE);
 //        TextView textView = (TextView) view.findViewById(R.id.textView1);
 //        textView.setText("Current frag # " + mNum);
+    }
+
+    public int GetPixelFromDips(float pixels) {
+        // Get the screen's density scale
+        final float scale = getResources().getDisplayMetrics().density;
+        // Convert the dps to pixels, based on density scale
+        return (int) (pixels * scale + 0.5f);
     }
 
     private void createCustomAnimation(View rootView) {

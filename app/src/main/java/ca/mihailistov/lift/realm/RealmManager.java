@@ -2,6 +2,7 @@ package ca.mihailistov.lift.realm;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.sync.VolleySingleton;
 import io.realm.Realm;
 import io.realm.RealmList;
@@ -73,7 +75,7 @@ public class RealmManager extends IntentService {
     }
 
     public void loadJSONFromWebBeta() {
-        final String URL = "http://192.168.0.136:3000/exercises";
+        final String URL = getResources().getString(R.string.url_exercises);
         JsonArrayRequest req = new JsonArrayRequest(URL, new Response.Listener<JSONArray> () {
             @Override
             public void onResponse(JSONArray response) {
@@ -104,7 +106,7 @@ public class RealmManager extends IntentService {
     }
 
     public void loadJSONFromWeb() {
-        String url = "http://192.168.1.50:3000/exercises";
+        String url = getResources().getString(R.string.url_exercises);
 
         Log.d(TAG, "Attempting to create JsonArrayRequest...");
         JsonArrayRequest jsonObjectRequest = new JsonArrayRequest(url,

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:divider="@null"
         android:background="@color/white"
-        android:groupIndicator="@drawable/ic_expand_more"
+        android:groupIndicator="@null"
         android:fastScrollEnabled="false"
         android:transcriptMode="disabled" />
 

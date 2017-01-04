@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         Log.e(TAG, "realm error: " + e);
                     }
 
-                    RealmExercise realmExercise = new RealmExercise();
+                    final RealmExercise realmExercise = new RealmExercise();
                     realmExercise.realmExerciseData = realmExerciseData;
 
                     RealmList<RealmSet> realmSetList = new RealmList<>();
@@ -199,16 +199,22 @@ public class MainActivity extends AppCompatActivity {
                     if (realmWorkout.exercises == null)
                         realmWorkout.exercises = new RealmList<RealmExercise>();
 
-                    realmWorkout.exercises.add(realmExercise);
+                    final RealmWorkout finalRealmWorkout = realmWorkout;
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            finalRealmWorkout.exercises.add(realmExercise);
+                        }
+                    });
                 }
 
-                final RealmWorkout finalRealmWorkout = realmWorkout;
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.copyToRealm(finalRealmWorkout);
-                    }
-                });
+//                final RealmWorkout finalRealmWorkout = realmWorkout;
+//                realm.executeTransaction(new Realm.Transaction() {
+//                    @Override
+//                    public void execute(Realm realm) {
+//                        realm.copyToRealm(finalRealmWorkout);
+//                    }
+//                });
                 return true;
         }
 
@@ -216,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadJSONFromWeb() {
-        final String categoriesUrl = "http://192.168.1.50:3000/categories";
+        final String categoriesUrl = getResources().getString(R.string.url_categories);
         JsonArrayRequest categoriesReq = new JsonArrayRequest(categoriesUrl, new Response.Listener<JSONArray> () {
             @Override
             public void onResponse(JSONArray response) {
@@ -251,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
 
         VolleySingleton.getInstance().getRequestQueue().add(categoriesReq);
 
-        final String exercisesUrl = "http://192.168.1.50:3000/exercises";
+        final String exercisesUrl = getResources().getString(R.string.url_exercises);
         JsonArrayRequest exercisesReq = new JsonArrayRequest(exercisesUrl, new Response.Listener<JSONArray> () {
             @Override
             public void onResponse(JSONArray response) {

@@ -1,4 +1,7 @@
 <resources>
+    <string name="url_exercises">http://192.168.0.30:3000/exercises</string>
+    <string name="url_categories">http://192.168.0.30:3000/categories</string>
+
     <string name="app_name">Lift</string>
     <string name="action_settings">Settings</string>
     <string name="drawer_open">Open navigation drawer</string>

@@ -1,14 +1,17 @@
 package ca.mihailistov.lift.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.realm.RealmExercise;
@@ -22,39 +25,46 @@ import io.realm.Realm;
 
 public class LiftExpandableAdapter extends BaseExpandableListAdapter {
 
+    private static final String TAG = "LiftExpandableAdapter";
     private Realm realm;
     private final LayoutInflater inf;
-    private List<RealmExercise> listExerciseData;
+    private List<RealmExercise> listExercises;
     private HashMap<RealmExercise, List<RealmSet>> listSetData;
 
-    public LiftExpandableAdapter(Context context, List<RealmExercise> listExerciseData,
-                                     HashMap<RealmExercise, List<RealmSet>> listSetData){
+    public LiftExpandableAdapter(Context context, List<RealmExercise> listExercises){
         realm = Realm.getDefaultInstance();
-        this.listExerciseData = listExerciseData;
-        this.listSetData = listSetData;
+        this.listExercises = listExercises;
         inf = LayoutInflater.from(context);
     }
 
     @Override
     public int getGroupCount(){
-        return this.listExerciseData.size();
+        return this.listExercises.size();
     }
 
     @Override
-    public int getChildrenCount(int i){
-        return this.listSetData.get(this.listExerciseData.get(i))
-                .size();}
-
+    public int getChildrenCount(int i) {
+        if (this.listExercises.get(i).realmSets == null)
+            return 1;
+        else
+            return this.listExercises.get(i).realmSets.size();
+    }
 
     @Override
-    public RealmExercise getGroup(int i){
-        return this.listExerciseData.get(i);
+    public RealmExerciseData getGroup (int i) {
+        return this.listExercises.get(i).realmExerciseData;
     }
 
     @Override
     public RealmSet getChild(int i, int i1){
-        return this.listSetData.get(this.listExerciseData.get(i))
-                .get(i1);
+        RealmSet realmSet = null;
+        try {
+            realmSet = this.listExercises.get(i).realmSets.get(i1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return realmSet;
     }
 
     @Override
@@ -86,7 +96,12 @@ public class LiftExpandableAdapter extends BaseExpandableListAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.text.setText(getGroup(i).realmExerciseData.name);
+        if (getGroup(i) != null)
+            holder.text.setText(getGroup(i).name);
+
+        ExpandableListView elv = (ExpandableListView) viewGroup;
+        elv.expandGroup(i);
+
         return view;
     }
 
@@ -104,16 +119,17 @@ public class LiftExpandableAdapter extends BaseExpandableListAdapter {
         TextView lbsTv = (TextView) view.findViewById(R.id.lbsTv);
         TextView repsTv = (TextView) view.findViewById(R.id.repsTv);
 
+        Log.e(TAG, "Getting child view i=" + i + " i1=" + i1);
         RealmSet childSet;
         if (getChild(i, i1) != null) {
             childSet = getChild(i, i1);
-            childSetNum.setText(i1);
-            childSetWeight.setText(childSet.weight);
-            childSetReps.setText(childSet.reps);
+            childSetNum.setText(String.valueOf(i1+1));
+            childSetWeight.setText(String.valueOf(childSet.weight));
+            childSetReps.setText(String.valueOf(childSet.reps));
         } else {
+            Log.e(TAG, "child # " + i1 + " found to be null");
             childSetNum.setText("+");
             childSetWeight.setText("Click to add set.");
-            childSetReps.setVisibility(View.GONE);
             lbsTv.setVisibility(View.GONE);
             repsTv.setVisibility(View.GONE);
         }

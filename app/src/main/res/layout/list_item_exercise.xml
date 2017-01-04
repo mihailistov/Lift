@@ -1,10 +1,16 @@
 <RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="60.28dp"
+    android:paddingRight="16dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/parentColor">
     <TextView
-        android:id="@+id/exercise_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/exercise_title"
         android:layout_centerVertical="true"
         android:fontFamily="sans-serif-medium"
         android:textSize="16sp"
@@ -12,13 +18,4 @@
         android:textColor="@color/white"
         android:textAllCaps="true"
         />
-
-    <ImageView
-        android:id="@+id/exercise_expand_arrow"
-        android:layout_alignRight="@+id/exercise_title"
-        android:layout_width="28.28dp"
-        android:layout_height="28.28dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_expand_more"
-        android:layout_gravity="center"/>
 </RelativeLayout>
