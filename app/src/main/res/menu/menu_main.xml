@@ -8,6 +8,11 @@
         android:title="Create data"
         app:showAsAction="never" />
     <item
+        android:id="@+id/clear_data"
+        android:orderInCategory="100"
+        android:title="Clear all data"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"

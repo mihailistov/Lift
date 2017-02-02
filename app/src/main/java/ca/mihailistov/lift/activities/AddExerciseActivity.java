@@ -38,6 +38,7 @@ import ca.mihailistov.lift.helpers.SimpleDividerItemDecoration;
 import ca.mihailistov.lift.realm.RealmCategory;
 import ca.mihailistov.lift.realm.RealmExercise;
 import ca.mihailistov.lift.realm.RealmExerciseData;
+import ca.mihailistov.lift.realm.RealmSet;
 import ca.mihailistov.lift.realm.RealmWorkout;
 import io.realm.Case;
 import io.realm.Realm;
@@ -148,6 +149,15 @@ public class AddExerciseActivity extends AppCompatActivity implements RecyclerVi
                     .equalTo("name",exercise)
                     .findFirst();
             newRealmExercise.realmExerciseData = realmExerciseData;
+
+            RealmSet realmSet = new RealmSet();
+            realmSet.reps = 0;
+            realmSet.weight = 0;
+
+            RealmList<RealmSet> realmSetList = new RealmList<>();
+            realmSetList.add(realmSet);
+
+            newRealmExercise.realmSets = realmSetList;
 
             RealmWorkout realmWorkout = null;
 

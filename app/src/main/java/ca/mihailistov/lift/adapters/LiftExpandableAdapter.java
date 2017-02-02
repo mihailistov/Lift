@@ -57,11 +57,19 @@ public class LiftExpandableAdapter extends BaseExpandableListAdapter {
 
     @Override
     public RealmSet getChild(int i, int i1){
+        Log.e(TAG, "Attempting to getChild...");
         RealmSet realmSet = null;
         try {
             realmSet = this.listExercises.get(i).realmSets.get(i1);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        if (realmSet == null) {
+            Log.e(TAG, "realmSet not found");
+            realmSet = new RealmSet();
+            realmSet.reps = 0;
+            realmSet.weight = 0;
         }
 
         return realmSet;
@@ -119,15 +127,12 @@ public class LiftExpandableAdapter extends BaseExpandableListAdapter {
         TextView lbsTv = (TextView) view.findViewById(R.id.lbsTv);
         TextView repsTv = (TextView) view.findViewById(R.id.repsTv);
 
-        Log.e(TAG, "Getting child view i=" + i + " i1=" + i1);
-        RealmSet childSet;
-        if (getChild(i, i1) != null) {
-            childSet = getChild(i, i1);
+        RealmSet childSet = getChild(i, i1);
+        if (childSet.reps != 0 && childSet.weight != 0) {
             childSetNum.setText(String.valueOf(i1+1));
             childSetWeight.setText(String.valueOf(childSet.weight));
             childSetReps.setText(String.valueOf(childSet.reps));
         } else {
-            Log.e(TAG, "child # " + i1 + " found to be null");
             childSetNum.setText("+");
             childSetWeight.setText("Click to add set.");
             lbsTv.setVisibility(View.GONE);
