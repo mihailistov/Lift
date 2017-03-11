@@ -24,19 +24,22 @@
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
-
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity
             android:name=".activities.AddActionActivity"
             android:label="@string/title_activity_add_action"
             android:launchMode="singleTop"
             android:theme="@style/AppDialogTheme.Transparent" />
-
         <activity
             android:name=".activities.AddExerciseActivity"
             android:label="@string/title_activity_add_exercise"
             android:launchMode="singleTop"
             android:theme="@style/AppDialogTheme" />
+        <activity
+            android:name=".activities.EditExerciseActivity"
+            android:theme="@style/AppDialogTheme">
+        </activity>
     </application>
 
 </manifest>

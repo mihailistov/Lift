@@ -6,7 +6,7 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:orientation="horizontal"
-        android:background="@android:color/white">
+        android:background="@color/white">
 
     <TextView
         android:layout_width="28.28dp"

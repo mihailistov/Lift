@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="horizontal"
+    android:background="@drawable/list_item_set_background">
+
+    <TextView
+        android:layout_width="28.28dp"
+        android:layout_height="28.28dp"
+        android:textSize="16dp"
+        android:textColor="#ffffff"
+        android:id="@+id/childSetNum"
+        android:background="@drawable/bg_set_circle"
+        android:gravity="center_vertical|center_horizontal"
+        />
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:paddingLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:id="@+id/childSetWeight" />
+
+    <TextView
+        android:id="@+id/lbsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/lighter_gray"
+        android:text=" lbs"/>
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:paddingLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:id="@+id/childSetReps" />
+
+    <TextView
+        android:id="@+id/repsTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textSize="16sp"
+        android:textColor="@color/lighter_gray"
+        android:text=" reps"/>
+
+
+</LinearLayout>

@@ -8,10 +8,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <TextView
         android:id="@+id/search_all"
-        android:text="search exercises"
+        android:text="exercises"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
-        android:textSize="16dip"
+        android:textSize="20dip"
         android:textStyle="bold"
         android:layout_margin="5dp"
         android:layout_width="0dp"
@@ -21,10 +21,10 @@
         android:background="@color/parentColor"/>
     <TextView
         android:id="@+id/search_plans"
-        android:text="search workout plans"
+        android:text="workouts"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
-        android:textSize="16dip"
+        android:textSize="20dip"
         android:textStyle="bold"
         android:layout_margin="5dp"
         android:layout_width="0dp"
@@ -34,10 +34,10 @@
         android:background="@color/parentColor"/>
     <TextView
         android:id="@+id/copy_previous"
-        android:text="copy previous workout"
+        android:text="copy"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
-        android:textSize="16dip"
+        android:textSize="20dip"
         android:textStyle="bold"
         android:layout_margin="5dp"
         android:layout_width="0dp"
@@ -47,10 +47,10 @@
         android:background="@color/parentColor"/>
     <TextView
         android:id="@+id/create_new"
-        android:text="create a new workout plan"
+        android:text="plan"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
-        android:textSize="16dip"
+        android:textSize="20dip"
         android:textStyle="bold"
         android:layout_margin="5dp"
         android:layout_width="0dp"

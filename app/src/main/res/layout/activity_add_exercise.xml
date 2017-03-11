@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/add_exercise_relative_layout"
     android:layout_width="match_parent"
-    android:layout_height="376dp"
+    android:layout_height="440dp"
     tools:context="ca.mihailistov.lift.activities.AddExerciseActivity">
 
     <include layout="@layout/toolbar_add_exercise"/>

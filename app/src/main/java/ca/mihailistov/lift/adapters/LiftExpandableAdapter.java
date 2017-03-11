@@ -116,7 +116,6 @@ public class LiftExpandableAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup){
 
-        ViewHolder holder;
         if (view == null){
             view = inf.inflate(R.layout.list_item_set, null);
         }
@@ -132,9 +131,15 @@ public class LiftExpandableAdapter extends BaseExpandableListAdapter {
             childSetNum.setText(String.valueOf(i1+1));
             childSetWeight.setText(String.valueOf(childSet.weight));
             childSetReps.setText(String.valueOf(childSet.reps));
+            lbsTv.setVisibility(View.VISIBLE);
+            repsTv.setVisibility(View.VISIBLE);
+            childSetReps.setVisibility(View.VISIBLE);
+            childSetWeight.setVisibility(View.VISIBLE);
+
         } else {
             childSetNum.setText("+");
             childSetWeight.setText("Click to add set.");
+            childSetReps.setVisibility(View.GONE);
             lbsTv.setVisibility(View.GONE);
             repsTv.setVisibility(View.GONE);
         }

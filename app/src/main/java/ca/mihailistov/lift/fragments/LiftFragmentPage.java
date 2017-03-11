@@ -36,6 +36,7 @@ import java.util.Locale;
 import ca.mihailistov.lift.R;
 import ca.mihailistov.lift.activities.AddActionActivity;
 import ca.mihailistov.lift.activities.AddExerciseActivity;
+import ca.mihailistov.lift.activities.EditExerciseActivity;
 import ca.mihailistov.lift.adapters.LiftExpandableAdapter;
 import ca.mihailistov.lift.realm.RealmExercise;
 import ca.mihailistov.lift.realm.RealmExerciseData;
@@ -132,6 +133,20 @@ public class LiftFragmentPage extends Fragment {
 
             liftExpandableAdapter = new LiftExpandableAdapter(getContext(), realmExerciseList);
             elv.setAdapter(liftExpandableAdapter);
+
+           elv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+               @Override
+               public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                   Intent intent = new Intent(getActivity(), EditExerciseActivity.class);
+                   Bundle b = new Bundle();
+                   b.putInt("mNum",mNum);
+                   b.putInt("groupPos",groupPosition);
+                   b.putInt("childPos",childPosition);
+                   intent.putExtras(b);
+                   startActivityForResult(intent, 1001);
+                   return false;
+               }
+           });
 
         } else {
             menuMultipleActions.hideMenu(true);
